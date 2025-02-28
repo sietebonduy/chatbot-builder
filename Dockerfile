@@ -14,14 +14,16 @@ RUN apt-get update -qq && \
     nodejs npm && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install Yarn
 RUN npm install -g yarn@1.22.19
 
-# Set development environment
-ENV RAILS_ENV="development" \
-    BUNDLE_DEPLOYMENT="1" \
+ARG RAILS_ENV=development
+ARG BUNDLE_DEPLOYMENT=0
+ARG BUNDLE_WITHOUT=""
+
+ENV RAILS_ENV=${RAILS_ENV} \
+    BUNDLE_DEPLOYMENT=${BUNDLE_DEPLOYMENT} \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT=${BUNDLE_WITHOUT}
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
@@ -37,11 +39,11 @@ RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
-# Run Webpacker install and precompile assets
-RUN bundle exec rails webpacker:install
-RUN bundle exec rails assets:precompile
-
+# Install JavaScript dependencies and build assets with esbuild
+COPY package.json yarn.lock ./
+RUN yarn install
 COPY . .
+RUN yarn build
 
 # Final stage for app image
 FROM base

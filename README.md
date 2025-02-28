@@ -1,24 +1,13 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Setup
 
-Things you may want to cover:
+* For development
+```bash
+docker build --build-arg RAILS_ENV=development --build-arg BUNDLE_DEPLOYMENT=0 --build-arg BUNDLE_WITHOUT="" .
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* For production
+```bash
+docker build --build-arg RAILS_ENV=production --build-arg BUNDLE_DEPLOYMENT=1 --build-arg BUNDLE_WITHOUT="development:test" .
+```
