@@ -1,59 +1,32 @@
+version: '3.8'
 services:
   db:
-    image: postgres:14
-    container_name: chatbot_db
+    image: postgres:17
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./tmp/db:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: chatbot_development
-    networks:
-      - chatbot_builder_network
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
 
-  web:
-    build: .
-    container_name: chatbot_builder
-    env_file: .env
+  api:
+    build: ./backend
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./backend:/app
+    ports:
+      - '80:3000'
     depends_on:
       - db
-    ports:
-      - "3000:3000"
     environment:
-      RAILS_ENV: development
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      DATABASE_URL: "postgres://postgres:password@db:5432/chatbot_development"
-    networks:
-      - chatbot_builder_network
-    volumes:
-      - .:/rails
-      - bundle_cache:/usr/local/bundle
-      - ~/.bash_history:/root/.bash_history
-      - node_modules:/rails/node_modules
-    command: ["bin/rails", "server", "-b", "0.0.0.0"]
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
-  frontend:
-    build: .
-    container_name: chatbot_frontend
-    image: chatbot_builder
-    restart: on-failure
+  client:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
-      - "3035:3035"
-    env_file: .env
-    networks:
-      - chatbot_builder_network
+      - '3000:3000'
     environment:
-      NODE_ENV: development
-    volumes:
-      - .:/rails
-      - node_modules:/rails/node_modules
-    command: ["sh", "-c", "yarn build && yarn watch"]
-
-volumes:
-  db_data:
-  node_modules:
-  bundle_cache:
-
-networks:
-  chatbot_builder_network:
-    name: chatbot_builder_network
+      - CHOKIDAR_USEPOLLING=true
