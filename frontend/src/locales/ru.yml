@@ -1,0 +1,27 @@
+authentication:
+  login: "Вход в систему"
+  registration: "Регистрация"
+  fields:
+    email:
+      title: "Электронная почта"
+      placeholder: "example@domain.ru"
+    password:
+      title: "Пароль"
+      placeholder: "Введите ваш пароль"
+    password_confirmation:
+      title: "Подтверждение пароля"
+      placeholder: "Введите ваш пароль повторно"
+  errors:
+    fill_all_fields: "Пожалуйста, заполните все поля!"
+    password_mismatch: "Пароли не совпадают!"
+    invalid_email: "Некорректная электронная почта!"
+    invalid_password: "Неправильнный пароль!"
+  buttons:
+    login: "Войти"
+    register: "Зарегистрироваться"
+navbar:
+  app_name: "Chatbot Builder"
+  main_page: "Главная"
+  login: "Войти"
+  register: "Зарегистрироваться"
+

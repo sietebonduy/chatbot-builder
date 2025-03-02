@@ -1,0 +1,26 @@
+authentication:
+  login: "Login"
+  registration: "Registration"
+  fields:
+    email:
+      title: "Email"
+      placeholder: "example@domain.com"
+    password:
+      title: "Password"
+      placeholder: "Enter your password"
+    password_confirmation:
+      title: "Confirm password"
+      placeholder: "Re-enter your password"
+  errors:
+    fill_all_fields: "Please fill in all fields!"
+    password_mismatch: "Passwords do not match!"
+    invalid_email: "Invalid email address!"
+    invalid_password: "Incorrect password!"
+  buttons:
+    login: "Log in"
+    register: "Sign up"
+navbar:
+  app_name: "Chatbot Builder"
+  main_page: "Home"
+  login: "Log in"
+  register: "Sign up"
