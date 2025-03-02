@@ -2,7 +2,6 @@
 Thumbs.db
 .idea
 
-
 .env
 .env.local
 .env.*.local
