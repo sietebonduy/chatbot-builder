@@ -19,6 +19,7 @@ authentication:
   buttons:
     login: "Log in"
     register: "Sign up"
+    loading: "Loading..."
 navbar:
   app_name: "Chatbot Builder"
   main_page: "Home"

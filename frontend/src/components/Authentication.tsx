@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { validateEmail, validatePassword } from "../utilities/validations";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { validateEmail, validatePassword } from '../utilities/validations';
+import { useAuth } from '../hooks/useAuth';
 
 const PageTypes = {
   LOGIN: 0,
@@ -20,13 +22,15 @@ const initialErrorsState = {
 
 const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState(initialErrorsState);
+  const { loading, error, register, signIn } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const updatedErrors = { ...errors };
@@ -51,11 +55,27 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
 
     setErrors(updatedErrors);
 
-    if (Object.values(updatedErrors).every(error => error === "")) {
+    if (Object.values(updatedErrors).some(error => error !== "")) {
+      return;
+    }
+
+    const credentials = { email, password };
+
+    try {
+      if (pageType === PageTypes.LOGIN) {
+        await signIn(credentials);
+      } else {
+        await register(credentials);
+      }
+
       setEmail("");
       setPassword("");
       setPasswordConfirm("");
+    } catch (error) {
+      return error;
     }
+
+    navigate('/hello')
   };
 
   return (
@@ -86,8 +106,10 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
             </div>
           )}
 
+          { error && <p className="text-red-500 text-sm mb-4">{error.message}</p> }
+
           <button type="submit" className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            { pageType === PageTypes.LOGIN ? t("authentication.buttons.login") : t("authentication.buttons.register") }
+            { loading ? t("authentication.buttons.loading") : pageType === PageTypes.LOGIN ? t("authentication.buttons.login") : t("authentication.buttons.register") }
           </button>
         </form>
       </div>

@@ -19,6 +19,7 @@ authentication:
   buttons:
     login: "Войти"
     register: "Зарегистрироваться"
+    loading: "Загрузка..."
 navbar:
   app_name: "Chatbot Builder"
   main_page: "Главная"
