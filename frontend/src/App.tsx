@@ -1,18 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Authentication, PageTypes } from './components/Authentication';
-
 import Navbar from './components/Navbar';
-import Hello from './components/Hello';
+import Hello from './pages/Hello';
+import NotFound from './pages/NotFound';
+import { Authentication, PageTypes } from './pages/Authentication';
 
 const App = () => (
   <Router>
-    <Navbar/>
+    <Navbar />
     <Routes>
-      <Route path="/login" element={<Authentication pageType={PageTypes.LOGIN}/>}/>
-      <Route path="/sign_up" element={<Authentication pageType={PageTypes.REGISTER}/>}/>
-      <Route path="/hello" element={<Hello/>}/>
+      <Route path="/login" element={<Authentication pageType={PageTypes.LOGIN} />} />
+      <Route path="/sign_up" element={<Authentication pageType={PageTypes.REGISTER} />} />
+      <Route path="/hello" element={<Hello />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   </Router>
-)
+);
 
 export default App;

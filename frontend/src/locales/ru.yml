@@ -26,4 +26,8 @@ navbar:
   login: "Войти"
   register: "Зарегистрироваться"
   logout: 'Выйти'
-
+error_pages:
+  not_found:
+    code: "404"
+    page_not_found: "Страница не найдена"
+    sorry_message: "Извините, страница, которую вы ищете, не существует или была перемещена."

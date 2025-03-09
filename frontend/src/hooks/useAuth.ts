@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
+import { useState} from 'react';
 import { useCookies } from 'react-cookie';
-import {registration, login, logout} from '../api/repositories/AuthRepository';
-import { IUserCredentials, IUserResponse } from '../types/auth.ts';
+import { registration, login, logout } from '../api/repositories/AuthRepository';
+import { IUserCredentials, IUserResponse } from '../types/auth';
 
 export const useAuth = () => {
   const [user, setUser] = useState<IUserResponse | null>(null);
@@ -43,8 +43,6 @@ export const useAuth = () => {
   };
 
   const signOut = async () => {
-    if (!cookies.jwt) return;
-
     setLoading(true);
     setError(null);
 

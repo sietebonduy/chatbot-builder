@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { validateEmail, validatePassword } from '../utilities/validations';
-import { useAuth } from '../hooks/useAuth';
+import { validateEmail, validatePassword } from '../utilities/validations.ts';
+import { useAuth } from '../hooks/useAuth.ts';
 
 const PageTypes = {
   LOGIN: 0,
