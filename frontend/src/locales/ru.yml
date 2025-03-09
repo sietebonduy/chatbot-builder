@@ -31,3 +31,6 @@ error_pages:
     code: "404"
     page_not_found: "Страница не найдена"
     sorry_message: "Извините, страница, которую вы ищете, не существует или была перемещена."
+home:
+  welcome: "Добро пожаловать в Chatbot Builder!"
+  description: ""

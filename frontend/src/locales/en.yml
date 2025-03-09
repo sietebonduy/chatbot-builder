@@ -31,3 +31,6 @@ error_pages:
     code: "404"
     page_not_found: "Page Not Found"
     sorry_message: "Sorry, the page you are looking for doesn't exist or has been moved."
+home:
+  welcome: "Welcome to the Chatbot Builder!"
+  description: ""
