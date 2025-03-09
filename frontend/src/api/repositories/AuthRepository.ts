@@ -13,3 +13,10 @@ export const login = (params: IUserCredentials) => {
 
   return FetchHelpers.post<IUserResponse>(url, { user: params });
 };
+
+export const logout = (jwt: string) => {
+  const url = Routes.USER.LOGOUT;
+  const headers = { Authorization: jwt };
+
+  return FetchHelpers.delete<IUserResponse>(url, headers);
+};

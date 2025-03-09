@@ -25,4 +25,5 @@ navbar:
   main_page: "Главная"
   login: "Войти"
   register: "Зарегистрироваться"
+  logout: 'Выйти'
 

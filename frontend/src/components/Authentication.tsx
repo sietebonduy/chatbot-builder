@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { validateEmail, validatePassword } from '../utilities/validations';
@@ -22,8 +23,8 @@ const initialErrorsState = {
 
 const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => {
   const { t } = useTranslation();
+  const [cookies] = useCookies(['jwt']);
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -74,9 +75,13 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
     } catch (error) {
       return error;
     }
-
-    navigate('/hello')
   };
+
+  useEffect(() => {
+    if (cookies.jwt) {
+      navigate('/hello');
+    }
+  }, [cookies.jwt, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

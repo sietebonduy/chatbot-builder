@@ -25,3 +25,4 @@ navbar:
   main_page: "Home"
   login: "Log in"
   register: "Sign up"
+  logout: 'Log Out'
