@@ -48,12 +48,12 @@ export const useAuth = () => {
 
     try {
       await logout(cookies.jwt);
-      setJwtToken('');
-      setUser(null);
-      removeCookie('jwt');
     } catch (err) {
       setError(err as Error);
     } finally {
+      removeCookie('jwt');
+      setJwtToken('');
+      setUser(null);
       setLoading(false);
     }
   };
