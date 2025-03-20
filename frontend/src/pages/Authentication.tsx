@@ -79,7 +79,7 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
 
   useEffect(() => {
     if (cookies.jwt) {
-      navigate('/hello');
+      navigate('/editor');
     }
   }, [cookies.jwt, navigate]);
 

@@ -5,7 +5,7 @@ const Routes = {
     LOGOUT: '/users/sign_out',
   },
   HELLO: {
-    INDEX: '/api/v1/hello',
+    INDEX: '/api/v1/editor',
   },
 };
 
