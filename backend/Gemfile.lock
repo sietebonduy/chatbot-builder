@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    action_policy (0.7.4)
+      ruby-next-core (>= 1.0)
     actioncable (8.0.1)
       actionpack (= 8.0.1)
       activesupport (= 8.0.1)
@@ -83,7 +85,6 @@ GEM
     brakeman (7.0.0)
       racc
     builder (3.3.0)
-    byebug (11.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
     crass (1.0.6)
@@ -282,6 +283,7 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
+    ruby-next-core (1.1.1)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     solid_cable (3.0.7)
@@ -346,9 +348,9 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  action_policy
   bootsnap
   brakeman
-  byebug
   debug
   devise (~> 4.9)
   devise-jwt

@@ -3,7 +3,7 @@
 module KindOfService
   extend ActiveSupport::Concern
 
-  DEFAULT_ERROR_MESSAGE = 'Error happened.'
+  DEFAULT_ERROR_MESSAGE = 'Something went wrong.'
 
   included do
     extend Memoist
