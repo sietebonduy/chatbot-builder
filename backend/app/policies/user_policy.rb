@@ -5,6 +5,10 @@ class UserPolicy < ApplicationPolicy
     admin?
   end
 
+  def show?
+    same_user? || admin?
+  end
+
   def update?
     same_user? || admin?
   end

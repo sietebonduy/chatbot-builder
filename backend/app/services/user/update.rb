@@ -17,6 +17,8 @@ class User::Update
     user.update!(user_params)
 
     success(user)
+  rescue => e
+    error(e.message)
   end
 
   def user_params

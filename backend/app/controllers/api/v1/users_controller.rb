@@ -7,6 +7,17 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     render json: User.all.to_json
   end
 
+  def show
+    form = ::Api::V1::User::ShowForm.new(params)
+    result = ::User::Show.call(current_user, form.params)
+
+    if result.successful?
+      render json: result.data
+    else
+      render_service_error(result)
+    end
+  end
+
   def update
     form = ::Api::V1::User::UpdateForm.new(params)
     result = ::User::Update.call(current_user, form.params)
