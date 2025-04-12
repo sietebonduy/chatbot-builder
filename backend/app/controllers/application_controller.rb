@@ -2,4 +2,5 @@
 
 class ApplicationController < ActionController::API
   include ActionPolicy::Behaviour
+  include Devise::Controllers::Helpers
 end

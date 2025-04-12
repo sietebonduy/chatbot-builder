@@ -28,4 +28,8 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  services:
+    timeout_error: "The request timed out. Please try again later."
+    unauthorized_error: "You are not authorized to access this resource."
+    not_found_error: "The requested resource could not be found."
+    error: "Something went wrong."

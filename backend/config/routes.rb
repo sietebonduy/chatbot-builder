@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
+
+  namespace :webhooks do
+    post 'telegram/:bot_token', to: 'telegram#receive'
+  end
 
   namespace :api do
     namespace :v1 do
