@@ -6,6 +6,6 @@ module ResponseHelpers
   private
 
   def render_service_error(result)
-    render json: ::ErrorsSerializer.new(result).as_json, status: :unprocessable_entity
+    render json: { errors: result.errors }, status: :unprocessable_entity
   end
 end

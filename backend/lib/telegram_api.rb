@@ -8,7 +8,7 @@ class TelegramApi
   end
 
   def send_message(chat_id, text)
-    body = { chat_id: chat_id, text: text }
+    body = { chat_id:, text: }
     response = HTTParty.post("#{base_url}/sendMessage", body:)
     JSON.parse(response.body)
   rescue Net::ReadTimeout

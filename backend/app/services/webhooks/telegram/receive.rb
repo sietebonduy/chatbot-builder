@@ -17,11 +17,11 @@ class Webhooks::Telegram::Receive
     api_client.send_message(chat_id, message)
 
     success
-  rescue => e
-    error(nil, [I18n.t('services.error')]e.message)
+  rescue
+    error(nil, [I18n.t('services.error')])
   end
 
   def bot
-    @@bot ||= Bot.find_by!(provider: 'telegram', token: params[:bot_token])
+    @@bot ||= Bot.find_by!(provider: 'telegram', token: @params[:bot_token])
   end
 end
