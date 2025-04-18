@@ -33,3 +33,7 @@ en:
     unauthorized_error: "You are not authorized to access this resource."
     not_found_error: "The requested resource could not be found."
     error: "Something went wrong."
+  mailer:
+    user_mailer:
+      welcome_email:
+        subject: "Welcome to My Awesome App"

@@ -17,6 +17,7 @@ services:
     working_dir: /app
     volumes:
       - ./backend:/app
+      - bundle:/gems
     ports:
       - '80:80'
     depends_on:
@@ -38,3 +39,4 @@ services:
 
 volumes:
   node_modules:
+  bundle:
