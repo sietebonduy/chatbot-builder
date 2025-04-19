@@ -28,5 +28,10 @@ module Backend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_backend_session',same_site: :lax, secure: Rails.env.production?
+
+    # Use Sidekiq for background jobs
+    config.active_job.queue_adapter = :sidekiq
   end
 end

@@ -2,6 +2,7 @@ version: '3.8'
 services:
   db:
     image: postgres:17
+    container_name: db
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
@@ -9,8 +10,15 @@ services:
     ports:
       - '5432:5432'
 
-  api:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - '6379:6379'
+
+  backend:
     build: ./backend
+    container_name: backend
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 80 -b '0.0.0.0'"
     stdin_open: true
     tty: true
@@ -22,13 +30,31 @@ services:
       - '80:80'
     depends_on:
       - db
+      - sidekiq
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       RAILS_ENV: development
-    restart: unless-stopped
+      REDIS_URL: ${REDIS_URL}
 
-  client:
+  sidekiq:
+    build: ./backend
+    container_name: sidekiq
+    command: bundle exec sidekiq
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - bundle:/gems
+    depends_on:
+      - db
+      - redis
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      RAILS_ENV: development
+      REDIS_URL: ${REDIS_URL}
+
+  frontend:
     build: ./frontend
+    container_name: frontend
     volumes:
       - ./frontend:/app
       - node_modules:/app/node_modules
