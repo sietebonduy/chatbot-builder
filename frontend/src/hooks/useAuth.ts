@@ -1,62 +1,71 @@
-import { useState} from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
 import { registration, login, logout } from '../api/repositories/AuthRepository';
-import { IUserCredentials, IUserResponse } from '../types/auth';
+import { IUserCredentials } from '../types/auth';
+import { normalizeFromDevise } from '../lib/normalizeUser';
+import { useUser } from '../contexts/UserContext';
 
 export const useAuth = () => {
-  const [user, setUser] = useState<IUserResponse | null>(null);
-  const [jwt, setJwtToken] = useState('');
+  const { user, setUser } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+  const jwt = cookies.jwt;
 
-  const register = async (credentials: IUserCredentials) => {
+  const register = useCallback(async (credentials: IUserCredentials) => {
     setLoading(true);
     setError(null);
 
     try {
-      const userData = await registration(credentials);
-      setUser(userData.data);
-    } catch (err) {
-      setError(err as Error);
+      const response = await registration(credentials);
+      setUser(normalizeFromDevise(response.data.data));
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err : new Error('Registration failed'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [setUser]);
 
-  const signIn = async (credentials: IUserCredentials) => {
+  const signIn = useCallback(async (credentials: IUserCredentials) => {
     setLoading(true);
     setError(null);
 
     try {
       const response = await login(credentials);
+      const userData = response.data;
       const authHeader = response.headers['authorization'];
-
-      setUser(response.data.data);
-      setJwtToken(authHeader);
       setCookie('jwt', authHeader, { path: '/' });
-    } catch (err) {
-      setError(err as Error);
+      setUser(normalizeFromDevise(userData.data));
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err : new Error('Login failed'));
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      await logout(cookies.jwt);
+      await logout();
     } catch (err) {
       setError(err as Error);
     } finally {
       removeCookie('jwt');
-      setJwtToken('');
       setUser(null);
       setLoading(false);
     }
-  };
+  }, [removeCookie, setUser]);
 
-  return { user, loading, error, register, signIn, signOut, jwt };
+  return useMemo(() => ({
+    user,
+    loading,
+    error,
+    signIn,
+    register,
+    signOut,
+    jwt,
+  }), [user, loading, error, jwt, signIn, register, signOut]);
 };

@@ -1,21 +1,17 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { UserProvider } from './contexts/UserContext';
 import Navbar from './components/Navbar';
-import Hello from './pages/Hello';
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
-import { Authentication, PageTypes } from './pages/Authentication';
+import AppRouter from "./components/AppRouter.tsx";
 
-const App = () => (
-  <Router>
-    <Navbar />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Authentication pageType={PageTypes.LOGIN} />} />
-      <Route path="/sign_up" element={<Authentication pageType={PageTypes.REGISTER} />} />
-      <Route path="/hello" element={<Hello />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  </Router>
-);
+const App = () => {
+  return (
+    <Router>
+      <UserProvider>
+        <Navbar />
+        <AppRouter />
+      </UserProvider>
+    </Router>
+  );
+};
 
 export default App;

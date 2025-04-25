@@ -33,4 +33,18 @@ error_pages:
     sorry_message: "Извините, страница, которую вы ищете, не существует или была перемещена."
 home:
   welcome: "Добро пожаловать в Chatbot Builder!"
-  description: ""
+  description: "Создайте и управляйте логикой чат-ботов с легкостью и эффективностью."
+  start: "Начать"
+  learn_more: "Узнать больше"
+  footer: "Разработано Денисом"
+admin:
+  users:
+    table:
+      first_name: 'Имя'
+      last_name: 'Фамилия'
+      role: 'Роль'
+      actions: 'Действия'
+    actions:
+      edit: "Редактировать"
+      archive: "Архивировать"
+      show: "Показать"

@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: '/letter_opener'
+  end
+
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
@@ -18,7 +22,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :hello, only: %i[index]
-      resources :users, only: %i[index show update]
+      resources :users, only: %i[index show update] do
+        collection do
+          get :me
+        end
+      end
       resources :routes , only: %i[index]
     end
   end

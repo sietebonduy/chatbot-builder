@@ -10,10 +10,16 @@ export default defineConfig({
       '/sidekiq': {
         target: 'http://backend:80/sidekiq',
         changeOrigin: true,
-        headers: {
-          Authorization: request.headers.Authorization
+        rewrite: (path) => path.replace(/^\/sidekiq/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            const authHeader = proxyReq.getHeader('Authorization')
+            if (authHeader) {
+              proxyReq.setHeader('Authorization', authHeader)
+            }
+          })
         }
-      },
-    },
+      }
+    }
   },
 })

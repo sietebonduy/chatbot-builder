@@ -1,16 +1,15 @@
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
-import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from "../contexts/UserContext.tsx";
 
-import Button from './Button';
-import { FaUser, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import userDefaultLogo from '../assets/user_icon.svg'
+import arrowDown from '../assets/arrow-down.svg'
 
 const Navbar = () => {
   const { t } = useTranslation();
   const { signOut } = useAuth();
-  const [cookies] = useCookies(['jwt']);
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -18,52 +17,51 @@ const Navbar = () => {
       await signOut();
     } catch {
       return;
+    } finally {
+      navigate('/login');
     }
-
-    navigate('/login');
   };
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-4 shadow-lg fixed top-0 w-full z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/"
-              className="text-xl font-extrabold text-white tracking-wide hover:text-gray-200 transition-colors duration-300">
-          {t('navbar.app_name')}
-        </Link>
-
-        <ul className="flex space-x-6">
-          {!cookies.jwt
-            ? (
-              <>
-                <li>
-                  <Link to="/login"
-                        className="flex items-center bg-white text-blue-600 px-6 py-2 rounded-md shadow-md hover:bg-gray-200 hover:scale-105 transition-all duration-300">
-                    <FaSignInAlt className="mr-2"/>
-                    {t('navbar.login')}
-                  </Link>
-                </li>
-                <li className="flex justify-center">
-                  <Link to="/sign_up"
-                        className="flex items-center text-white hover:underline hover:scale-105 transition-all duration-300">
-                    <FaUser className="mr-2"/>
-                    {t('navbar.register')}
-                  </Link>
-                </li>
-              </>
-            )
-            : (
-              <li>
-                <Button onClick={handleLogout} variant='danger'
-                        className="flex items-center bg-red-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-red-700 hover:scale-105 transition-all duration-300">
-                  <FaSignOutAlt className="mr-2"/>
-                  {t('navbar.logout')}
-                </Button>
-              </li>
-            )
-          }
-        </ul>
-      </div>
-    </nav>
+    <>
+      { user ?
+          <div className="navbar bg-base-200 shadow-sm px-10">
+            <div className="flex-1">
+              <div
+                className="text-xl font-extrabold text-black tracking-wide hover:text-gray-500 transition-colors duration-300 cursor-pointer"
+                onClick={() => navigate('/')}>
+                {t('navbar.app_name')}
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-300 overflow-hidden">
+                <img
+                  alt="Profile Image"
+                  src={userDefaultLogo}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="text-sm font-semibold text-gray-800">Denis Domanin</p>
+                <p className="text-xs text-gray-500">den@gmail.com</p>
+              </div>
+            </div>
+            <div className="dropdown dropdown-end w-10 h-10 self-center">
+                <div tabIndex={0} role="button" className="w-10 h-10 flex items-center justify-center p-0">
+                  <img src={arrowDown} alt="menu" width={20} height={20} />
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                  <li><a>Profile</a></li>
+                  <li><a>Settings</a></li>
+                  <li><a onClick={handleLogout}>{ t('navbar.logout' )}</a></li>
+                </ul>
+            </div>
+          </div>
+        : null
+      }
+    </>
   );
 };
 

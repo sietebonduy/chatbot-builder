@@ -34,3 +34,6 @@ error_pages:
 home:
   welcome: "Welcome to the Chatbot Builder!"
   description: ""
+  start: "Start"
+  learn_more: "Learn More"
+  footer: "Powered by Denis"

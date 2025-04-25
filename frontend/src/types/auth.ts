@@ -3,7 +3,7 @@ export interface IUserCredentials {
   password: string;
 }
 
-export interface IUserResponse {
+export interface IUserDeviseResponse {
   message: string;
   data: {
     id: number;

@@ -1,8 +1,9 @@
 import axios from 'axios';
 import humps from 'humps';
 
-const getCookie = (name) => {
+const getCookie = (name: string) => {
   if (typeof document === 'undefined') return null;
+
   const cookies = document.cookie.split(';').map(c => c.trim());
   const targetCookie = cookies.find(c => c.startsWith(`${name}=`));
   return targetCookie ? decodeURIComponent(targetCookie.split('=')[1]) : null;
@@ -22,24 +23,25 @@ apiClient.interceptors.request.use((config) => {
   }
 
   const jwtCookie = getCookie('jwt');
-
-  if (jwtCookie && !config.headers.Authorization) {
+  if (jwtCookie) {
     config.headers.Authorization = jwtCookie;
+  } else {
+    delete config.headers.Authorization;
   }
 
   return config;
 });
 
-apiClient.interceptors.response.use((response) => {
-  if (response.data) {
-    response.data = humps.camelizeKeys(response.data);
+apiClient.interceptors.response.use(
+  (response) => {
+    if (response.data) {
+      response.data = humps.camelizeKeys(response.data);
+    }
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return response;
-}, (error) => {
-  if (error.response?.status === 401) {
-    window.location.href = '/login';
-  }
-  return Promise.reject(error);
-});
+);
 
 export default apiClient;

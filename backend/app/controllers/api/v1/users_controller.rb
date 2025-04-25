@@ -4,7 +4,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: User.all.to_json
+    users = User.all
+    render json: UserSerializer.new(users).serializable_hash.to_json
   end
 
   def show
@@ -12,7 +13,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     result = ::User::Show.call(current_user, form.params)
 
     if result.successful?
-      render json: result.data
+      render json: UserSerializer.new(result.data).serializable_hash.to_json
     else
       render_service_error(result)
     end
@@ -23,9 +24,20 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     result = ::User::Update.call(current_user, form.params)
 
     if result.successful?
-      render json: result.data
+      render json: UserSerializer.new(result.data).serializable_hash.to_json
     else
       render_service_error(result)
     end
+  end
+
+  def me
+    token = request.headers['Authorization']&.split(' ')&.last
+
+    if current_user.auth_token_expired?(token)
+      new_token = current_user.refresh_auth_token
+      response.set_header('Authorization', "Bearer #{new_token}")
+    end
+
+    render json: UserSerializer.new(current_user).serializable_hash.to_json
   end
 end

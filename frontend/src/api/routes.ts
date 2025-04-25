@@ -7,6 +7,14 @@ const Routes = {
   HELLO: {
     INDEX: '/api/v1/hello',
   },
+  API: {
+    V1: {
+      USERS: {
+        INDEX: '/api/v1/users',
+      }
+    }
+  }
+
 };
 
 export default Routes;
