@@ -3,6 +3,14 @@
 @tailwind utilities;
 @plugin "daisyui";
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
 :root {
   width: 100%;
 

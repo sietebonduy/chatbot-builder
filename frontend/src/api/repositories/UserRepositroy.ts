@@ -9,7 +9,7 @@ export const index = () => {
 };
 
 export const getCurrentUser = () => {
-  const url = Routes.USER.ME;
+  const url = Routes.API.V1.USERS.ME;
 
   return FetchHelpers.get<IUserResponse>(url);
 };

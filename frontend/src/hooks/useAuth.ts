@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import { registration, login, logout } from '../api/repositories/AuthRepository';
 import { IUserCredentials } from '../types/auth';
 import { normalizeFromDevise } from '../lib/normalizeUser';
@@ -10,6 +11,7 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+  const navigate = useNavigate();
   const jwt = cookies.jwt;
 
   const register = useCallback(async (credentials: IUserCredentials) => {

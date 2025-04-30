@@ -11,6 +11,10 @@ const Routes = {
     V1: {
       USERS: {
         INDEX: '/api/v1/users',
+        ME: '/api/v1/users/me',
+      },
+      CAPTCHA: {
+        VERIFY: '/api/v1/verify_recaptcha',
       }
     }
   }

@@ -7,7 +7,6 @@ const App = () => {
   return (
     <Router>
       <UserProvider>
-        <Navbar />
         <AppRouter />
       </UserProvider>
     </Router>

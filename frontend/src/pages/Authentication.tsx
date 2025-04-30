@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { validateEmail, validatePassword } from '../utilities/validations.ts';
 import { useAuth } from '../hooks/useAuth.ts';
 import { useNavigate } from 'react-router-dom';
+// import CaptchaRepository from '../api/repositories/CaptchaRepository';
+// import ReCAPTCHA from 'react-google-recaptcha';
 
 import Divider from '@mui/material/Divider';
 
@@ -27,14 +29,24 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState(initialErrorsState);
   const { loading, error, register, signIn } = useAuth();
 
+  // const handleCaptchaChange = (value: string | null) => {
+  //   setCaptchaValue(value);
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const updatedErrors = { ...errors };
+    const updatedErrors = {...errors};
+
+    // if (!captchaValue) {
+    //   setErrors({ ...errors, api: 'Please complete the CAPTCHA' });
+    //   return;
+    // }
 
     if (!validateEmail(email)) {
       updatedErrors.email = t("authentication.errors.invalid_email");
@@ -60,7 +72,7 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
       return;
     }
 
-    const credentials = { email, password };
+    const credentials = {email, password};
 
     try {
       if (pageType === PageTypes.LOGIN) {
@@ -73,7 +85,8 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
       setPassword("");
       setPasswordConfirm("");
     } catch (error) {
-      return error;
+      // обработка ошибки если нужно
+      console.error(error);
     }
   };
 
@@ -117,16 +130,14 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
             </div>
           )}
 
-          { pageType === PageTypes.LOGIN ?
+          {pageType === PageTypes.LOGIN ?
             <>
-              <div className="flex items-center justify-between my-5">
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required=""/>
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
-                  </div>
+              <div className="flex items-end justify-between my-5">
+                <div className="mb-6">
+                  {/*<ReCAPTCHA*/}
+                  {/*  sitekey="YOUR_RECAPTCHA_SITE_KEY"*/}
+                  {/*  onChange={handleCaptchaChange}*/}
+                  {/*/>*/}
                 </div>
                 <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
                   password?</a>
@@ -135,21 +146,24 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
             : null
           }
 
-          <button type="submit" className="w-full py-2 px-4 mb-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            { pageType === PageTypes.LOGIN ? t("authentication.buttons.login") : t("authentication.buttons.register") }
+          <button type="submit"
+                  className="w-full py-2 px-4 mb-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            {pageType === PageTypes.LOGIN ? t("authentication.buttons.login") : t("authentication.buttons.register")}
           </button>
 
-          <Divider component="div" role="presentation" />
+          <Divider component="div" role="presentation"/>
 
           <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-3">
-            { pageType === PageTypes.LOGIN ?
+            {pageType === PageTypes.LOGIN ?
               <>
                 Don’t have an account yet?
-                <a href="/sign_up" className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">Sign up</a>
+                <a href="/sign_up" className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">Sign
+                  up</a>
               </>
               : <>
                 Already have an account?
-                <a href="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">Login</a>
+                <a href="/login"
+                   className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">Login</a>
               </>
             }
           </p>

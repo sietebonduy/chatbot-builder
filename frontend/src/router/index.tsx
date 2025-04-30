@@ -1,13 +1,12 @@
-import Home from "../pages/Home.tsx";
-import { Authentication, PageTypes } from "../pages/Authentication.tsx";
-// import ProtectedRoute from "../components/ProtectedRoute.tsx";
-import Hello from "../pages/Hello.tsx";
-import NotFound from "../pages/NotFound.tsx";
-import ListUsers from "../pages/admin/users/ListUsers.tsx";
-
+import Home from "../pages/Home";
+import { Authentication, PageTypes } from "../pages/Authentication";
+import Hello from "../pages/Hello";
+import NotFound from "../pages/NotFound";
+import Dashboard from "../pages/Dashboard";
+import ListUsers from "../pages/admin/users/ListUsers";
+import MainLayout from "../layouts/MainLayout";
 
 export const routes = [
-  { path: "/", element: <Home />, isPrivate: false },
   {
     path: "/login",
     element: <Authentication pageType={PageTypes.LOGIN} />,
@@ -18,15 +17,16 @@ export const routes = [
     element: <Authentication pageType={PageTypes.REGISTER} />,
     isPrivate: false,
   },
+
   {
-    path: "/hello",
-    element: <Hello />,
+    element: <MainLayout />,
     isPrivate: false,
+    children: [
+      { path: "/", element: <Home />, isPrivate: false },
+      { path: "/hello", element: <Hello />, isPrivate: false },
+      { path: "/dashboard", element: <Dashboard />, isPrivate: false },
+      { path: "/admin/users", element: <ListUsers />, isPrivate: false },
+      { path: "*", element: <NotFound />, isPrivate: false },
+    ],
   },
-  {
-    path: "/admin/users",
-    element: <ListUsers />,
-    isPrivate: false,
-  },
-  { path: "*", element: <NotFound />, isPrivate: false },
 ];
