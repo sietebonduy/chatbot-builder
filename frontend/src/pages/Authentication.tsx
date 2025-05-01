@@ -85,7 +85,6 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
       setPassword("");
       setPasswordConfirm("");
     } catch (error) {
-      // обработка ошибки если нужно
       console.error(error);
     }
   };
@@ -98,15 +97,13 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
         </h2>
 
         <form onSubmit={handleSubmit} className="pt-3">
-          {error && <p className="text-red-500 text-sm mb-4">{error.message}</p>}
-
           <div className="mb-4">
             <label htmlFor="email"
                    className="block text-sm font-medium text-gray-700">{t("authentication.fields.email.title")}</label>
             <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}
                    placeholder={t("authentication.fields.email.placeholder")}
                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-            {errors.email && <p className="text-red-500 text-sm mb-4">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-sm mt-1 mb-3">{errors.email}</p>}
           </div>
 
           <div className="mb-4">
@@ -115,7 +112,7 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
             <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}
                    placeholder={t("authentication.fields.password.placeholder")}
                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-            {errors.password && <p className="text-red-500 text-sm mb-4">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-sm mt-1 mb-3">{errors.password}</p>}
           </div>
 
           {pageType === PageTypes.REGISTER && (
@@ -126,7 +123,7 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
                      onChange={(e) => setPasswordConfirm(e.target.value)}
                      placeholder={t("authentication.fields.password_confirmation.placeholder")}
                      className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-              {errors.passwordConfirm && <p className="text-red-500 text-sm mb-4">{errors.passwordConfirm}</p>}
+              {errors.passwordConfirm && <p className="text-red-500 text-sm mt-1 mb-3">{errors.passwordConfirm}</p>}
             </div>
           )}
 

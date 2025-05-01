@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :socials, dependent: :destroy
   has_many :bots, dependent: :destroy
+  has_many :chatbot_flows, dependent: :destroy
 
   def auth_token_expired?(token)
     jwt_secret_key = ENV['JWT_SECRET_KEY']

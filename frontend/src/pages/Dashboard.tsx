@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Dashboard: React.FC = () => {
-  const navigate = useNavigate();
   const [statistics, setStatistics] = useState({
     users: 1200,
     revenue: 24500,
@@ -33,73 +40,69 @@ const Dashboard: React.FC = () => {
         label: "Revenue",
         data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 1000)),
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
+        borderColor: "#6B7280", // muted gray
+        tension: 0.3,
       },
     ],
   };
 
   return (
-    <div className="flex flex-col bg-gray-100 px-36 py-16 overflow-hidden">
-      <div className="flex-1 space-y-6 overflow-auto">
-        <div className="text-3xl font-semibold mb-6">Overview</div>
+    <div className="w-full min-h-screen bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center px-6 py-20">
+      <div className="w-full max-w-5xl bg-white/20 backdrop-blur-sm text-gray-800 p-10 rounded-2xl shadow-xl">
+        <h1 className="text-4xl font-bold mb-10 text-center text-gray-800">Overview</h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           {[
-            {title: "Users", value: statistics.users, icon: "👥", color: "bg-indigo-600"},
-            {title: "Revenue", value: `$${statistics.revenue}`, icon: "💰", color: "bg-green-600"},
-            {title: "Orders", value: statistics.orders, icon: "📦", color: "bg-yellow-600"},
-            {title: "Products", value: statistics.products, icon: "🛒", color: "bg-purple-600"},
+            { title: "Users", value: statistics.users, icon: "👥" },
+            { title: "Revenue", value: `$${statistics.revenue}`, icon: "💰" },
+            { title: "Orders", value: statistics.orders, icon: "📦" },
+            { title: "Products", value: statistics.products, icon: "🛒" },
           ].map((stat, index) => (
             <div
               key={index}
-              className={`p-6 rounded-lg shadow-md flex items-center justify-between ${stat.color}`}
+              className="bg-white/30 p-6 rounded-xl text-center shadow-md hover:bg-white/40 transition-all"
             >
-              <div className="text-white">
-                <div className="text-xl font-bold">{stat.title}</div>
-                <div className="text-3xl">{stat.value}</div>
-              </div>
-              <div className="text-4xl text-white">{stat.icon}</div>
+              <div className="text-4xl mb-2">{stat.icon}</div>
+              <div className="text-lg font-semibold">{stat.title}</div>
+              <div className="text-2xl font-bold">{stat.value}</div>
             </div>
           ))}
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="text-xl font-semibold mb-4">Sales Over Time</div>
-          <div className="h-64 p-4 rounded-lg">
-            <Line data={chartData}/>
+        <div className="bg-white/30 rounded-xl p-6 mb-12 shadow-md">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">📈 Sales Over Time</h2>
+          <div className="bg-white/10 rounded-lg p-4">
+            <Line data={chartData} />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="text-xl font-semibold mb-4">Recent Activity</div>
-          <ul className="space-y-4">
-            {[
-              "User 'Denis' added a new product.",
-              "Order #4587 was placed by 'John'.",
-              "Revenue increased by $200 in the last hour.",
-              "Product 'Widget Pro' stock updated.",
-            ].map((activity, index) => (
-              <li key={index} className="text-gray-600">
-                {activity}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white/30 rounded-xl p-6 shadow-md">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">🕒 Recent Activity</h3>
+            <ul className="space-y-2 text-gray-600">
+              {[
+                "User 'Denis' added a new product.",
+                "Order #4587 was placed by 'John'.",
+                "Revenue increased by $200 in the last hour.",
+                "Product 'Widget Pro' stock updated.",
+              ].map((item, i) => (
+                <li key={i}>• {item}</li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="text-xl font-semibold mb-4">Notifications</div>
-          <ul className="space-y-4">
-            {[
-              "New comment on your post.",
-              "Product 'Smartphone' is back in stock.",
-              "Your subscription is about to expire.",
-            ].map((notification, index) => (
-              <li key={index} className="text-gray-600">
-                {notification}
-              </li>
-            ))}
-          </ul>
+          <div className="bg-white/30 rounded-xl p-6 shadow-md">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">🔔 Notifications</h3>
+            <ul className="space-y-2 text-gray-600">
+              {[
+                "New comment on your post.",
+                "Product 'Smartphone' is back in stock.",
+                "Your subscription is about to expire.",
+              ].map((item, i) => (
+                <li key={i}>• {item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

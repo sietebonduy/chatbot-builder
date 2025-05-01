@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        spin: 'spin 1s linear infinite',
+        pulse: 'pulse 1.5s infinite',
+      },
+    },
   },
   plugins: [require('daisyui')],
 }
