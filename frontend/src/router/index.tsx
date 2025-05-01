@@ -5,7 +5,9 @@ import NotFound from "../pages/NotFound";
 import Dashboard from "../pages/Dashboard";
 import ListUsers from "../pages/admin/users/ListUsers";
 import MainLayout from "../layouts/MainLayout";
-import AboutUs from "../pages/AboutUs.tsx";
+import AboutUs from "../pages/AboutUs";
+import Profile from "../pages/Profile";
+import Settings from "../pages/Settings";
 
 export const routes = [
   {
@@ -27,6 +29,8 @@ export const routes = [
       { path: "/about_us", element: <AboutUs />, isPrivate: false },
       { path: "/flow_builder", element: <ChatbotBuilder />, isPrivate: false },
       { path: "/dashboard", element: <Dashboard />, isPrivate: false },
+      { path: "/profile", element: <Profile />, isPrivate: false },
+      { path: "/settings", element: <Settings />, isPrivate: false },
       { path: "/admin/users", element: <ListUsers />, isPrivate: false },
       { path: "*", element: <NotFound />, isPrivate: false },
     ],
