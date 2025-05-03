@@ -1,6 +1,6 @@
 import Routes from '../routes';
 import { FetchHelpers } from '@/lib/FetchHelpers';
-import type { IChatbotFlow } from "@/types/chatbotFlow";
+import type { IChatbotFlow, IUpdateChatbotFlowParams } from "@/types/chatbotFlow";
 
 export const index = () => {
   const url = Routes.API.V1.CHATBOT_FLOWS.ROOT;
@@ -20,8 +20,8 @@ export const create = () => {
   return FetchHelpers.post<IChatbotFlow>(url);
 };
 
-export const update = (id: number | string) => {
+export const update = (id: number | string, params: IUpdateChatbotFlowParams) => {
   const url = `${Routes.API.V1.CHATBOT_FLOWS.ROOT}/${id}`;
 
-  return FetchHelpers.put<IChatbotFlow>(url);
+  return FetchHelpers.put<IChatbotFlow>(url, params);
 };

@@ -5,8 +5,6 @@ class ChatbotFlow < ApplicationRecord
 
   belongs_to :user
 
-  friendly_id :slug_candidates, use: [:slugged, :history, :scoped], scope: :user
-
   validates :name, presence: true
-  validates :slug, uniqueness: { scope: :user_id }
+  validates :slug, presence: true, uniqueness: true
 end

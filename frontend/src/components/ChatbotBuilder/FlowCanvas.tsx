@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, forwardRef, useImperativeHandle } from "react";
 import {
   ReactFlow, useNodesState, useEdgesState, addEdge,
   Controls, Background
@@ -9,14 +9,31 @@ import { nanoid } from 'nanoid';
 import MessageNode from "./nodeTypes/MessageNode";
 import UserResponseNode from "./nodeTypes/UserResponseNode";
 
-import { show } from "@/api/repositories/ChatbotFlowRepository";
+import { show, update } from "@/api/repositories/ChatbotFlowRepository";
+import { isBlank } from "@/utils/presence.ts";
 
 const initialNodes = [];
 const initialEdges = [];
 
-const FlowCanvas = ({ flowId = '1' }) => {
+const FlowCanvas = forwardRef(({ slug }, ref) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const saveFlow = () => {
+    const flowData = { nodes, edges };
+
+    update(slug, { flowData: flowData })
+      .then(() => {
+        console.log("Flow updated!");
+      })
+      .catch((error) => {
+        console.error("Ошибка обновления flow:", error);
+      });
+  };
+
+  useImperativeHandle(ref, () => ({
+    save: saveFlow
+  }));
 
   const nodeTypes = { message: MessageNode, userResponse: UserResponseNode };
 
@@ -51,11 +68,10 @@ const FlowCanvas = ({ flowId = '1' }) => {
   }));
 
   useEffect(() => {
-    if (!flowId) return;
+    if (isBlank(slug)) return;
 
-    show(flowId)
+    show(slug)
       .then((flow) => {
-        console.log(flow)
         const { nodes = [], edges = [] } = flow.data?.flowData || {};
         setNodes(nodes);
         setEdges(edges);
@@ -63,7 +79,7 @@ const FlowCanvas = ({ flowId = '1' }) => {
       .catch((error) => {
         console.error("Ошибка загрузки flow:", error);
       });
-  }, [flowId, setNodes, setEdges]);
+  }, [slug]);
 
   return (
     <div ref={drop} className="react-flow-wrapper w-full h-full">
@@ -82,6 +98,6 @@ const FlowCanvas = ({ flowId = '1' }) => {
       </ReactFlow>
     </div>
   );
-};
+});
 
 export default FlowCanvas;

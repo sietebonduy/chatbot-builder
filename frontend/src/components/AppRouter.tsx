@@ -1,15 +1,16 @@
 import { useUserStore } from "../stores/userStore";
 import { routes } from "../router";
 import { Route, Routes } from "react-router-dom";
+import { isBlank, present } from "@/utils/presence.ts";
 
 const renderRoute = (route, user) => {
-  if (route.isPrivate && !user) return null;
+  if (route.isPrivate && isBlank(user)) return null;
 
-  if (route.children) {
+  if (present(route.children)) {
     return (
       <Route key={route.element?.type?.name || 'layout'} element={route.element}>
         {route.children.map((child) =>
-          !child.isPrivate || user ? (
+          !child.isPrivate || present(user) ? (
             <Route key={child.path} path={child.path} element={child.element} />
           ) : null
         )}

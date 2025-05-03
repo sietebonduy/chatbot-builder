@@ -3,13 +3,22 @@ export interface IChatbotFlow {
   name: string;
   slug: string;
   description: string;
-  flowData: {
-    nodes: any[];
-    edges: any[];
-  };
+  flowData: IFlowData;
   userId: number;
   published: boolean;
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IFlowData {
+  nodes: any[];
+  edges: any[];
+}
+
+export interface IUpdateChatbotFlowParams {
+  flow_data?: IFlowData;
+  name?: string;
+  description?: string;
+  published?: boolean;
 }

@@ -29,7 +29,7 @@ navbar:
   register: "Зарегистрироваться"
   logout: 'Выйти'
   dashboard: 'Дашборд'
-  flow_builder: 'Редактор'
+  chatbot_flows: 'Сценарии ботов'
   profile: 'Профиль'
   settings: 'Настройки'
 error_pages:

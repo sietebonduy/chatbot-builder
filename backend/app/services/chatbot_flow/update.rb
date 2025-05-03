@@ -11,10 +11,31 @@ class ChatbotFlow::Update
   private
 
   def perform
-    flow = ChatbotFlow.update(@params)
+    flow = ChatbotFlow.friendly.find(@params[:id])
+
+    update_params = build_params(flow)
+    flow.update(update_params)
 
     success(flow)
   rescue => e
     error(e)
+  end
+
+  def build_params(flow)
+    {}.tap do |params|
+      params[:published] = published?
+      params[:name] = @params[:name] if @params[:name].present?
+      params[:description] = @params[:description] if @params[:description].present?
+      params[:published_at] = Time.current if published?
+      params[:flow_data] = @params[:flow_data] if scenario_has_changed?(flow)
+    end
+  end
+
+  def scenario_has_changed?(flow)
+    @params[:flow_data].present? && (@params[:flow_data] != flow.flow_data)
+  end
+
+  def published?
+    @params[:published].to_boolean
   end
 end

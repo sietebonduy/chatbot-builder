@@ -17,7 +17,7 @@ class Users::SessionsController < Devise::SessionsController
     if current_user
       reset_session
 
-      render json: { message: 'logged out successfully' }, status: :ok
+      render json: { message: 'Logged out successfully' }, status: :ok
     else
       render json: { message: 'Couldn\'t find an active session.' }, status: :unauthorized
     end

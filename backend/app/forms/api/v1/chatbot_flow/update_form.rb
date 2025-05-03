@@ -6,6 +6,6 @@ class Api::V1::ChatbotFlow::UpdateForm
   end
 
   def params
-    @params.permit(:name, :description, flow_data: {})
+    @params.permit(:id, :name, :description, :published, flow_data: {})
   end
 end

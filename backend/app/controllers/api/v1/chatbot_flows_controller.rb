@@ -15,12 +15,12 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
   end
 
   def show
-    flow = ChatbotFlow.find(params[:id])
+    @chatbot_flow = ChatbotFlow.friendly.find(params[:id])
 
-    if flow.present?
-      render json: flow.as_json
+    if @chatbot_flow.present?
+      render json: @chatbot_flow.as_json
     else
-      head :not_found
+      render json: { message: 'Couldn\'t find record' }, status: :unauthorized
     end
   end
 
@@ -36,8 +36,8 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
   end
 
   def update
-    form = ::Api::V1::ChatbotFlow::CreateForm.new(params)
-    result = ::ChatbotFlow::Create.call(current_user, form.params)
+    form = ::Api::V1::ChatbotFlow::UpdateForm.new(params)
+    result = ::ChatbotFlow::Update.call(current_user, form.params)
 
     if result.successful?
       render json: result.data

@@ -99,7 +99,7 @@ const Navbar = () => {
                   <a href="/settings">{t('navbar.settings')}</a>
                 </li>
                 <li>
-                  <a href="/flow_builder">{t('navbar.flow_builder')}</a>
+                  <a href="/chatbot_flows">{t('navbar.chatbot_flows')}</a>
                 </li>
                 <li>
                   <a onClick={handleLogout} className="text-red-600">{t('navbar.logout')}</a>
