@@ -1,6 +1,6 @@
 import Routes from '../routes';
-import { FetchHelpers } from '../../lib/FetchHelpers';
-import {IUserCredentials, IUserDeviseResponse } from '../../types/auth.ts';
+import { FetchHelpers } from '@/lib/FetchHelpers';
+import { IUserCredentials, IUserDeviseResponse } from '@/types/auth.ts';
 
 export const registration = (params: IUserCredentials) => {
   const url = Routes.USER.REGISTRATION;

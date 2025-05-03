@@ -1,8 +1,9 @@
 import axios from 'axios';
 import humps from 'humps';
+import { isBlank, present } from "@/utils/presence";
 
 const getCookie = (name: string) => {
-  if (typeof document === 'undefined') return null;
+  if (isBlank(document)) return null;
 
   const cookies = document.cookie.split(';').map(c => c.trim());
   const targetCookie = cookies.find(c => c.startsWith(`${name}=`));
@@ -18,12 +19,12 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  if (config.data) {
+  if (present(config.data)) {
     config.data = humps.decamelizeKeys(config.data);
   }
 
   const jwtCookie = getCookie('jwt');
-  if (jwtCookie) {
+  if (present(jwtCookie)) {
     config.headers.Authorization = jwtCookie;
   } else {
     delete config.headers.Authorization;
@@ -34,7 +35,7 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => {
-    if (response.data) {
+    if (present(response.data)) {
       response.data = humps.camelizeKeys(response.data);
     }
     return response;

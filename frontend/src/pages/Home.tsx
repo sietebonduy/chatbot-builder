@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../contexts/UserContext';
+import { useUserStore } from '@/stores/userStore';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user } = useUserStore();
 
   const handleStart = () => {
     navigate(user ? '/dashboard' : '/login');

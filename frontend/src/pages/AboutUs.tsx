@@ -29,41 +29,23 @@ const AboutUs: React.FC = () => {
           {t("about_us.description")}
         </p>
 
-        {/* Team Section */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-semibold mb-8">{t("about_us.team_title")}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <img
-                className="w-24 h-24 rounded-full mx-auto mb-4"
-                src="https://via.placeholder.com/150"
-                alt="Team Member"
-              />
-              <h3 className="text-xl font-semibold mb-2">John Doe</h3>
+              <div className="w-24 h-24 rounded-full mx-auto overflow-hidden border-4 border-indigo-600">
+                <img
+                  className="w-full h-full object-cover"
+                  src="https://via.placeholder.com/150"
+                  alt="Ваше Имя"
+                />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Ваше Имя</h3>
               <p className="text-gray-500">{t("about_us.team_member_1")}</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <img
-                className="w-24 h-24 rounded-full mx-auto mb-4"
-                src="https://via.placeholder.com/150"
-                alt="Team Member"
-              />
-              <h3 className="text-xl font-semibold mb-2">Jane Smith</h3>
-              <p className="text-gray-500">{t("about_us.team_member_2")}</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <img
-                className="w-24 h-24 rounded-full mx-auto mb-4"
-                src="https://via.placeholder.com/150"
-                alt="Team Member"
-              />
-              <h3 className="text-xl font-semibold mb-2">Michael Lee</h3>
-              <p className="text-gray-500">{t("about_us.team_member_3")}</p>
             </div>
           </div>
         </div>
 
-        {/* Call to Action */}
         <div className="flex justify-center gap-6">
           <button
             onClick={() => navigate("/contact_us")}

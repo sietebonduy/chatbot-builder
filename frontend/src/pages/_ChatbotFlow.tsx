@@ -95,7 +95,7 @@ const NodeSelector = () => {
 };
 
 
-const ChatbotBuilder: React.FC = () => {
+const _ChatbotFlow: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -176,4 +176,4 @@ const ChatbotBuilder: React.FC = () => {
   );
 };
 
-export default ChatbotBuilder;
+export default _ChatbotFlow;

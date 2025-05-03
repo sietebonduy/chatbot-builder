@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { validateEmail, validatePassword } from '../utilities/validations.ts';
-import { useAuth } from '../hooks/useAuth.ts';
+import { validateEmail, validatePassword } from '@/utils/validations';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-// import CaptchaRepository from '../api/repositories/CaptchaRepository';
+// import CaptchaRepository from '@/api/repositories/CaptchaRepository';
 // import ReCAPTCHA from 'react-google-recaptcha';
 
 import Divider from '@mui/material/Divider';

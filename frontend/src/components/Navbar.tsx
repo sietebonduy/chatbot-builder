@@ -1,16 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../contexts/UserContext.tsx';
+import { useUserStore } from '@/stores/userStore';
 
-import userDefaultLogo from '../assets/user_icon.svg';
-import arrowDown from '../assets/arrow-down.svg';
+import userDefaultLogo from '@/assets/user_icon.svg';
+import arrowDown from '@/assets/arrow-down.svg';
 
 const Navbar = () => {
   const { t } = useTranslation();
   const { signOut } = useAuth();
-  const { user } = useUser();
+  const { user } = useUserStore();
   const navigate = useNavigate();
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);

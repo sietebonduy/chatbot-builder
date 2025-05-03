@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { IUser } from '../types/user';
+import { IUser } from '@/types/user';
 
 interface UserItemProps {
   user: IUser;

@@ -1,22 +1,20 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import { registration, login, logout } from '../api/repositories/AuthRepository';
-import { IUserCredentials } from '../types/auth';
-import { normalizeFromDevise } from '../lib/normalizeUser';
-import { useUser } from '../contexts/UserContext';
+import { registration, login, logout } from '@/api/repositories/AuthRepository';
+import { IUserCredentials } from '@/types/auth';
+import { normalizeFromDevise } from '@/lib/normalizeUser';
+import { useUserStore } from '@/stores/userStore';
 import { toast } from 'react-toastify';
 
 export const useAuth = () => {
-  const { user, setUser } = useUser();
-  const [loading, setLoading] = useState(false);
+  const { user, setUser, loading, fetchUser } = useUserStore();
   const [error, setError] = useState<Error | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
   const navigate = useNavigate();
   const jwt = cookies.jwt;
 
   const register = useCallback(async (credentials: IUserCredentials) => {
-    setLoading(true);
     setError(null);
 
     try {
@@ -26,13 +24,10 @@ export const useAuth = () => {
     } catch (err: unknown) {
       setError(err instanceof Error ? err : new Error('Registration failed'));
       toast.error("Что-то пошло не так...");
-    } finally {
-      setLoading(false);
     }
   }, [setUser]);
 
   const signIn = useCallback(async (credentials: IUserCredentials) => {
-    setLoading(true);
     setError(null);
 
     try {
@@ -46,15 +41,10 @@ export const useAuth = () => {
     } catch (err: unknown) {
       toast.error("Что-то пошло не так...");
       setError(err instanceof Error ? err : new Error('Login failed'));
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [setUser, setCookie, navigate]);
 
   const signOut = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
     try {
       await logout();
       toast.success("Успешно!");
@@ -65,8 +55,9 @@ export const useAuth = () => {
       removeCookie('jwt');
       setUser(null);
       setLoading(false);
+      navigate('/login');
     }
-  }, [removeCookie, setUser]);
+  }, [removeCookie, setUser, navigate]);
 
   return useMemo(() => ({
     user,
@@ -76,5 +67,6 @@ export const useAuth = () => {
     register,
     signOut,
     jwt,
-  }), [user, loading, error, jwt, signIn, register, signOut]);
+    fetchUser
+  }), [user, loading, error, jwt, signIn, register, signOut, fetchUser]);
 };

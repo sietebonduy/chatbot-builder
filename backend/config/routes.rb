@@ -29,7 +29,8 @@ Rails.application.routes.draw do
           get :me
         end
       end
-      resources :routes , only: %i[index]
+      resources :routes, only: %i[index]
+      resources :chatbot_flows, only: %i[index show create update]
     end
   end
 end

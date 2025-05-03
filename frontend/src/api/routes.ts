@@ -15,10 +15,12 @@ const Routes = {
       },
       CAPTCHA: {
         VERIFY: '/api/v1/verify_recaptcha',
+      },
+      CHATBOT_FLOWS: {
+        ROOT: '/api/v1/chatbot_flows',
       }
     }
   }
-
 };
 
 export default Routes;

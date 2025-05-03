@@ -1,13 +1,14 @@
-import Home from "../pages/Home";
-import { Authentication, PageTypes } from "../pages/Authentication";
-import ChatbotBuilder from "../pages/ChatbotBuilder";
-import NotFound from "../pages/NotFound";
-import Dashboard from "../pages/Dashboard";
-import ListUsers from "../pages/admin/users/ListUsers";
-import MainLayout from "../layouts/MainLayout";
-import AboutUs from "../pages/AboutUs";
-import Profile from "../pages/Profile";
-import Settings from "../pages/Settings";
+import Home from "@/pages/Home";
+import { Authentication, PageTypes } from "@/pages/Authentication";
+// import ChatbotFlow from "@/pages/ChatbotFlow.tsx";
+import NotFound from "@/pages/NotFound";
+import Dashboard from "@/pages/Dashboard";
+import ListUsers from "@/pages/admin/users/ListUsers";
+import MainLayout from "@/layouts/MainLayout";
+import AboutUs from "@/pages/AboutUs";
+import Profile from "@/pages/Profile";
+import Settings from "@/pages/Settings";
+import ChatbotBuilder from "@/components/ChatbotBuilder";
 
 export const routes = [
   {

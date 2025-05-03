@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ChatbotFlow::Create
+class ChatbotFlow::Update
   include KindOfService
 
   def initialize(current_user, params)
@@ -11,8 +11,7 @@ class ChatbotFlow::Create
   private
 
   def perform
-    flow = ChatbotFlow.new(@params)
-    flow.save!
+    flow = ChatbotFlow.update(@params)
 
     success(flow)
   rescue => e

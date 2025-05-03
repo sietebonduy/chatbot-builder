@@ -1,6 +1,6 @@
 import Routes from '../routes';
-import { FetchHelpers } from '../../lib/FetchHelpers';
-import { IUserResponse } from '../../types/user';
+import { FetchHelpers } from '@/lib/FetchHelpers';
+import { IUserResponse } from '@/types/user';
 
 export const index = () => {
   const url = Routes.API.V1.USERS.INDEX;

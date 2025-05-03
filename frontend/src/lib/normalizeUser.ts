@@ -1,5 +1,5 @@
-import { IUserDeviseResponse } from '../types/auth';
-import { IUser, IUserResponse } from '../types/user';
+import { IUserDeviseResponse } from '@/types/auth';
+import { IUser, IUserResponse } from '@/types/user';
 
 export const normalizeFromDevise = (data: IUserDeviseResponse['data']): IUser => ({
   id: String(data.id),

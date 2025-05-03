@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { index } from '../../../api/repositories/UserRepositroy'
-import { IUser } from '../../../types/user';
-import UserTable from '../../../components/UserTable';
+import { index } from '@/api/repositories/UserRepositroy'
+import { IUser } from '@/types/user';
+import UserTable from '@/components/UserTable';
 // import { useNavigate } from 'react-router-dom';
-import { normalizeFromJsonApi } from "../../../lib/normalizeUser.ts";
+import { normalizeFromJsonApi } from "@/lib/normalizeUser";
 
 export default function ListUsers() {
   const [users, setUsers] = useState<User[]>([]);

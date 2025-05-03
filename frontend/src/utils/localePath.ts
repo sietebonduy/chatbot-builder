@@ -1,4 +1,4 @@
-import i18n from '../i18n';
+import i18n from '@/i18n';
 
 export const localePath = (path: string): string => {
   const base = path.startsWith('/') ? path.slice(1) : path;

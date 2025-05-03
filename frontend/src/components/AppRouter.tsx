@@ -1,4 +1,4 @@
-import { useUser } from "../contexts/UserContext";
+import { useUserStore } from "../stores/userStore";
 import { routes } from "../router";
 import { Route, Routes } from "react-router-dom";
 
@@ -23,7 +23,7 @@ const renderRoute = (route, user) => {
 };
 
 const AppRouter = () => {
-  const { user } = useUser();
+  const { user } = useUserStore();
 
   return <Routes>{routes.map((route) => renderRoute(route, user))}</Routes>;
 };

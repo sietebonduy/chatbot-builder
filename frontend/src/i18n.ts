@@ -2,8 +2,8 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { parse } from 'yaml'
 
-import ruYaml from './locales/ru.yml?raw'
-import enYaml from './locales/en.yml?raw'
+import ruYaml from '@/locales/ru.yml?raw'
+import enYaml from '@/locales/en.yml?raw'
 
 const ru = parse(ruYaml)
 const en = parse(enYaml)

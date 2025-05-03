@@ -1,9 +1,9 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import { IUser } from '../types/user';
-import { getCurrentUser } from "../api/repositories/UserRepositroy.ts";
-import { normalizeFromJsonApi } from "../lib/normalizeUser.ts";
+import { IUser } from '@/types/user';
+import { getCurrentUser } from "@/api/repositories/UserRepositroy.ts";
+import { normalizeFromJsonApi } from "@/lib/normalizeUser.ts";
 
-import Loader from "../components/UI/loader/Loader.tsx";
+import Loader from "@/components/UI/loader/Loader.tsx";
 
 interface UserContextType {
   user: IUser | null;

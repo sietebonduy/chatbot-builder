@@ -14,7 +14,28 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
     end
   end
 
+  def show
+    flow = ChatbotFlow.find(params[:id])
+
+    if flow.present?
+      render json: flow.as_json
+    else
+      head :not_found
+    end
+  end
+
   def create
+    form = ::Api::V1::ChatbotFlow::CreateForm.new(params)
+    result = ::ChatbotFlow::Create.call(current_user, form.params)
+
+    if result.successful?
+      render json: result.data
+    else
+      render_service_error(result)
+    end
+  end
+
+  def update
     form = ::Api::V1::ChatbotFlow::CreateForm.new(params)
     result = ::ChatbotFlow::Create.call(current_user, form.params)
 

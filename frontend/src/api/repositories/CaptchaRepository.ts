@@ -1,5 +1,5 @@
 import Routes from '../routes.ts';
-import { FetchHelpers } from '../../lib/FetchHelpers.ts';
+import { FetchHelpers } from '@/lib/FetchHelpers.ts';
 
 function verify() {
   const url = Routes.API.V1.CAPTCHA.VERIFY;
