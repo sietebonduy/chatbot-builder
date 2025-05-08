@@ -33,6 +33,6 @@ class TelegramApi
   private
 
   def base_url
-    @@base_url ||= "#{BASE_URI}#{@token}"
+    @base_url ||= "#{BASE_URI}#{@token}"
   end
 end

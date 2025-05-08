@@ -6,7 +6,7 @@ const MainLayout = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-1 overflow-auto bg-white">
+      <main className="flex-1 overflow-auto">
         <div className="h-full w-full">
           <Outlet />
         </div>

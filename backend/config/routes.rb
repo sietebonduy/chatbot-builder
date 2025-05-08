@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   }
 
   namespace :webhooks do
-    post 'telegram/:bot_token', to: 'telegram#receive'
+    post 'telegram/:user_id/:bot_token', to: 'telegram#receive'
   end
 
   namespace :api do
@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       end
       resources :routes, only: %i[index]
       resources :chatbot_flows, only: %i[index show create update]
+      resources :bots, only: %i[index show create update destroy]
     end
   end
 end

@@ -10,6 +10,8 @@ import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import ChatbotFlowListPage from "@/pages/ChatbotFlowListPage.tsx";
 import ChatbotBuilder from "@/components/ChatbotBuilder";
+import BotListPage from "@/pages/bot/BotListPage";
+import ShowBot from "../pages/bot/ShowBot.tsx";
 
 export const routes = [
   {
@@ -37,6 +39,8 @@ export const routes = [
     children: [
       { path: "/chatbot_flows", element: <ChatbotFlowListPage />, isPrivate: false },
       { path: "/chatbot_flows/:slug/edit", element: <ChatbotBuilder />, isPrivate: false },
+      { path: "/bots", element: <BotListPage />, isPrivate: false },
+      { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
       { path: "/dashboard", element: <Dashboard />, isPrivate: false },
       { path: "/profile", element: <Profile />, isPrivate: false },
       { path: "/settings", element: <Settings />, isPrivate: false },

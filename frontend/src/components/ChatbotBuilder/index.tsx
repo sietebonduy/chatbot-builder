@@ -28,7 +28,7 @@ const ChatbotBuilder = () => {
 
       <div className="flex-grow bg-white p-4 overflow-hidden">
         <div className="w-full pb-3 px-3 m-auto flex justify-end">
-          <Button onClick={handleSave} variant="outlined" startIcon={<SaveIcon/>}>Save</Button>
+          <Button onClick={handleSave} variant="outlined" startIcon={<SaveIcon/>}>Сохранить</Button>
         </div>
 
         <FlowCanvas slug={slug} ref={canvasRef}/>

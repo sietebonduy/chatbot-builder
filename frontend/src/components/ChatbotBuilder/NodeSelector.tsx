@@ -1,10 +1,46 @@
-import React from "react";
 import { useDrag } from 'react-dnd';
 
+const NODE_TYPES = [
+  {
+    type: 'message',
+    label: 'Новое сообщение',
+    description: 'Перетащите для создания нового сообщения',
+    color: '#3B82F6'
+  },
+  {
+    type: 'button',
+    label: 'Новая кнопка',
+    description: 'Перетащите для создания кнопки',
+    color: '#10B981'
+  },
+  {
+    type: 'textInput',
+    label: 'Текстовое поле',
+    description: 'Перетащите для создания текстового поля',
+    color: '#F59E0B'
+  },
+  {
+    type: 'condition',
+    label: 'Условие',
+    description: 'Перетащите для создания условия ветвления',
+    color: '#8B5CF6'
+  }
+];
+
 const NodeSelector = () => {
+  return (
+    <div className="space-y-4 p-4">
+      {NODE_TYPES.map((nodeType) => (
+        <DraggableNode key={nodeType.type} {...nodeType} />
+      ))}
+    </div>
+  );
+};
+
+const DraggableNode = ({ type, label, description, color }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'node',
-    item: { type: 'message', label: 'Новое сообщение' },
+    item: { type, label },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -13,14 +49,23 @@ const NodeSelector = () => {
   return (
     <div
       ref={drag}
-      className={`bg-white text-gray-800 p-5 mb-4 cursor-move rounded-xl border shadow-lg transition-all duration-300 ease-in-out transform ${isDragging ? 'opacity-50 scale-105' : 'opacity-100'}`}
+      className={`p-4 rounded-lg border-2 cursor-move transition-all duration-200 ${
+        isDragging ? 'opacity-50 scale-95' : 'opacity-100 hover:shadow-md'
+      }`}
       style={{
-        borderColor: '#D1D5DB',
-        boxShadow: isDragging ? '0 10px 20px rgba(0, 0, 0, 0.15)' : '0 4px 10px rgba(0, 0, 0, 0.1)',
+        backgroundColor: `${color}10`,
+        borderColor: color,
       }}
     >
-      <div className="text-lg font-medium">{isDragging ? 'Перетаскивайте...' : 'Новое сообщение'}</div>
-      <div className="mt-2 text-sm text-gray-500">Перетащите для создания нового сообщения</div>
+      <div
+        className="font-semibold"
+        style={{ color }}
+      >
+        {isDragging ? 'Перетаскивается...' : label}
+      </div>
+      <div className="text-sm text-gray-600 mt-1">
+        {description}
+      </div>
     </div>
   );
 };

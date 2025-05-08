@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/userStore';
 
 import userDefaultLogo from '@/assets/user_icon.svg';
 import arrowDown from '@/assets/arrow-down.svg';
+import Button from '@mui/material/Button';
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -70,7 +71,7 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                <img src={userDefaultLogo} alt="profile" className="w-full h-full object-cover" />
+                <img src={userDefaultLogo} alt="profile" className="w-full h-full object-cover"/>
               </div>
               <div className="text-sm">
                 <p className="font-medium">{user.name || 'Unknown Bird'}</p>
@@ -102,13 +103,35 @@ const Navbar = () => {
                   <a href="/chatbot_flows">{t('navbar.chatbot_flows')}</a>
                 </li>
                 <li>
+                  <a href="/bots">{t('navbar.bots')}</a>
+                </li>
+                <li>
                   <a onClick={handleLogout} className="text-red-600">{t('navbar.logout')}</a>
                 </li>
               </ul>
             </div>
           </div>
         </>
-        : <button onClick={handleLogin} className="bg-transparent border-none text-indigo-600 hover:underline cursor-pointer p-0">{t('navbar.login')}</button>
+        : <>
+          <Button
+            onClick={handleLogin}
+            variant="contained"
+            color="primary"
+            sx={{
+              textTransform: 'none',
+              borderRadius: '8px',
+              boxShadow: 3,
+              px: 3,
+              py: 1.5,
+              '&:hover': {
+                backgroundColor: '#3949ab',
+              },
+            }}
+          >
+            {t('navbar.login')}
+          </Button>
+
+        </>
       }
     </div>
   );

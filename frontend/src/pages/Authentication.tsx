@@ -136,8 +136,7 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
                   {/*  onChange={handleCaptchaChange}*/}
                   {/*/>*/}
                 </div>
-                <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
-                  password?</a>
+                <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">{t('authentication.forgot_password')}</a>
               </div>
             </>
             : null
@@ -153,14 +152,13 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
           <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-3">
             {pageType === PageTypes.LOGIN ?
               <>
-                Don’t have an account yet?
-                <a href="/sign_up" className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">Sign
-                  up</a>
+                {t('authentication.dont_have_an_account_yet')}
+                <a href="/sign_up" className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">{t('authentication.registration')}</a>
               </>
               : <>
-                Already have an account?
+                {t('authentication.already_have_an_account')}
                 <a href="/login"
-                   className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">Login</a>
+                   className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">{t('authentication.login')}</a>
               </>
             }
           </p>

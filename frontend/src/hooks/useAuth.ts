@@ -5,9 +5,11 @@ import { registration, login, logout } from '@/api/repositories/AuthRepository';
 import { IUserCredentials } from '@/types/auth';
 import { normalizeFromDevise } from '@/lib/normalizeUser';
 import { useUserStore } from '@/stores/userStore';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 export const useAuth = () => {
+  const { t } = useTranslation();
   const { user, setUser, loading, fetchUser } = useUserStore();
   const [error, setError] = useState<Error | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
@@ -20,10 +22,11 @@ export const useAuth = () => {
     try {
       const response = await registration(credentials);
       setUser(normalizeFromDevise(response.data.data));
-      toast.success("Успешно!");
+      toast.success(t('notifications.successfully_registered'));
+      navigate('/dashboard');
     } catch (err: unknown) {
       setError(err instanceof Error ? err : new Error('Registration failed'));
-      toast.error("Что-то пошло не так...");
+      toast.error(t('notifications.something_went_wrong'));
     }
   }, [setUser]);
 
@@ -37,9 +40,9 @@ export const useAuth = () => {
       setCookie('jwt', authHeader, { path: '/' });
       setUser(normalizeFromDevise(userData.data));
       navigate('/dashboard');
-      toast.success("Успешно!");
+      toast.success(t('notifications.successfully_logged_in'));
     } catch (err: unknown) {
-      toast.error("Что-то пошло не так...");
+      toast.error(t('notifications.invalid_password_or_email'));
       setError(err instanceof Error ? err : new Error('Login failed'));
     }
   }, [setUser, setCookie, navigate]);
@@ -47,10 +50,9 @@ export const useAuth = () => {
   const signOut = useCallback(async () => {
     try {
       await logout();
-      toast.success("Успешно!");
+      toast.success(t('notifications.successfully_logged_out'));
     } catch (err) {
       setError(err as Error);
-      toast.error("Что-то пошло не так...");
     } finally {
       removeCookie('jwt');
       setUser(null);

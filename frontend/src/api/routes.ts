@@ -18,6 +18,9 @@ const Routes = {
       },
       CHATBOT_FLOWS: {
         ROOT: '/api/v1/chatbot_flows',
+      },
+      BOTS: {
+        ROOT: '/api/v1/bots',
       }
     }
   }

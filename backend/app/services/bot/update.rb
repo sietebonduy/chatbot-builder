@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ChatbotFlow::Index
+class Bot::Update
   include KindOfService
 
   def initialize(current_user, params)
@@ -11,10 +11,18 @@ class ChatbotFlow::Index
   private
 
   def perform
-    flows = ChatbotFlow.for_user(@current_user)
+    bot = Bot.find(@params[:id])
 
-    success(flows)
+    update_params = build_params(bot)
+    bot.update(update_params)
+
+    success(bot)
   rescue => e
     error(e)
+  end
+
+  def build_params(bot)
+    {}.tap do |params|
+    end
   end
 end
