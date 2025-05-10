@@ -10,7 +10,7 @@ const Routes = {
   API: {
     V1: {
       USERS: {
-        INDEX: '/api/v1/users',
+        ROOT: '/api/v1/users',
         ME: '/api/v1/users/me',
       },
       CAPTCHA: {

@@ -7,6 +7,6 @@ class Api::V1::User::UpdateForm
 
   # TODO: Fix issue with admin param
   def params
-    @params.permit(:id, :admin)
+    @params.permit(:id, :email, :first_name, :last_name, :admin, :avatar, :locale)
   end
 end

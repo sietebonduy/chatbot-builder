@@ -2,6 +2,7 @@
 
 class Users::SessionsController < Devise::SessionsController
   # include RackSessionFix
+  include SetActiveStorageUrlOptions
 
   respond_to :json
 
@@ -10,7 +11,7 @@ class Users::SessionsController < Devise::SessionsController
   def respond_with(resource, _opts = {})
     session[:user_id] = resource.id
 
-    render json: { message: 'Logged in sucessfully.', data: resource }, status: :ok
+    render json: UserSerializer.new(resource).serializable_hash.to_json
   end
 
   def respond_to_on_destroy

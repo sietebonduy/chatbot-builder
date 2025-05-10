@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/stores/userStore';
+import { present } from "@/utils/presence";
 
 import userDefaultLogo from '@/assets/user_icon.svg';
 import arrowDown from '@/assets/arrow-down.svg';
@@ -13,6 +14,7 @@ const Navbar = () => {
   const { signOut } = useAuth();
   const { user } = useUserStore();
   const navigate = useNavigate();
+  const userLogo = present(user) && present(user.avatarUrl) ? user.avatarUrl : userDefaultLogo;
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -71,10 +73,10 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                <img src={userDefaultLogo} alt="profile" className="w-full h-full object-cover"/>
+                <img src={userLogo} alt="profile" className="w-full h-full object-cover"/>
               </div>
               <div className="text-sm">
-                <p className="font-medium">{user.name || 'Unknown Bird'}</p>
+                <p className="font-medium">{user.fullName || 'Unknown Bird'}</p>
                 <p className="text-xs opacity-80">{user.email || 'bird@domain.com'}</p>
               </div>
             </div>
@@ -93,9 +95,9 @@ const Navbar = () => {
                 <li>
                   <a href="/dashboard">{t('navbar.dashboard')}</a>
                 </li>
-                <li>
-                  <a href="/profile">{t('navbar.profile')}</a>
-                </li>
+                {/*<li>*/}
+                {/*  <a href="/profile">{t('navbar.profile')}</a>*/}
+                {/*</li>*/}
                 <li>
                   <a href="/settings">{t('navbar.settings')}</a>
                 </li>

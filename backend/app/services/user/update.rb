@@ -14,7 +14,11 @@ class User::Update
   def perform
     authorize!(user, to: :update?, context: auth_context)
 
-    user.update!(user_params)
+    user.assign_attributes(user_params)
+
+    attach_avatar if @params[:avatar].present?
+
+    user.save!
 
     success(user)
   rescue => e
@@ -22,10 +26,19 @@ class User::Update
   end
 
   def user_params
-    params = {}
+    permitted = {}
 
-    params.merge({ admin: @params[:admin].to_boolean }) if should_update_role?
-    params
+    permitted[:first_name] = @params[:first_name] if @params[:first_name].present?
+    permitted[:last_name] = @params[:last_name] if @params[:last_name].present?
+    permitted[:email] = @params[:email] if @params[:email].present?
+    permitted[:locale] = @params[:locale] if @params[:locale].present?
+    permitted[:admin] = @params[:admin].to_boolean if should_update_role?
+
+    permitted
+  end
+
+  def attach_avatar
+    user.avatar.attach(@params[:avatar])
   end
 
   def should_update_role?

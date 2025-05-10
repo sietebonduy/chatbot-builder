@@ -21,6 +21,8 @@ authentication:
     password_mismatch: "Пароли не совпадают!"
     invalid_email: "Некорректная электронная почта!"
     invalid_password: "Пароль должен быть больше 5 символов."
+    required: "Это поле обязательно для заполнения"
+    invalid_credentials: "Неверная электронная почта или пароль"
   buttons:
     login: "Войти"
     register: "Зарегистрироваться"

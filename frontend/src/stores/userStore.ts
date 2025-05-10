@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { IUser } from '@/types/user';
 import { getCurrentUser } from "@/api/repositories/UserRepositroy";
 import { normalizeFromJsonApi } from "@/lib/normalizeUser";
+import { present } from "@/utils/presence.ts";
+import i18n from '@/i18n'
 
 interface UserState {
   user: IUser | null;
@@ -17,7 +19,13 @@ export const useUserStore = create<UserState>((set) => ({
   user: (() => {
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : null;
+      const parsed = stored ? JSON.parse(stored) : null;
+
+      if (present(parsed?.locale)) {
+        i18n.changeLanguage(parsed.locale);
+      }
+
+      return parsed;
     } catch {
       return null;
     }
@@ -39,12 +47,15 @@ export const useUserStore = create<UserState>((set) => ({
   },
 
   setUser: (user) => {
-    if (user) {
+    if (present(user)) {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
+      if (present(user.locale)) {
+        i18n.changeLanguage(user.locale)
+      }
     } else {
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_KEY)
     }
-    set({ user });
+    set({ user })
   },
 
   logout: () => {

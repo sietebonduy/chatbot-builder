@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { registration, login, logout } from '@/api/repositories/AuthRepository';
 import { IUserCredentials } from '@/types/auth';
-import { normalizeFromDevise } from '@/lib/normalizeUser';
+import { normalizeFromJsonApi } from '@/lib/normalizeUser';
 import { useUserStore } from '@/stores/userStore';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -21,7 +21,7 @@ export const useAuth = () => {
 
     try {
       const response = await registration(credentials);
-      setUser(normalizeFromDevise(response.data.data));
+      setUser(normalizeFromJsonApi(response.data.data));
       toast.success(t('notifications.successfully_registered'));
       navigate('/dashboard');
     } catch (err: unknown) {
@@ -38,7 +38,7 @@ export const useAuth = () => {
       const userData = response.data;
       const authHeader = response.headers['authorization'];
       setCookie('jwt', authHeader, { path: '/' });
-      setUser(normalizeFromDevise(userData.data));
+      setUser(normalizeFromJsonApi(userData.data));
       navigate('/dashboard');
       toast.success(t('notifications.successfully_logged_in'));
     } catch (err: unknown) {

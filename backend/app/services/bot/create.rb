@@ -13,10 +13,14 @@ class Bot::Create
   def perform
     bot = Bot.new(build_params)
     bot.user_id = @current_user.id
-    bot.save!
 
-    set_webhook
-    bot.update(webhook_set_at: Time.current)
+    # bot_info = get_bot_info
+    # bot.username = bot_info.dig('result', 'username')
+    #
+    # set_webhook
+    # bot.webhook_set_at =  Time.current
+
+    bot.save!
 
     success(bot)
   rescue => e
@@ -29,7 +33,18 @@ class Bot::Create
       name: @params[:name],
       provider: @params[:provider],
       token: @params[:token],
-      webhook_url: webhook_url,
+      # webhook_url: webhook_url,
+    }
+  end
+
+
+  def get_bot_info
+    response = bot_provider.get_me
+
+    {
+      username: response['username'],
+      first_name: response['first_name'],
+      last_name: response['last_name']
     }
   end
 

@@ -32,13 +32,12 @@ const ChatbotFlowListPage = () => {
 
   const handleDelete = (flowId) => {
     if (window.confirm("Вы уверены, что хотите удалить этот сценарий?")) {
-      // Your API call to delete the flow
       console.log(`Удалить флоу с ID: ${flowId}`);
     }
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" className="my-5 p-5">
       <Box py={4}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
           <Typography variant="h5" fontWeight="bold">

@@ -13,9 +13,6 @@ const getCookie = (name: string) => {
 const apiClient = axios.create({
   baseURL: 'http://localhost:80',
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 apiClient.interceptors.request.use((config) => {

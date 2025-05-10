@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { validateEmail, validatePassword } from '@/utils/validations';
+import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-// import CaptchaRepository from '@/api/repositories/CaptchaRepository';
-// import ReCAPTCHA from 'react-google-recaptcha';
 
 import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const PageTypes = {
   LOGIN: 0,
@@ -17,75 +18,47 @@ interface AuthenticationProps {
   pageType: number;
 }
 
-const initialErrorsState = {
-  email: "",
-  password: "",
-  passwordConfirm: "",
-  api: "",
+interface AuthFormInputs {
+  email: string;
+  password: string;
+  passwordConfirm?: string;
 }
 
 const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [errors, setErrors] = useState(initialErrorsState);
-  const { loading, error, register, signIn } = useAuth();
+  const { register: registerUser, signIn } = useAuth();
 
-  // const handleCaptchaChange = (value: string | null) => {
-  //   setCaptchaValue(value);
-  // };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setError,
+    clearErrors,
+  } = useForm<AuthFormInputs>();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const passwordValue = watch("password");
 
-    const updatedErrors = {...errors};
-
-    // if (!captchaValue) {
-    //   setErrors({ ...errors, api: 'Please complete the CAPTCHA' });
-    //   return;
-    // }
-
-    if (!validateEmail(email)) {
-      updatedErrors.email = t("authentication.errors.invalid_email");
-    } else {
-      updatedErrors.email = "";
-    }
-
-    if (!validatePassword(password)) {
-      updatedErrors.password = t("authentication.errors.invalid_password");
-    } else {
-      updatedErrors.password = "";
-    }
-
-    if (pageType === PageTypes.REGISTER && password !== passwordConfirm) {
-      updatedErrors.passwordConfirm = t("authentication.errors.password_mismatch");
-    } else {
-      updatedErrors.passwordConfirm = "";
-    }
-
-    setErrors(updatedErrors);
-
-    if (Object.values(updatedErrors).some(error => error !== "")) {
+  const onSubmit = async (data: AuthFormInputs) => {
+    if (pageType === PageTypes.REGISTER && data.password !== data.passwordConfirm) {
+      setError("passwordConfirm", {
+        type: "manual",
+        message: t("authentication.errors.password_mismatch"),
+      });
       return;
     }
 
-    const credentials = {email, password};
-
     try {
       if (pageType === PageTypes.LOGIN) {
-        await signIn(credentials);
+        await signIn({ email: data.email, password: data.password });
       } else {
-        await register(credentials);
+        await registerUser({ email: data.email, password: data.password });
       }
 
-      setEmail("");
-      setPassword("");
-      setPasswordConfirm("");
-    } catch (error) {
-      console.error(error);
+      navigate("/");
+    } catch (e: any) {
+      setError("email", { type: "manual", message: t("authentication.errors.invalid_credentials") });
     }
   };
 
@@ -93,75 +66,127 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-center mb-6">
-          {pageType === PageTypes.LOGIN ? t("authentication.login") : t("authentication.registration")}
+          {pageType === PageTypes.LOGIN
+            ? t("authentication.login")
+            : t("authentication.registration")}
         </h2>
 
-        <form onSubmit={handleSubmit} className="pt-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="pt-3">
           <div className="mb-4">
-            <label htmlFor="email"
-                   className="block text-sm font-medium text-gray-700">{t("authentication.fields.email.title")}</label>
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                   placeholder={t("authentication.fields.email.placeholder")}
-                   className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-            {errors.email && <p className="text-red-500 text-sm mt-1 mb-3">{errors.email}</p>}
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: t("authentication.errors.required"),
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: t("authentication.errors.invalid_email"),
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={t("authentication.fields.email.title")}
+                  placeholder={t("authentication.fields.email.placeholder")}
+                  fullWidth
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+              )}
+            />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password"
-                   className="block text-sm font-medium text-gray-700">{t("authentication.fields.password.title")}</label>
-            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                   placeholder={t("authentication.fields.password.placeholder")}
-                   className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-            {errors.password && <p className="text-red-500 text-sm mt-1 mb-3">{errors.password}</p>}
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: t("authentication.errors.required"),
+                minLength: {
+                  value: 6,
+                  message: t("authentication.errors.invalid_password"),
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="password"
+                  label={t("authentication.fields.password.title")}
+                  placeholder={t("authentication.fields.password.placeholder")}
+                  fullWidth
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+              )}
+            />
           </div>
 
           {pageType === PageTypes.REGISTER && (
-            <div className="mb-6">
-              <label htmlFor="passwordConfirm"
-                     className="block text-sm font-medium text-gray-700">{t("authentication.fields.password_confirmation.title")}</label>
-              <input type="password" id="passwordConfirm" value={passwordConfirm}
-                     onChange={(e) => setPasswordConfirm(e.target.value)}
-                     placeholder={t("authentication.fields.password_confirmation.placeholder")}
-                     className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-              {errors.passwordConfirm && <p className="text-red-500 text-sm mt-1 mb-3">{errors.passwordConfirm}</p>}
+            <div className="mb-4">
+              <Controller
+                name="passwordConfirm"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: t("authentication.errors.required"),
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="password"
+                    label={t("authentication.fields.password_confirmation.title")}
+                    placeholder={t("authentication.fields.password_confirmation.placeholder")}
+                    fullWidth
+                    error={!!errors.passwordConfirm}
+                    helperText={errors.passwordConfirm?.message}
+                  />
+                )}
+              />
             </div>
           )}
 
-          {pageType === PageTypes.LOGIN ?
-            <>
-              <div className="flex items-end justify-between my-5">
-                <div className="mb-6">
-                  {/*<ReCAPTCHA*/}
-                  {/*  sitekey="YOUR_RECAPTCHA_SITE_KEY"*/}
-                  {/*  onChange={handleCaptchaChange}*/}
-                  {/*/>*/}
-                </div>
-                <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">{t('authentication.forgot_password')}</a>
-              </div>
-            </>
-            : null
-          }
+          {pageType === PageTypes.LOGIN && (
+            <div className="flex items-end justify-between mb-4">
+              {/* CAPTCHA можно вернуть сюда при необходимости */}
+              <a href="#" className="text-sm text-primary-600 hover:underline">
+                {t('authentication.forgot_password')}
+              </a>
+            </div>
+          )}
 
-          <button type="submit"
-                  className="w-full py-2 px-4 mb-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            {pageType === PageTypes.LOGIN ? t("authentication.buttons.login") : t("authentication.buttons.register")}
-          </button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mb: 2 }}
+          >
+            {pageType === PageTypes.LOGIN
+              ? t("authentication.buttons.login")
+              : t("authentication.buttons.register")}
+          </Button>
 
-          <Divider component="div" role="presentation"/>
+          <Divider />
 
-          <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-3">
-            {pageType === PageTypes.LOGIN ?
+          <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 2 }}>
+            {pageType === PageTypes.LOGIN ? (
               <>
-                {t('authentication.dont_have_an_account_yet')}
-                <a href="/sign_up" className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">{t('authentication.registration')}</a>
+                {t('authentication.dont_have_an_account_yet')}{' '}
+                <a href="/sign_up" className="text-primary-600 hover:underline">
+                  {t('authentication.registration')}
+                </a>
               </>
-              : <>
-                {t('authentication.already_have_an_account')}
-                <a href="/login"
-                   className="font-medium text-primary-600 hover:underline dark:text-primary-500 ml-1">{t('authentication.login')}</a>
+            ) : (
+              <>
+                {t('authentication.already_have_an_account')}{' '}
+                <a href="/login" className="text-primary-600 hover:underline">
+                  {t('authentication.login')}
+                </a>
               </>
-            }
-          </p>
+            )}
+          </Typography>
         </form>
       </div>
     </div>

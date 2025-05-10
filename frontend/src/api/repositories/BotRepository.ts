@@ -21,6 +21,13 @@ export interface IBot {
   errorCount: number;
 }
 
+export interface ICreateBotParams {
+  userId: number;
+  name: string | null;
+  provider: string;
+  token: string;
+}
+
 export const index = () => {
   const url = Routes.API.V1.BOTS.ROOT;
 
@@ -32,12 +39,12 @@ export const show = (id: number | string) => {
 
   return FetchHelpers.get<IBot>(url);
 };
-//
-// export const create = () => {
-//   const url = Routes.API.V1.CHATBOT_FLOWS.ROOT;
-//
-//   return FetchHelpers.post<IChatbotFlow>(url);
-// };
+
+export const create = (params: ICreateBotParams) => {
+  const url = Routes.API.V1.BOTS.ROOT;
+
+  return FetchHelpers.post<IBot>(url, params);
+};
 //
 // export const update = (id: number | string, params: IUpdateChatbotFlowParams) => {
 //   const url = `${Routes.API.V1.CHATBOT_FLOWS.ROOT}/${id}`;

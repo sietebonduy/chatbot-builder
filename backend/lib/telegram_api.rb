@@ -30,6 +30,13 @@ class TelegramApi
     { errors: [I18n.t('services.timeout_error')] }
   end
 
+  def get_me
+    response = HTTParty.get("#{base_url}/getMe?token=#{@token}")
+    JSON.parse(response.body)
+  rescue Net::ReadTimeout
+    { errors: [I18n.t('services.timeout_error')] }
+  end
+
   private
 
   def base_url

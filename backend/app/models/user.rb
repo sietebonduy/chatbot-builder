@@ -1,5 +1,11 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+
+  enum :locale, { ru: 0, en: 1 }
+
+  has_one_attached :avatar
 
   devise :database_authenticatable, :registerable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
   devise :omniauthable, omniauth_providers: []
@@ -25,5 +31,9 @@ class User < ApplicationRecord
     social = socials.where(provider: auth.provider).first_or_create
     social.update!(uid: auth.uid, email: auth.info.email, extra: auth.is_a?(Hash) ? auth : {})
     social
+  end
+
+  def full_name
+    "#{first_name} #{last_name}"
   end
 end

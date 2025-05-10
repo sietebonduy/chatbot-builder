@@ -34,7 +34,7 @@ const BotListPage = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" className="my-5 p-5">
       <Box py={4}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
           <Typography variant="h5" fontWeight={600}>

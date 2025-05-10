@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^5.0.1",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@rollup/plugin-yaml": "^4.1.2",
@@ -20,6 +21,7 @@
     "chart.js": "^4.4.9",
     "clsx": "^2.1.1",
     "daisyui": "^5.0.28",
+    "framer-motion": "^12.10.4",
     "humps": "^2.0.1",
     "i18next": "^24.2.2",
     "motion": "^12.4.10",
@@ -38,6 +40,7 @@
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
     "yaml": "^2.7.0",
+    "yup": "^1.6.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

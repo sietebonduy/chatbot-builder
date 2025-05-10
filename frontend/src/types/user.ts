@@ -1,6 +1,12 @@
 export interface IUserAttributes {
+  id: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   admin: boolean;
+  avatarUrl: string;
+  locale: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -8,9 +14,14 @@ export interface IUserAttributes {
 export interface IUser {
   id: string;
   email: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  admin: boolean;
+  avatarUrl: string;
+  locale: string;
   createdAt: string;
   updatedAt: string;
-  admin: boolean;
 }
 
 export interface IUserResponse {
@@ -19,4 +30,13 @@ export interface IUserResponse {
     type: string;
     attributes: IUserAttributes;
   };
+}
+
+export interface IUpdateUserParams {
+  email: string;
+  avatar?: File;
+  admin: boolean;
+  firstName: string;
+  lastName: string;
+  locale: string;
 }
