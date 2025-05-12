@@ -1,18 +1,18 @@
 import Home from "@/pages/Home";
 import { Authentication, PageTypes } from "@/pages/Authentication";
-// import ChatbotFlow from "@/pages/ChatbotFlow.tsx";
 import NotFound from "@/pages/NotFound";
 import Dashboard from "@/pages/Dashboard";
 import ListUsers from "@/pages/admin/users/ListUsers";
 import MainLayout from "@/layouts/MainLayout";
 import AboutUs from "@/pages/AboutUs";
-import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import ChatbotFlowListPage from "@/pages/ChatbotFlowListPage.tsx";
 import ChatbotBuilder from "@/components/ChatbotBuilder";
 import BotListPage from "@/pages/bot/BotListPage";
 import ShowBot from "@/pages/bot/ShowBot";
 import CreateBot from "@/pages/bot/CreateBot";
+import ResetPassword from "@/pages/ResetPassword.tsx";
+import ResetPasswordRequest from "@/pages/ResetPasswordRequest.tsx";
 
 export const routes = [
   {
@@ -23,6 +23,16 @@ export const routes = [
   {
     path: "/sign_up",
     element: <Authentication pageType={PageTypes.REGISTER} />,
+    isPrivate: false,
+  },
+  {
+    path: "/forgot_password",
+    element: <ResetPasswordRequest />,
+    isPrivate: false,
+  },
+  {
+    path: "/reset_password",
+    element: <ResetPassword />,
     isPrivate: false,
   },
   {

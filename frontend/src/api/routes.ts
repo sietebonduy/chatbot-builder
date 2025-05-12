@@ -4,6 +4,8 @@ const Routes = {
     REGISTRATION: '/users',
     LOGOUT: '/users/sign_out',
     UPDATE_PASSWORD: '/users/password',
+    CREATE_PASSWORD_TOKEN: '/users/password',
+    RESET_PASSWORD_BY_TOKEN: '/users/reset_password',
   },
   HELLO: {
     INDEX: '/api/v1/hello',

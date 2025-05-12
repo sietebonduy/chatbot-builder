@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '../hooks/useAuth';
@@ -148,11 +147,12 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
           )}
 
           {pageType === PageTypes.LOGIN && (
-            <div className="flex items-end justify-between mb-4">
-              {/* CAPTCHA можно вернуть сюда при необходимости */}
-              <a href="#" className="text-sm text-primary-600 hover:underline">
-                {t('authentication.forgot_password')}
-              </a>
+            <div className="flex justify-end mb-4">
+              <Typography variant="body2" color="primary">
+                <a href="/forgot_password" className="hover:underline">
+                  {t('authentication.forgot_password')}
+                </a>
+              </Typography>
             </div>
           )}
 

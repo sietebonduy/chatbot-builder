@@ -6,10 +6,13 @@ authentication:
   already_have_an_account: "Уже есть аккаунт?"
   dont_have_an_account_yet: "Еще нет аккаунта?"
   forgot_password: "Забыли пароль?"
+  reset_password: "Восстановление пароля"
+  reset_password_instructions_sent: "Инструкции по сбросу пароля отправлены на вашу почту."
+  back_to_login: "Назад к входу"
   fields:
     email:
       title: "Электронная почта"
-      placeholder: "example@domain.ru"
+      placeholder: "Введите ваш email"
     password:
       title: "Пароль"
       placeholder: "Введите ваш пароль"
@@ -19,14 +22,17 @@ authentication:
   errors:
     fill_all_fields: "Пожалуйста, заполните все поля!"
     password_mismatch: "Пароли не совпадают!"
-    invalid_email: "Некорректная электронная почта!"
     invalid_password: "Пароль должен быть больше 5 символов."
     required: "Это поле обязательно для заполнения"
     invalid_credentials: "Неверная электронная почта или пароль"
+    invalid_email: "Некорректный email"
+    email_not_found: "Email не найден"
   buttons:
     login: "Войти"
     register: "Зарегистрироваться"
     loading: "Загрузка..."
+    send_reset_link: "Отправить ссылку для сброса"
+    reset_password: "Сбросить пароль"
 navbar:
   app_name: "Chatbot Builder"
   main_page: "Главная"
@@ -122,3 +128,4 @@ notifications:
   successfully_logged_out: 'Выполнен выход из системы'
   something_went_wrong: 'Ой, что-то пошло не так...'
   successfully_updated: 'Успешно обновленно.'
+  reset_token_is_not_present: 'Токен для обновления пароля отстуствует'

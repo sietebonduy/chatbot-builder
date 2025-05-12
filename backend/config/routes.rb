@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     patch '/users/password', to: 'users/passwords#update'
+    put 'users/reset_password', to: 'users/passwords#reset_password'
   end
 
 

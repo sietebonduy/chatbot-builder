@@ -1,6 +1,7 @@
 import Routes from '../routes';
 import { FetchHelpers } from '@/lib/FetchHelpers';
-import { IUserResponse, IUpdateUserParams, IUpdatePasswordParams } from '@/types/user';
+import { IUserResponse, IUpdateUserParams, IUpdatePasswordParams, IResetPasswordParams } from '@/types/user';
+import { ICommonMessageResponse } from '@/types';
 
 export const index = () => {
   const url = Routes.API.V1.USERS.ROOT;
@@ -28,5 +29,17 @@ export const getCurrentUser = () => {
 export const updatePassword = (params: IUpdatePasswordParams) => {
   const url = Routes.USER.UPDATE_PASSWORD;
 
-  return FetchHelpers.patch<T>(url, params);
+  return FetchHelpers.patch<ICommonMessageResponse>(url, params);
+}
+
+export const createPasswordResetToken = (params: { email: string } ) => {
+  const url = Routes.USER.CREATE_PASSWORD_TOKEN;
+
+  return FetchHelpers.post<ICommonMessageResponse>(url, params);
+}
+
+export const updatePasswordByResetToken = (params: IResetPasswordParams) => {
+  const url = Routes.USER.RESET_PASSWORD_BY_TOKEN;
+
+  return FetchHelpers.put<ICommonMessageResponse>(url, params);
 }

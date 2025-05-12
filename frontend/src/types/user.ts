@@ -47,4 +47,8 @@ export interface IUpdatePasswordParams {
   passwordConfirmation: string;
 }
 
-
+export interface IResetPasswordParams {
+  resetPasswordToken: string;
+  password: string;
+  passwordConfirmation: string;
+}

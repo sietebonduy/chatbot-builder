@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  devise :database_authenticatable, :registerable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
+  devise :database_authenticatable, :recoverable, :registerable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
   devise :omniauthable, omniauth_providers: []
 
   has_many :socials, dependent: :destroy
