@@ -5,7 +5,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   def index
     users = User.all
-    render json: UserSerializer.new(users).serializable_hash.to_json
+    render json: UserSerializer.new(result.data, { params: { host: request.base_url } }).serializable_hash
   end
 
   def show
@@ -13,7 +13,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     result = ::User::Show.call(current_user, form.params)
 
     if result.successful?
-      render json: UserSerializer.new(result.data).serializable_hash.to_json
+      render json: UserSerializer.new(result.data, { params: { host: request.base_url } }).serializable_hash
     else
       render_service_error(result)
     end
@@ -24,7 +24,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     result = ::User::Update.call(current_user, form.params)
 
     if result.successful?
-      render json: UserSerializer.new(result.data).serializable_hash.to_json
+      render json: UserSerializer.new(result.data, { params: { host: request.base_url } }).serializable_hash
     else
       render_service_error(result)
     end
@@ -38,6 +38,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       response.set_header('Authorization', "Bearer #{new_token}")
     end
 
-    render json: UserSerializer.new(current_user).serializable_hash.to_json
+    render json: UserSerializer.new(current_user, { params: { host: request.base_url } }).serializable_hash
   end
 end

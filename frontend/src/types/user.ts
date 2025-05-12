@@ -40,3 +40,11 @@ export interface IUpdateUserParams {
   lastName: string;
   locale: string;
 }
+
+export interface IUpdatePasswordParams {
+  currentPassword: string;
+  password: string;
+  passwordConfirmation: string;
+}
+
+

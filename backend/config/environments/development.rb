@@ -77,3 +77,6 @@ Rails.application.configure do
   config.hosts << 'backend'
   config.hosts << ENV['NGROK_HOST'] if ENV['NGROK_HOST'].present?
 end
+
+Rails.application.routes.default_url_options[:host] = ENV.fetch('FULL_HOST', 'http://localhost:80')
+

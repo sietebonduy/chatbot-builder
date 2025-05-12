@@ -3,6 +3,7 @@ const Routes = {
     LOGIN: '/users/sign_in',
     REGISTRATION: '/users',
     LOGOUT: '/users/sign_out',
+    UPDATE_PASSWORD: '/users/password',
   },
   HELLO: {
     INDEX: '/api/v1/hello',
@@ -21,7 +22,8 @@ const Routes = {
       },
       BOTS: {
         ROOT: '/api/v1/bots',
-      }
+      },
+      LOGIN_ACTIVITIES: { ROOT: '/api/v1/login_activities', }
     }
   }
 };

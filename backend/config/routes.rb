@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  mount ActiveStorage::Engine => '/rails/active_storage'
+
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: '/letter_opener'
   end
@@ -12,8 +14,14 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
-    omniauth_callbacks: 'users/omniauth_callbacks'
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    passwords: 'users/passwords'
   }
+
+  devise_scope :user do
+    patch '/users/password', to: 'users/passwords#update'
+  end
+
 
   namespace :webhooks do
     post 'telegram/:user_id/:bot_token', to: 'telegram#receive'
@@ -32,6 +40,7 @@ Rails.application.routes.draw do
       resources :routes, only: %i[index]
       resources :chatbot_flows, only: %i[index show create update]
       resources :bots, only: %i[index show create update destroy]
+      resources :login_activities, only: %i[index]
     end
   end
 end

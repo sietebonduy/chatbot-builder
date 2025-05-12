@@ -4,7 +4,7 @@ class UserSerializer
   set_type :user
   attributes :id, :first_name, :last_name, :full_name, :email, :admin, :locale, :created_at, :updated_at
 
-  attribute :avatar_url do |object|
-    object.avatar.attached? ? object.avatar.url : nil
+  attribute :avatar_url do |object, params|
+    SerializerHelper.avatar_url_for(object, host: params[:host])
   end
 end

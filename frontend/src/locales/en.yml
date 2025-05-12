@@ -1,6 +1,11 @@
+shared:
+  loading: 'Loading...'
 authentication:
   login: "Login"
   registration: "Registration"
+  already_have_an_account: "Already have an account?"
+  dont_have_an_account_yet: "Don't have an account yet?"
+  forgot_password: "Forgot password?"
   fields:
     email:
       title: "Email"
@@ -9,31 +14,97 @@ authentication:
       title: "Password"
       placeholder: "Enter your password"
     password_confirmation:
-      title: "Confirm password"
+      title: "Confirm Password"
       placeholder: "Re-enter your password"
   errors:
     fill_all_fields: "Please fill in all fields!"
     password_mismatch: "Passwords do not match!"
-    invalid_email: "Invalid email address!"
-    invalid_password: "Incorrect password!"
+    invalid_email: "Invalid email!"
+    invalid_password: "Password must be longer than 5 characters."
+    required: "This field is required"
+    invalid_credentials: "Invalid email or password"
   buttons:
-    login: "Log in"
-    register: "Sign up"
+    login: "Login"
+    register: "Register"
     loading: "Loading..."
 navbar:
   app_name: "Chatbot Builder"
   main_page: "Home"
-  login: "Log in"
-  register: "Sign up"
-  logout: "Log Out"
+  login: "Login"
+  register: "Register"
+  logout: 'Logout'
+  dashboard: 'Dashboard'
+  chatbot_flows: 'Bot Flows'
+  profile: 'Profile'
+  settings: 'Settings'
+  bots: "Bots"
 error_pages:
   not_found:
     code: "404"
     page_not_found: "Page Not Found"
-    sorry_message: "Sorry, the page you are looking for doesn't exist or has been moved."
+    sorry_message: "Sorry, the page you are looking for does not exist or has been moved."
+    go_home: "Go to Home"
 home:
-  welcome: "Welcome to the Chatbot Builder!"
-  description: ""
-  start: "Start"
+  welcome: "Welcome to Chatbot Builder!"
+  description: "Create and manage chatbot logic with ease and efficiency."
+  start: "Get Started"
   learn_more: "Learn More"
-  footer: "Powered by Denis"
+  footer: "Developed by Denis"
+about_us:
+  title: "About Us"
+  description: "I am a student working on a graduation project to develop an information system for real estate rental management. This page tells you about my project and the process behind it."
+  team_title: "About the Project"
+  team_member_1: "A student developing an information system for real estate rental management. This is my diploma project."
+  contact_us: "Contact Me"
+  back_to_home: "Back to Home"
+settings:
+  title: "Settings"
+  subtitle: "Manage application preferences and security settings."
+  personal_information:
+    title: "Personal Information"
+    first_name: "First Name"
+    last_name: "Last Name"
+    email: "Email"
+    language: "Language"
+    validations:
+      first_name_is_required: 'First name is required'
+      last_name_is_required: 'Last name is required'
+      email_is_invalid: 'Invalid email'
+      email_is_required: 'Email is required'
+      language_is_required: 'Please select a language'
+  login_activity:
+    title: "Login Activity"
+    no_activities_found: "No login activity found."
+    unknown_country: "Unknown country"
+    unknown: "Unknown"
+    devise_type: "Devise Type: "
+    devise: "Devise: "
+    os: "OS: "
+    browser: "Browser: "
+    used_at: "Used at: "
+  change_password:
+
+  buttons:
+    change_avatar: "Change Avatar"
+    update_profile: "Update Profile"
+    change_password: "Change Password"
+admin:
+  users:
+    table:
+      first_name: 'First Name'
+      last_name: 'Last Name'
+      role: 'Role'
+      actions: 'Actions'
+    actions:
+      edit: "Edit"
+      archive: "Archive"
+      show: "Show"
+notifications:
+  success: "Action completed successfully."
+  error: "An error occurred. Please try again."
+  invalid_password_or_email: 'Incorrect email or password'
+  successfully_logged_in: 'Successfully logged in'
+  successfully_registered: 'Successfully registered'
+  successfully_logged_out: 'Successfully logged out'
+  something_went_wrong: 'Oops, something went wrong...'
+  successfully_updated: 'Successfully updated.'

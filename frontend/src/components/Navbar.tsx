@@ -72,7 +72,7 @@ const Navbar = () => {
         <>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-500">
                 <img src={userLogo} alt="profile" className="w-full h-full object-cover"/>
               </div>
               <div className="text-sm">
@@ -95,9 +95,6 @@ const Navbar = () => {
                 <li>
                   <a href="/dashboard">{t('navbar.dashboard')}</a>
                 </li>
-                {/*<li>*/}
-                {/*  <a href="/profile">{t('navbar.profile')}</a>*/}
-                {/*</li>*/}
                 <li>
                   <a href="/settings">{t('navbar.settings')}</a>
                 </li>

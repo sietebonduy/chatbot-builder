@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_10_225922) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_12_175831) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -90,6 +90,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_10_225922) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "login_activities", force: :cascade do |t|
+    t.string "scope"
+    t.string "strategy"
+    t.string "identity"
+    t.boolean "success"
+    t.string "failure_reason"
+    t.string "user_type"
+    t.bigint "user_id"
+    t.string "context"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "referrer"
+    t.string "city"
+    t.string "region"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at"
+    t.string "device_type"
+    t.string "device_name"
+    t.string "os_name"
+    t.string "os_version"
+    t.string "browser_name"
+    t.string "browser_version"
+    t.index ["identity"], name: "index_login_activities_on_identity"
+    t.index ["ip"], name: "index_login_activities_on_ip"
+    t.index ["user_type", "user_id"], name: "index_login_activities_on_user"
+  end
+
   create_table "socials", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "provider"
@@ -114,6 +143,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_10_225922) do
     t.string "first_name"
     t.string "last_name"
     t.integer "locale", default: 0
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

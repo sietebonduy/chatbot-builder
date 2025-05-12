@@ -15,6 +15,11 @@ gem 'devise-jwt'
 gem 'jsonapi-serializer'
 gem 'action_policy'
 
+# Login Activity
+gem 'authtrail'
+gem 'geocoder'
+gem 'device_detector'
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

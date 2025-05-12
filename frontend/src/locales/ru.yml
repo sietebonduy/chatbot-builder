@@ -57,6 +57,51 @@ about_us:
   team_member_1: "Студент, работающий над созданием информационной системы для управления арендой недвижимости. Это мой дипломный проект."
   contact_us: "Связаться со мной"
   back_to_home: "Вернуться на главную"
+settings:
+  title: "Настройки"
+  subtitle: "Управляйте предпочтениями приложения и настройками безопасности."
+  personal_information:
+    title: "Персональная информация"
+    first_name: "Имя"
+    last_name: "Фамилия"
+    email: "Email"
+    language: "Язык"
+    validations:
+      first_name_is_required: 'Имя обязательно к заполнению'
+      last_name_is_required: 'Фамилия обязательна к заполнению'
+      email_is_invalid: 'Некорректный email'
+      email_is_required: 'Email обязателен к заполнению'
+      language_is_required: 'Выберите язык'
+  login_activity:
+    title: "Активность входа"
+    no_activities_found: "Не найдено активности входа."
+    unknown_country: "Неизвестная страна"
+    unknown: "Неизвестно"
+    devise_type: "Тип устройства: "
+    devise: "Устройство: "
+    os: "ОС: "
+    browser: "Браузер: "
+    used_at: "Вход выполнен: "
+  change_password:
+    title: "Смена пароля"
+    fields:
+      current_password: "Текущий пароль"
+      new_password: "Новый пароль"
+      password_confirmation: "Подтверждение пароля"
+    placeholders:
+      current_password: "Введите текущий пароль"
+      new_password: "Введите новый пароль"
+      password_confirmation: "Повторите новый пароль"
+    validations:
+      current_password_required: "Введите текущий пароль"
+      new_password_required: "Введите новый пароль"
+      confirmation_required: "Подтвердите пароль"
+      passwords_must_match: "Пароли не совпадают"
+      password_too_short: "Пароль должен быть не менее 6 символов"
+  buttons:
+    change_avatar: "Изменить автар"
+    update_profile: "Обновить профиль"
+    change_password: "Изменить пароль"
 admin:
   users:
     table:
@@ -76,3 +121,4 @@ notifications:
   successfully_registered: 'Выполнена регистрация в систему'
   successfully_logged_out: 'Выполнен выход из системы'
   something_went_wrong: 'Ой, что-то пошло не так...'
+  successfully_updated: 'Успешно обновленно.'

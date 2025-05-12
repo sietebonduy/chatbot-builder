@@ -25,6 +25,14 @@ export const FetchHelpers = {
     };
   },
 
+  patch: async <T>(url: string, data?: any) => {
+    const response = await apiClient.patch<T>(url, data);
+    return {
+      data: response.data,
+      headers: response.headers,
+    };
+  },
+
   delete: async <T>(url: string, headers?: Record<string, string>) => {
     const response = await apiClient.delete<T>(url, { headers });
     return {
