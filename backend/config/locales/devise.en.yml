@@ -16,11 +16,25 @@ en:
       timeout: "Your session expired. Please sign in again to continue."
       unauthenticated: "You need to sign in or sign up before continuing."
       unconfirmed: "You have to confirm your email address before continuing."
+    controllers:
+      sessions_controller:
+        logged_out_successfully: "Успешный выход из системы"
+        could_not_find_an_active_session: "Не получилось найти активную сессию"
+      password_controller:
+        instructions_sent: "Reset password instructions sent to your email."
+        email_not_found: "Email not found"
+        reset_successfully: "Password has been reset successfully."
+        update_successfully: "Password updated successfully"
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
+        greeting: "Hello %{email}!"
+        message: "Someone has requested a link to change your password. You can do this through the link below:"
+        cta: "Change my password"
+        ignore: "If you didn't request this, please ignore this email."
+        note: "Your password won't change until you access the link above and create a new one."
       unlock_instructions:
         subject: "Unlock instructions"
       email_changed:

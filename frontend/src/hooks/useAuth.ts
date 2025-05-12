@@ -42,15 +42,15 @@ export const useAuth = () => {
       navigate('/dashboard');
       toast.success(t('notifications.successfully_logged_in'));
     } catch (err: unknown) {
-      toast.error(t('notifications.invalid_password_or_email'));
+      toast.error(err?.response?.data || t('notifications.invalid_password_or_email'));
       setError(err instanceof Error ? err : new Error('Login failed'));
     }
   }, [setUser, setCookie, navigate]);
 
   const signOut = useCallback(async () => {
     try {
-      await logout();
-      toast.success(t('notifications.successfully_logged_out'));
+      const response = await logout();
+      toast.success(response?.data?.message || t('notifications.successfully_logged_out'));
     } catch (err) {
       setError(err as Error);
     } finally {

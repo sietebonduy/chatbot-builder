@@ -142,6 +142,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
+    http_accept_language (2.1.1)
     httparty (0.23.1)
       csv
       mini_mime (>= 1.0.0)
@@ -428,6 +429,7 @@ DEPENDENCIES
   dotenv-rails
   friendly_id
   geocoder
+  http_accept_language
   httparty
   jsonapi-serializer
   kamal

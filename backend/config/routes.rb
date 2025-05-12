@@ -1,10 +1,12 @@
 require 'sidekiq/web'
 
-Rails.application.routes.draw do
-  authenticate :user, lambda { |user| user.admin? || Rails.env.development? } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  ActiveSupport::SecurityUtils.secure_compare(username, ENV.fetch('SIDEKIQ_USERNAME', 'admin')) &
+    ActiveSupport::SecurityUtils.secure_compare(password, ENV.fetch('SIDEKIQ_PASSWORD', 'secret'))
+end
 
+Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
   mount ActiveStorage::Engine => '/rails/active_storage'
 
   if Rails.env.development?

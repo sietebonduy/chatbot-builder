@@ -17,9 +17,9 @@ class Users::SessionsController < Devise::SessionsController
   def respond_to_on_destroy
     if current_user
       reset_session
-      render json: { message: 'Logged out successfully' }, status: :ok
+      render json: { message: I18n.t('devise.controllers.sessions_controller.logged_out_successfully') }, status: :ok
     else
-      render json: { message: 'Couldn\'t find an active session.' }, status: :unauthorized
+      render json: { message: I18n.t('devise.controllers.sessions_controller.could_not_find_an_active_session') }, status: :unauthorized
     end
   end
 end
