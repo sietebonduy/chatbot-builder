@@ -1,5 +1,14 @@
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
+import {
+  FaPlay,
+  FaCommentDots,
+  FaCheckSquare,
+  FaKeyboard,
+  FaCodeBranch,
+  FaUserCheck,
+  FaCloudDownloadAlt,
+} from 'react-icons/fa';
 
 interface NodeProps {
   data: {
@@ -12,119 +21,91 @@ interface NodeProps {
   position: { x: number; y: number };
 }
 
-const Node: React.FC<NodeProps> = ({ data, selected, type, position = { x: 0, y: 0 } }) => {
+const typeStyles: Record<NodeProps['type'], { bg: string; icon: JSX.Element }> = {
+  trigger: {
+    bg: 'bg-purple-100 border-purple-500',
+    icon: <FaPlay className="text-purple-500" />,
+  },
+  message: {
+    bg: 'bg-blue-100 border-blue-500',
+    icon: <FaCommentDots className="text-blue-500" />,
+  },
+  button: {
+    bg: 'bg-green-100 border-green-500',
+    icon: <FaCheckSquare className="text-green-500" />,
+  },
+  textInput: {
+    bg: 'bg-yellow-100 border-yellow-500',
+    icon: <FaKeyboard className="text-yellow-500" />,
+  },
+  condition: {
+    bg: 'bg-violet-100 border-violet-500',
+    icon: <FaCodeBranch className="text-violet-500" />,
+  },
+  userResponse: {
+    bg: 'bg-red-100 border-red-500',
+    icon: <FaUserCheck className="text-red-500" />,
+  },
+  apiCall: {
+    bg: 'bg-cyan-100 border-cyan-500',
+    icon: <FaCloudDownloadAlt className="text-cyan-500" />,
+  },
+};
+
+const Node: React.FC<NodeProps> = ({ data, selected, type, position }) => {
   const handleContextMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
     data.onContextMenu?.(e);
   };
 
-  const renderNodeContent = () => {
-    switch (type) {
-      case 'message':
-        return <div className="p-2">{data.label}</div>;
-      case 'userResponse':
-        return <div className="p-2 bg-blue-50 rounded">{data.label}</div>;
-      case 'textInput':
-        return <input type="text" placeholder={data.label} className="border p-2 rounded w-full" />;
-      case 'button':
-        return <button className="border p-2 rounded bg-gray-100 w-full">{data.label}</button>;
-      case 'condition':
-        return <div className="p-2 bg-yellow-50 rounded">Condition: {data.label}</div>;
-      case 'apiCall':
-        return <div className="p-2 bg-green-50 rounded">API: {data.label}</div>;
-      case 'trigger':
-        return <div className="p-2 bg-purple-50 rounded">START</div>;
-      default:
-        return <div className="p-2 bg-gray-100 rounded">Unknown node</div>;
-    }
-  };
-
-  const commonStyle = {
-    padding: '10px',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    position: 'absolute',
-    left: position.x,
-    top: position.y,
-  };
+  const style = typeStyles[type];
 
   return (
     <div
       onDoubleClick={data.onEdit}
       onContextMenu={handleContextMenu}
-      className={`p-3 border rounded bg-white text-black cursor-pointer ${
-        selected ? 'border-blue-500' : 'border-gray-300'
-      }`}
-      style={commonStyle}
+      className={`relative w-48 p-3 rounded shadow-sm cursor-pointer border-2 transition-colors duration-200
+        ${style.bg} ${selected ? 'border-black' : style.bg}`}
     >
-      {type !== 'trigger' && (
-        <Handle type="target" position={Position.Left} />
-      )}
+      {type !== 'trigger' && <Handle type="target" position={Position.Left} />}
 
-      {type === 'message' && (
-        <>
-          {renderNodeContent()}
-          <Handle type="source" position={Position.Right} />
-        </>
-      )}
-
-      {type === 'userResponse' && (
-        <>
-          {renderNodeContent()}
-          <Handle type="source" position={Position.Right} id="source" />
-        </>
-      )}
+      <div className="flex items-center gap-2 mb-2">
+        <div className="text-xl">{style.icon}</div>
+        <div className="text-sm font-semibold text-gray-800">{data.label}</div>
+      </div>
 
       {type === 'textInput' && (
-        <>
-          {renderNodeContent()}
-          <Handle type="source" position={Position.Right} />
-        </>
+        <input
+          type="text"
+          placeholder={data.label}
+          disabled
+          className="w-full px-2 py-1 text-sm border rounded bg-white"
+        />
       )}
 
       {type === 'button' && (
-        <>
-          {renderNodeContent()}
-          <Handle type="source" position={Position.Right} />
-        </>
+        <button className="w-full px-2 py-1 text-sm font-medium text-gray-700 bg-white border rounded">
+          {data.label}
+        </button>
+      )}
+
+      {/* Выходные Handle в зависимости от типа */}
+      {['message', 'userResponse', 'textInput', 'button', 'trigger'].includes(type) && (
+        <Handle type="source" position={Position.Right} />
       )}
 
       {type === 'condition' && (
         <>
-          {renderNodeContent()}
-          <Handle
-            type="source"
-            position={Position.Right}
-            id="true"
-            style={{ top: '30%' }}
-          />
-          <Handle
-            type="source"
-            position={Position.Right}
-            id="false"
-            style={{ top: '70%' }}
-          />
+          <Handle type="source" position={Position.Right} id="true" style={{ top: '30%' }} />
+          <Handle type="source" position={Position.Right} id="false" style={{ top: '70%' }} />
         </>
       )}
 
       {type === 'apiCall' && (
         <>
-          {renderNodeContent()}
           <Handle type="source" position={Position.Right} id="success" />
-          <Handle
-            type="source"
-            position={Position.Bottom}
-            id="error"
-            style={{ left: '50%' }}
-          />
-        </>
-      )}
-
-      {type === 'trigger' && (
-        <>
-          {renderNodeContent()}
-          <Handle type="source" position={Position.Right} />
+          <Handle type="source" position={Position.Bottom} id="error" style={{ left: '50%' }} />
         </>
       )}
     </div>

@@ -49,7 +49,6 @@ export const routes = [
     isPrivate: true,
     children: [
       { path: "/chatbot_flows", element: <ChatbotFlowListPage />, isPrivate: false },
-      { path: "/chatbot_flows/:slug/edit", element: <ChatbotBuilder />, isPrivate: false },
       { path: "/bots", element: <BotListPage />, isPrivate: false },
       { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
       { path: "/bots/new", element: <CreateBot />, isPrivate: false },
@@ -59,4 +58,5 @@ export const routes = [
       { path: "/admin/users", element: <ListUsers />, isPrivate: false },
     ],
   },
+  { path: "/chatbot_flows/:slug/edit", element: <ChatbotBuilder />, isPrivate: false },
 ];

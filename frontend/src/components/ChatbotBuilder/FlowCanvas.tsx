@@ -1,21 +1,17 @@
-import React, {
-  useCallback, useState, useEffect, forwardRef, useImperativeHandle, useRef
-} from "react";
-import {
-  ReactFlow, useNodesState, useEdgesState, addEdge,
-  Controls, Background, ReactFlowInstance
-} from "@xyflow/react";
-import { useDrop } from "react-dnd";
+import React, { useCallback, useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
+
+import { ReactFlow, Controls, Background } from "@xyflow/react";
+import { addEdge, useNodesState, useEdgesState } from "@xyflow/react";
+import type { ReactFlowInstance, ReactFlowJsonObject, Connection, XYPosition, NodeChange, EdgeChange } from '@xyflow/react';
+
+import { useDrop, DropTargetMonitor } from "react-dnd";
 import { useTranslation } from 'react-i18next';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
 
 import EditNodeModal from "./EditNodeModal";
 import ContextMenu from '@/components/UI/ContextMenu';
-import {
-  MessageNode, UserResponseNode, TextInputNode, ButtonNode,
-  ConditionNode, APICallNode, TriggerNode
-} from './nodeTypes/Nodes';
+import { MessageNode, UserResponseNode, TextInputNode, ButtonNode, ConditionNode, APICallNode, TriggerNode } from './nodeTypes/Nodes';
 
 import { show, update } from "@/api/repositories/ChatbotFlowRepository";
 import { isBlank } from "@/utils/presence";
@@ -23,13 +19,18 @@ import { isBlank } from "@/utils/presence";
 type FlowNode = {
   id: string;
   type: string;
-  position: { x: number; y: number };
+  position: XYPosition;
   data: {
     label: string;
     onEdit: () => void;
     onContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
     [key: string]: any;
   };
+};
+
+type DragItem = {
+  type: string;
+  label: string;
 };
 
 type FlowEdge = {
@@ -45,7 +46,7 @@ interface IFlowCanvasProps {
   onChange?: () => void;
 }
 
-const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
+const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
   const { t } = useTranslation();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -61,23 +62,35 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
     nodesRef.current = nodes;
   }, [nodes]);
 
-  const handleNodesChange = useCallback((changes) => {
+  const onInit = useCallback((rfi: ReactFlowInstance) => {
+    setReactFlowInstance(rfi);
+  }, []);
+
+  const handleNodesChange = useCallback((changes: NodeChange[]) => {
     onNodesChange(changes);
     onChange?.();
   }, [onNodesChange, onChange]);
 
-  const handleEdgesChange = useCallback((changes) => {
+  const handleEdgesChange = useCallback((changes: EdgeChange[]) => {
     onEdgesChange(changes);
     onChange?.();
   }, [onEdgesChange, onChange]);
 
-
   const saveFlow = useCallback(() => {
-    const flowData = { nodes, edges };
+    if (!reactFlowInstance) return;
+
+    const { x, y, zoom } = reactFlowInstance.getViewport?.() ?? { x: 0, y: 0, zoom: 1 };
+
+    const flowData: ReactFlowJsonObject = {
+      nodes,
+      edges,
+      viewport: { x, y, zoom },
+    };
+
     update(slug, { flowData })
       .then(() => toast.success(t('notifications.success')))
       .catch(() => toast.error(t('notifications.error')));
-  }, [nodes, edges, slug, t]);
+  }, [nodes, edges, reactFlowInstance, slug, t]);
 
   useImperativeHandle(ref, () => ({
     save: saveFlow
@@ -94,8 +107,13 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
   };
 
   const onConnect = useCallback(
-    (params) => {
-      setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: "#A1A1AA" } }, eds));
+    (params: Connection) => {
+      setEdges((eds) =>
+        addEdge(
+          { ...params, animated: true, style: { stroke: "#A1A1AA" } },
+          eds
+        )
+      );
       onChange?.();
     },
     [setEdges, onChange]
@@ -103,16 +121,23 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
 
   const [, drop] = useDrop({
     accept: "node",
-    drop: (item: any, monitor) => {
+    drop: (item: DragItem, monitor: DropTargetMonitor) => {
       const offset = monitor.getClientOffset();
       const bounds = wrapperRef.current?.getBoundingClientRect();
 
-      if (!offset || !bounds || !reactFlowInstance?.project) return;
+      if (!offset || !bounds || !reactFlowInstance) {
+        console.warn("No offset/bounds/reactFlowInstance");
+        return;
+      }
 
-      const position = reactFlowInstance.project({
-        x: offset.x - bounds.left,
-        y: offset.y - bounds.top,
-      });
+      const zoom = reactFlowInstance.getZoom();
+
+      const position = {
+        x: (offset.x - bounds.left) / zoom,
+        y: (offset.y - bounds.top) / zoom,
+      };
+
+      console.log("New node position:", position);
 
       const id = nanoid();
       const newNode = {
@@ -126,12 +151,12 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
         },
       };
 
+      console.log("Adding node:", newNode);
+
       setNodes((nds) => {
-        const updated = nds.concat(newNode);
-        onChange?.();
-        return updated;
+        return [...nds, newNode];
       });
-    },
+    }
   });
 
   const handleContextMenu = useCallback((event: React.MouseEvent<HTMLElement>, nodeId: string) => {
@@ -161,9 +186,13 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
   }, [handleCloseMenu, setEdges, setNodes]);
 
   const handleSaveNode = useCallback((newLabel: string) => {
+    if (!editingNode) return;
+
+    const nodeId = editingNode.id;
+
     setNodes((nds) =>
       nds.map((n) =>
-        n.id === editingNode?.id
+        n.id === nodeId
           ? {
             ...n,
             data: {
@@ -176,7 +205,10 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
           : n
       )
     );
-  }, [editingNode?.id, handleContextMenu, handleEditNode]);
+
+    setEditingNode(null);
+    setIsModalOpen(false);
+  }, [editingNode, handleContextMenu, handleEditNode]);
 
   useEffect(() => {
     if (isBlank(slug)) return;
@@ -184,7 +216,8 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
     const loadFlow = async () => {
       try {
         const flow = await show(slug);
-        const { nodes = [], edges = [] } = flow.data?.flowData || {};
+        const flowData: ReactFlowJsonObject = flow.data?.flowData || { nodes: [], edges: [] };
+        const { nodes = [], edges = [], viewport } = flowData;
 
         setNodes(
           nodes.map((n: FlowNode) => ({
@@ -197,20 +230,23 @@ const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
           }))
         );
         setEdges(edges);
-      } catch (error) {
-        console.error("Ошибка загрузки flow:", error);
+
+        if (viewport && reactFlowInstance) {
+          reactFlowInstance.setViewport(viewport);
+        }
+      } catch {
         toast.error(t('notifications.load_error'));
       }
     };
 
     loadFlow();
-  }, [slug, handleContextMenu, handleEditNode, setEdges, setNodes, t]);
+  }, [slug, handleContextMenu, handleEditNode, setEdges, setNodes, reactFlowInstance, t]);
 
   return (
     <div ref={drop} className="w-full h-full" style={{ position: 'relative' }}>
       <div ref={wrapperRef} className="react-flow-wrapper w-full h-full">
         <ReactFlow
-          onInit={setReactFlowInstance}
+          onInit={onInit}
           nodes={nodes}
           edges={edges}
           onNodesChange={handleNodesChange}

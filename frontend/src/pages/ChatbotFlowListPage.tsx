@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Card,
-  CardActionArea,
   CardContent,
   Stack,
   Tooltip,
@@ -25,7 +24,7 @@ const ChatbotFlowListPage = () => {
 
   useEffect(() => {
     fetchFlows()
-      .then((res) => setFlows(res.data || []))
+      .then((res) => setFlows(res?.data ?? []))
       .catch((err) => console.error("Ошибка загрузки флоу:", err))
       .finally(() => setLoading(false));
   }, []);
@@ -66,7 +65,10 @@ const ChatbotFlowListPage = () => {
                 key={flow.id}
                 variant="outlined"
               >
-                <CardActionArea onClick={() => navigate(`/chatbot_flows/${flow.slug}/edit`)}>
+                <Box
+                  onClick={() => navigate(`/chatbot_flows/${flow.slug}/edit`)}
+                  sx={{ cursor: "pointer" }}
+                >
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
                       <Typography variant="subtitle1" fontWeight="bold">
@@ -95,7 +97,7 @@ const ChatbotFlowListPage = () => {
                       {flow.description || "Без описания"}
                     </Typography>
                   </CardContent>
-                </CardActionArea>
+                </Box>
               </Card>
             ))}
           </Stack>

@@ -1,35 +1,63 @@
 import { useDrag } from 'react-dnd';
+import {
+  FaPlay,
+  FaCommentDots,
+  FaCheckSquare,
+  FaKeyboard,
+  FaCodeBranch,
+  FaUserCheck,
+  FaCloudDownloadAlt,
+} from 'react-icons/fa';
 
 const NODE_TYPES = [
   {
+    type: 'trigger',
+    label: 'Старт',
+    color: '#64748B',
+    icon: <FaPlay />,
+  },
+  {
     type: 'message',
-    label: 'Новое сообщение',
-    description: 'Перетащите для создания нового сообщения',
-    color: '#3B82F6'
+    label: 'Сообщение',
+    color: '#3B82F6',
+    icon: <FaCommentDots />,
   },
   {
     type: 'button',
-    label: 'Новая кнопка',
-    description: 'Перетащите для создания кнопки',
-    color: '#10B981'
+    label: 'Кнопка',
+    color: '#10B981',
+    icon: <FaCheckSquare />,
   },
   {
     type: 'textInput',
     label: 'Текстовое поле',
-    description: 'Перетащите для создания текстового поля',
-    color: '#F59E0B'
+    color: '#F59E0B',
+    icon: <FaKeyboard />,
   },
   {
     type: 'condition',
     label: 'Условие',
-    description: 'Перетащите для создания условия ветвления',
-    color: '#8B5CF6'
-  }
+    color: '#8B5CF6',
+    icon: <FaCodeBranch />,
+  },
+  {
+    type: 'userResponse',
+    label: 'Ответ пользователя',
+    color: '#EF4444',
+    icon: <FaUserCheck />,
+  },
+  // {
+  //   type: 'apiCall',
+  //   label: 'API вызов',
+  //   color: '#0EA5E9',
+  //   icon: <FaCloudDownloadAlt />,
+  // },
 ];
+
 
 const NodeSelector = () => {
   return (
-    <div className="space-y-4 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
       {NODE_TYPES.map((nodeType) => (
         <DraggableNode key={nodeType.type} {...nodeType} />
       ))}
@@ -37,7 +65,7 @@ const NodeSelector = () => {
   );
 };
 
-const DraggableNode = ({ type, label, description, color }) => {
+const DraggableNode = ({ type, label, color, icon }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'node',
     item: { type, label },
@@ -49,22 +77,18 @@ const DraggableNode = ({ type, label, description, color }) => {
   return (
     <div
       ref={drag}
-      className={`p-4 rounded-lg border-2 cursor-move transition-all duration-200 ${
-        isDragging ? 'opacity-50 scale-95' : 'opacity-100 hover:shadow-md'
-      }`}
+      className={`flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-move transition-all duration-200 
+        ${isDragging ? 'opacity-60 scale-95' : 'hover:shadow-lg'} `}
       style={{
         backgroundColor: `${color}10`,
         borderColor: color,
       }}
     >
-      <div
-        className="font-semibold"
-        style={{ color }}
-      >
-        {isDragging ? 'Перетаскивается...' : label}
+      <div className="text-md mb-2" style={{ color }}>
+        {icon}
       </div>
-      <div className="text-sm text-gray-600 mt-1">
-        {description}
+      <div className="text-xs font-semibold text-center" style={{ color }}>
+        {isDragging ? 'Перетаскивается...' : label || 'Без названия'}
       </div>
     </div>
   );
