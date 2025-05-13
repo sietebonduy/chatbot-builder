@@ -89,11 +89,28 @@ settings:
     browser: "Browser: "
     used_at: "Used at: "
   change_password:
-
+    title: "Change Password"
+    fields:
+      current_password: "Current Password"
+      new_password: "New Password"
+      password_confirmation: "Password Confirmation"
+    placeholders:
+      current_password: "Enter current password"
+      new_password: "Enter new password"
+      password_confirmation: "Repeat new password"
+    validations:
+      current_password_required: "Please enter your current password"
+      new_password_required: "Please enter a new password"
+      confirmation_required: "Please confirm the password"
+      passwords_must_match: "Passwords do not match"
+      password_too_short: "Password must be at least 6 characters long"
   buttons:
     change_avatar: "Change Avatar"
     update_profile: "Update Profile"
     change_password: "Change Password"
+flow_builder:
+  buttons:
+    save: "Save"
 admin:
   users:
     table:

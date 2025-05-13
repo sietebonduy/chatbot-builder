@@ -5,7 +5,9 @@ module ResponseHelpers
 
   private
 
-  def render_service_error(result)
-    render json: { errors: result.errors }, status: :unprocessable_entity
+  def render_service_error(result = nil)
+    errors = result.present? && result.errors.present? ? result.errors : [I18n.t('services.error')]
+
+    render json: { errors: errors }, status: :unprocessable_entity
   end
 end

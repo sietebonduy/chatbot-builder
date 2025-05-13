@@ -40,7 +40,12 @@ type FlowEdge = {
   style?: { stroke: string };
 };
 
-const FlowCanvas = forwardRef(({ slug }: { slug: string }, ref) => {
+interface IFlowCanvasProps {
+  slug: string;
+  onChange?: () => void;
+}
+
+const FlowCanvas = forwardRef(({ slug, onChange }: FlowCanvasProps, ref) => {
   const { t } = useTranslation();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -55,6 +60,17 @@ const FlowCanvas = forwardRef(({ slug }: { slug: string }, ref) => {
   useEffect(() => {
     nodesRef.current = nodes;
   }, [nodes]);
+
+  const handleNodesChange = useCallback((changes) => {
+    onNodesChange(changes);
+    onChange?.();
+  }, [onNodesChange, onChange]);
+
+  const handleEdgesChange = useCallback((changes) => {
+    onEdgesChange(changes);
+    onChange?.();
+  }, [onEdgesChange, onChange]);
+
 
   const saveFlow = useCallback(() => {
     const flowData = { nodes, edges };
@@ -78,10 +94,11 @@ const FlowCanvas = forwardRef(({ slug }: { slug: string }, ref) => {
   };
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) =>
-      addEdge({ ...params, animated: true, style: { stroke: "#A1A1AA" } }, eds)
-    ),
-    [setEdges]
+    (params) => {
+      setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: "#A1A1AA" } }, eds));
+      onChange?.();
+    },
+    [setEdges, onChange]
   );
 
   const [, drop] = useDrop({
@@ -109,7 +126,11 @@ const FlowCanvas = forwardRef(({ slug }: { slug: string }, ref) => {
         },
       };
 
-      setNodes((nds) => nds.concat(newNode));
+      setNodes((nds) => {
+        const updated = nds.concat(newNode);
+        onChange?.();
+        return updated;
+      });
     },
   });
 
@@ -192,8 +213,8 @@ const FlowCanvas = forwardRef(({ slug }: { slug: string }, ref) => {
           onInit={setReactFlowInstance}
           nodes={nodes}
           edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
+          onNodesChange={handleNodesChange}
+          onEdgesChange={handleEdgesChange}
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           proOptions={{ hideAttribution: true }}

@@ -8,6 +8,7 @@ class Webhooks::Telegram::ReceiveForm
   def params
     @params.permit(
       :update_id,
+      :bot_id,
       :bot_token,
       message: [
         :message_id,

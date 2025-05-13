@@ -56,7 +56,7 @@ const UpdatePasswordForm = () => {
       toast.success(data.data?.message || t("notifications.success"));
       reset();
     } catch (error: any) {
-      const message = error?.response?.data?.errors?.[0]?.detail || t("notifications.error");
+      const message = error?.response?.data?.errors?.[0] || t("notifications.error");
       toast.error(message);
     }
   };

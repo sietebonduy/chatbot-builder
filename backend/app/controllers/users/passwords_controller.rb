@@ -26,12 +26,12 @@ class Users::PasswordsController < Devise::PasswordsController
   end
 
   def update
-    if current_user.update_with_password(password_update_params)
+    if current_user.present? && current_user.update_with_password(password_update_params)
       bypass_sign_in(current_user)
 
       render json: { message: I18n.t('devise.controllers.password_controller.update_successfully') }, status: :ok
     else
-      render json: { errors: current_user.errors.full_messages }, status: :unprocessable_entity
+      render_service_error
     end
   end
 

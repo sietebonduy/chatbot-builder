@@ -41,10 +41,10 @@ class Webhooks::Telegram::Receive
   end
 
   def flow
-    @flow ||= bot.chatbot_flows.last
+    @flow ||= bot.chatbot_flow
   end
 
   def bot
-    @bot ||= Bot.find_by!(provider: 'telegram', token: @params[:bot_token])
+    @bot ||= Bot.find_by!(id: @params[:bot_id], token: @params[:bot_token], provider: 'telegram')
   end
 end

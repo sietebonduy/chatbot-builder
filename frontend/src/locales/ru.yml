@@ -108,6 +108,9 @@ settings:
     change_avatar: "Изменить автар"
     update_profile: "Обновить профиль"
     change_password: "Изменить пароль"
+flow_builder:
+  buttons:
+    save: "Сохранить"
 admin:
   users:
     table:
