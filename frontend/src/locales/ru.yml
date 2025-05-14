@@ -119,6 +119,7 @@ settings:
     change_password: "Изменить пароль"
 flow_builder:
   leave_confirm: "У вас есть несохранённые изменения. Вы уверены, что хотите покинуть страницу?"
+  delete_edge: "Удалить узел"
   buttons:
     save: "Сохранить"
 flow_list:

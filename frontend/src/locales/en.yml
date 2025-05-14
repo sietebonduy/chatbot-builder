@@ -119,6 +119,7 @@ settings:
     change_password: "Change Password"
 flow_builder:
   leave_confirm: "You have unsaved changes. Are you sure you want to leave this page?"
+  delete_edge: "Delete edge"
   buttons:
     save: "Save"
 flow_list:
