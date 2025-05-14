@@ -10,6 +10,7 @@ interface ContextMenuProps {
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({
+                                                   node,
                                                    anchorEl,
                                                    open,
                                                    onClose,
@@ -22,7 +23,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     if (anchorEl) {
       const rect = anchorEl.getBoundingClientRect();
       setPosition({
-        x: rect.left + window.scrollX,  // корректируем для скролла
+        x: rect.left + window.scrollX,
         y: rect.top + window.scrollY,
       });
     }
@@ -35,7 +36,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       anchorReference="anchorPosition"
       anchorPosition={position ? { top: position.y, left: position.x } : undefined}
     >
-      <MenuItem onClick={onEdit}>Редактировать</MenuItem>
+      { node.type !== 'trigger' ? <MenuItem onClick={onEdit}>Редактировать</MenuItem> : null}
       <MenuItem onClick={onDelete}>Удалить</MenuItem>
     </Menu>
   );

@@ -16,6 +16,12 @@ export interface IFlowData {
   edges: any[];
 }
 
+export interface ICreateChatbotFlowParams {
+  name: string;
+  description: string;
+  botId: number | string;
+}
+
 export interface IUpdateChatbotFlowParams {
   flow_data?: IFlowData;
   name?: string;

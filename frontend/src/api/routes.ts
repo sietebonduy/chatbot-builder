@@ -24,6 +24,7 @@ const Routes = {
       },
       BOTS: {
         ROOT: '/api/v1/bots',
+        CHECK_STATUS: '/api/v1/bots/check_status',
       },
       LOGIN_ACTIVITIES: { ROOT: '/api/v1/login_activities', }
     }

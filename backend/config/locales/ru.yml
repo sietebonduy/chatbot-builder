@@ -4,3 +4,12 @@ ru:
     unauthorized_error: "У вас нет прав для доступа к этому ресурсу."
     not_found_error: "Запрашиваемый ресурс не найден."
     error: "Что-то пошло не так, попробуйте позже."
+  activerecord:
+    errors:
+      messages:
+        blank: "не может быть пустым"
+        invalid: "неверно"
+        too_short: "слишком короткое"
+        too_long: "слишком длинное"
+        taken: "уже занято"
+        record_invalid: "Запись невалидна"

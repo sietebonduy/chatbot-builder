@@ -42,8 +42,12 @@ Rails.application.routes.draw do
       end
 
       resources :routes, only: %i[index]
-      resources :chatbot_flows, only: %i[index show create update]
-      resources :bots, only: %i[index show create update destroy]
+      resources :chatbot_flows, only: %i[index show create update destroy]
+      resources :bots, only: %i[index show create update destroy] do
+        collection do
+          get :check_status
+        end
+      end
       resources :login_activities, only: %i[index]
     end
   end

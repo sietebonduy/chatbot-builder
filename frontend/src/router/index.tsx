@@ -6,7 +6,8 @@ import ListUsers from "@/pages/admin/users/ListUsers";
 import MainLayout from "@/layouts/MainLayout";
 import AboutUs from "@/pages/AboutUs";
 import Settings from "@/pages/Settings";
-import ChatbotFlowListPage from "@/pages/ChatbotFlowListPage.tsx";
+import ChatbotFlowListPage from "@/pages/scenarios/ChatbotFlowListPage";
+import CreateFlow from "@/pages/scenarios/Create";
 import ChatbotBuilder from "@/components/ChatbotBuilder";
 import BotListPage from "@/pages/bot/BotListPage";
 import ShowBot from "@/pages/bot/ShowBot";
@@ -49,6 +50,7 @@ export const routes = [
     isPrivate: true,
     children: [
       { path: "/chatbot_flows", element: <ChatbotFlowListPage />, isPrivate: false },
+      { path: "/chatbot_flows/new", element: <CreateFlow />, isPrivate: false },
       { path: "/bots", element: <BotListPage />, isPrivate: false },
       { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
       { path: "/bots/new", element: <CreateBot />, isPrivate: false },

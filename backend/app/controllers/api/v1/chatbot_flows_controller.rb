@@ -45,4 +45,14 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
       render_service_error(result)
     end
   end
+
+  def destroy
+    @chatbot_flow = ChatbotFlow.for_user(current_user).find(params[:id])
+
+    if @chatbot_flow.destroy
+      head :no_content
+    else
+      render_service_error
+    end
+  end
 end

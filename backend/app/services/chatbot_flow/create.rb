@@ -11,8 +11,7 @@ class ChatbotFlow::Create
   private
 
   def perform
-    flow = ChatbotFlow.new(@params)
-    flow.save!
+    flow = @current_user.chatbot_flows.create!(@params)
 
     success(flow)
   rescue => e

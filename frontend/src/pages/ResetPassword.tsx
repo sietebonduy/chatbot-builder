@@ -60,7 +60,7 @@ const ResetPassword = () => {
       toast.success(response.data.message);
       navigate('/login');
     } catch (error: any) {
-      const messages = error?.response?.data?.errors || ['Unexpected error'];
+      const messages = error?.response?.data?.errors || t('notifications.error');
       toast.error(messages.join(', '));
     }
   };

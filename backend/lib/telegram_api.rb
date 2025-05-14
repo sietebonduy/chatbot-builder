@@ -37,6 +37,13 @@ class TelegramApi
     { errors: [I18n.t('services.timeout_error')] }
   end
 
+  def get_webhook_info
+    response = HTTParty.get("#{base_url}/getWebhookInfo")
+    JSON.parse(response.body)
+  rescue Net::ReadTimeout
+    { errors: [I18n.t('services.timeout_error')] }
+  end
+
   private
 
   def base_url

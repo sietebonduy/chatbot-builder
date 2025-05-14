@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +17,7 @@ import {
   Stack,
 } from "@mui/material";
 import { create as createBot } from "@/api/repositories/BotRepository";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const schema = yup.object().shape({
   name: yup.string().required("Имя обязательно"),
@@ -29,6 +32,7 @@ const providers = [
 ];
 
 const CreateBot = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const {
@@ -48,18 +52,28 @@ const CreateBot = () => {
   const onSubmit = async (data) => {
     try {
       const response = await createBot(data);
+      toast.success(t('notifications.successfully_created'));
       navigate(`/bots/${response.data.id}`);
     } catch (error) {
+      const messages = error?.response?.data?.errors || t('notifications.error');
+      toast.error(messages.join(', '));
       console.error("Ошибка при создании:", error);
     }
   };
 
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
-      <Box mb={3}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" fontWeight="bold">
           Создание чат-бота
         </Typography>
+        <Button
+          variant="outlined"
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate(-1)}
+        >
+          Назад
+        </Button>
       </Box>
 
       <Card variant="outlined" sx={{ boxShadow: 3, borderRadius: 2 }}>

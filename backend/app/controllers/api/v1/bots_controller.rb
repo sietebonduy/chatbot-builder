@@ -20,7 +20,7 @@ class Api::V1::BotsController < Api::V1::ApplicationController
     if @bot.present?
       render json: @bot.as_json
     else
-      render json: { message: 'Couldn\'t find record' }, status: :unauthorized
+      render_service_error
     end
   end
 
@@ -52,7 +52,17 @@ class Api::V1::BotsController < Api::V1::ApplicationController
     if @bot.destroy
       head :no_content
     else
-      render json: { message: 'Couldn\'t destroy record' }, status: :unauthorized
+      render_service_error
+    end
+  end
+
+  def check_status
+    result = ::Bot::CheckStatus.call(current_user, params)
+
+    if result.successful?
+      render json: result.data
+    else
+      render_service_error(result)
     end
   end
 end

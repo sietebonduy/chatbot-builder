@@ -2,7 +2,8 @@
 
 class Bot < ApplicationRecord
   belongs_to :user
-  has_one :chatbot_flows
+  has_one :chatbot_flow
+  has_many :chats
 
   has_one_attached :avatar
 

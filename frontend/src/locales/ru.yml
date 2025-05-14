@@ -57,12 +57,21 @@ home:
   learn_more: "Узнать больше"
   footer: "Разработано Денисом"
 about_us:
-  title: "О нас"
-  description: "Я — студент, работающий над дипломной работой по разработке информационной системы управления арендой недвижимости. Эта страница расскажет вам о моем проекте и процессе работы над ним."
-  team_title: "О проекте"
-  team_member_1: "Студент, работающий над созданием информационной системы для управления арендой недвижимости. Это мой дипломный проект."
-  contact_us: "Связаться со мной"
-  back_to_home: "Вернуться на главную"
+  title: "О платформе"
+  description: "Интерактивная платформа для создания чат-ботов без программирования — просто собирайте логику в визуальном редакторе. Всё исполняется сервером через вебхуки — никакой инфраструктуры, хостинга или лишней сложности."
+  features:
+    visual_interface:
+      title: "Визуальный интерфейс"
+      desc: "Создавайте сложную логику без кода — используйте блоки и соединяйте их как в конструкторе."
+    webhooks_support:
+      title: "Поддержка вебхуков"
+      desc: "Сценарии исполняются на сервере через вебхуки. Гибкость и мощь серверной логики без лишней головной боли."
+    instant_launch:
+      title: "Мгновенный запуск"
+      desc: "Вам не нужно арендовать сервер — просто создайте бота, настройте сценарий, и он уже готов к работе."
+  cta:
+    start: "Начать создавать бота"
+    docs: "Документация"
 settings:
   title: "Настройки"
   subtitle: "Управляйте предпочтениями приложения и настройками безопасности."
@@ -111,6 +120,69 @@ settings:
 flow_builder:
   buttons:
     save: "Сохранить"
+flow_list:
+  title: "Сценарии"
+  buttons:
+    new: "Новый сценарий"
+  empty: "Нет доступных сценариев."
+  tooltips:
+    edit: "Редактировать"
+    delete: "Удалить"
+  delete_confirm:
+    title: "Удаление сценария"
+    description: "Вы уверены, что хотите удалить этот сценарий?"
+  notifications:
+    deleted: "Сценарий удалён"
+create_flow:
+  title: "Создание сценария"
+  labels:
+    name: "Имя"
+    description: "Описание"
+    bot: "Бот"
+  buttons:
+    back: "Назад"
+    create: "Создать"
+  loading: "Загрузка…"
+  errors:
+    name_required: "Имя обязательно"
+    bot_required: "Выберите бота"
+    description_max: "Описание не должно превышать 500 символов"
+  unnamed: "Без имени"
+  no_username: "Без username"
+bot_list:
+  title: "Мои чат-боты"
+  buttons:
+    new: "Новый бот"
+  empty: "Нет доступных ботов."
+  unnamed: "Без имени"
+  details: "ID: {{id}} · Провайдер: {{provider}}"
+  tooltips:
+    edit: "Редактировать"
+    delete: "Удалить"
+  delete_confirm:
+    title: "Удаление бота"
+    description: "Вы уверены, что хотите удалить бота \"{{name}}\"?"
+  notifications:
+    deleted: "Бот удалён"
+bot_details:
+  title: "Детали бота"
+  default_name: "Бот"
+  labels:
+    name: "Имя"
+    username: "Username"
+    description: "Описание"
+    provider: "Провайдер"
+    token: "Токен"
+    webhook_set: "Вебхук установлен"
+  status:
+    active: "Активен"
+    inactive: "Неактивен"
+  tooltips:
+    check_status: "Проверить статус"
+  buttons:
+    refresh: "Обновить"
+  notifications:
+    status_ok: "Статус обновлён"
 admin:
   users:
     table:
@@ -131,4 +203,12 @@ notifications:
   successfully_logged_out: 'Выполнен выход из системы'
   something_went_wrong: 'Ой, что-то пошло не так...'
   successfully_updated: 'Успешно обновленно.'
+  successfully_created: 'Успешно создано.'
+  successfully_destroyed: 'Успешно удалено.'
   reset_token_is_not_present: 'Токен для обновления пароля отстуствует'
+common:
+  back: "Назад"
+  yes: "Да"
+  no: "Нет"
+  cancel: "Отмена"
+  delete: "Удалить"

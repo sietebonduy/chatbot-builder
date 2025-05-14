@@ -7,6 +7,8 @@ class ApplicationController < ActionController::API
   include SetActiveStorageUrlOptions
   include HttpAcceptLanguage
 
+  DEFAULT_LOCALE = 'ru'
+
   respond_to :json
 
   before_action :set_locale
@@ -14,7 +16,7 @@ class ApplicationController < ActionController::API
   private
 
   def set_locale
-    I18n.locale = current_user&.locale || extract_locale_from_accept_language_header
+    I18n.locale = current_user&.locale || extract_locale_from_accept_language_header || DEFAULT_LOCALE
   end
 
   def extract_locale_from_accept_language_header

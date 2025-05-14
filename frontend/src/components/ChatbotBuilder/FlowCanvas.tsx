@@ -110,7 +110,7 @@ const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
     (params: Connection) => {
       setEdges((eds) =>
         addEdge(
-          { ...params, animated: true, style: { stroke: "#A1A1AA" } },
+          { ...params, style: { stroke: "#A1A1AA" } },
           eds
         )
       );
@@ -130,12 +130,25 @@ const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
         return;
       }
 
-      const zoom = reactFlowInstance.getZoom();
+      if (item.type === "trigger") {
+        const hasTrigger = nodes.some((node) => node.type === "trigger");
+        if (hasTrigger) {
+          toast.warning("Trigger node already exists");
+          return;
+        }
+      }
 
-      const position = {
-        x: (offset.x - bounds.left) / zoom,
-        y: (offset.y - bounds.top) / zoom,
-      };
+      // const zoom = reactFlowInstance.getZoom();
+
+      const position = reactFlowInstance.project({
+        x: offset.x - bounds.left,
+        y: offset.y - bounds.top,
+      });
+
+      // const position = {
+      //   x: 0,
+      //   y: 0,
+      // };
 
       console.log("New node position:", position);
 
@@ -174,6 +187,8 @@ const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
   const handleEditNode = useCallback((nodeId: string) => {
     const node = nodesRef.current.find((n) => n.id === nodeId);
     if (!node) return;
+    if (node.type === 'trigger') return;
+
     setEditingNode(node);
     setIsModalOpen(true);
     handleCloseMenu();
@@ -211,7 +226,7 @@ const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
   }, [editingNode, handleContextMenu, handleEditNode]);
 
   useEffect(() => {
-    if (isBlank(slug)) return;
+    if (!slug || !reactFlowInstance) return;
 
     const loadFlow = async () => {
       try {
@@ -231,16 +246,16 @@ const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
         );
         setEdges(edges);
 
-        if (viewport && reactFlowInstance) {
+        if (viewport) {
           reactFlowInstance.setViewport(viewport);
         }
       } catch {
-        toast.error(t('notifications.load_error'));
+        toast.error(t('notifications.error'));
       }
     };
 
     loadFlow();
-  }, [slug, handleContextMenu, handleEditNode, setEdges, setNodes, reactFlowInstance, t]);
+  }, [slug, reactFlowInstance]);
 
   return (
     <div ref={drop} className="w-full h-full" style={{ position: 'relative' }}>
@@ -275,6 +290,7 @@ const FlowCanvas = forwardRef(({ slug, onChange }: IFlowCanvasProps, ref) => {
 
       {contextMenuPosition && (
         <ContextMenu
+          node={nodesRef.current.find((n) => n.id === selectedNodeId)}
           anchorEl={document.elementFromPoint(contextMenuPosition.x, contextMenuPosition.y)}
           open
           onClose={handleCloseMenu}

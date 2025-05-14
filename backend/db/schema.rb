@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_12_175831) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_14_141803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -61,6 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_175831) do
     t.integer "message_count", default: 0
     t.integer "error_count", default: 0
     t.string "avatar_url"
+    t.string "default_response", default: ""
     t.index ["user_id"], name: "index_bots_on_user_id"
   end
 
@@ -77,6 +78,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_175831) do
     t.bigint "bot_id"
     t.index ["flow_data"], name: "index_chatbot_flows_on_flow_data", using: :gin
     t.index ["user_id"], name: "index_chatbot_flows_on_user_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "client_id", null: false
+    t.bigint "bot_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id", "bot_id"], name: "index_chats_on_client_id_and_bot_id", unique: true
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "chat_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username"
+    t.bigint "bot_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id", "bot_id"], name: "index_clients_on_chat_id_and_bot_id", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -117,6 +137,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_175831) do
     t.index ["identity"], name: "index_login_activities_on_identity"
     t.index ["ip"], name: "index_login_activities_on_ip"
     t.index ["user_type", "user_id"], name: "index_login_activities_on_user"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.boolean "from_bot", default: false, null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "socials", force: :cascade do |t|

@@ -57,12 +57,21 @@ home:
   learn_more: "Learn More"
   footer: "Developed by Denis"
 about_us:
-  title: "About Us"
-  description: "I am a student working on a graduation project to develop an information system for real estate rental management. This page tells you about my project and the process behind it."
-  team_title: "About the Project"
-  team_member_1: "A student developing an information system for real estate rental management. This is my diploma project."
-  contact_us: "Contact Me"
-  back_to_home: "Back to Home"
+  title: "About Platform"
+  description: "An interactive platform for building chatbots without coding — simply assemble logic in a visual editor. Everything is executed on the server via webhooks — no infrastructure, hosting, or unnecessary complexity."
+  features:
+    visual_interface:
+      title: "Visual Interface"
+      desc: "Create complex logic without code — use blocks and connect them like in a builder."
+    webhooks_support:
+      title: "Webhook Support"
+      desc: "Scenarios are executed on the server via webhooks. Flexibility and power of server-side logic without the hassle."
+    instant_launch:
+      title: "Instant Launch"
+      desc: "No need to rent a server — simply create a bot, configure the scenario, and it’s ready to go."
+  cta:
+    start: "Start Building a Bot"
+    docs: "Documentation"
 settings:
   title: "Settings"
   subtitle: "Manage application preferences and security settings."
@@ -111,6 +120,69 @@ settings:
 flow_builder:
   buttons:
     save: "Save"
+flow_list:
+  title: "Flows"
+  buttons:
+    new: "New Flow"
+  empty: "No flows available."
+  tooltips:
+    edit: "Edit"
+    delete: "Delete"
+  delete_confirm:
+    title: "Delete Flow"
+    description: "Are you sure you want to delete this flow?"
+  notifications:
+    deleted: "Flow deleted"
+create_flow:
+  title: "Create Flow"
+  labels:
+    name: "Name"
+    description: "Description"
+    bot: "Bot"
+  buttons:
+    back: "Back"
+    create: "Create"
+  loading: "Loading…"
+  errors:
+    name_required: "Name is required"
+    bot_required: "Please select a bot"
+    description_max: "Description must not exceed 500 characters"
+  unnamed: "Unnamed"
+  no_username: "No username"
+bot_list:
+  title: "My Chatbots"
+  buttons:
+    new: "New Bot"
+  empty: "No bots available."
+  unnamed: "Unnamed"
+  details: "ID: {{id}} · Provider: {{provider}}"
+  tooltips:
+    edit: "Edit"
+    delete: "Delete"
+  delete_confirm:
+    title: "Delete Bot"
+    description: "Are you sure you want to delete bot \"{{name}}\"?"
+  notifications:
+    deleted: "Bot deleted"
+bot_details:
+  title: "Bot Details"
+  default_name: "Bot"
+  labels:
+    name: "Name"
+    username: "Username"
+    description: "Description"
+    provider: "Provider"
+    token: "Token"
+    webhook_set: "Webhook Set"
+  status:
+    active: "Active"
+    inactive: "Inactive"
+  tooltips:
+    check_status: "Check Status"
+  buttons:
+    refresh: "Refresh"
+  notifications:
+    status_ok: "Status refreshed"
 admin:
   users:
     table:
@@ -132,3 +204,9 @@ notifications:
   something_went_wrong: 'Oops, something went wrong...'
   successfully_updated: 'Successfully updated.'
   reset_token_is_not_present: 'Reset token is not present'
+common:
+  back: "Back"
+  yes: "Yes"
+  no: "No"
+  cancel: "Cancel"
+  delete: "Delete"

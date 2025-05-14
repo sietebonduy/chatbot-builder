@@ -57,3 +57,9 @@ export const destroy = (id: number | string) => {
 
   return FetchHelpers.delete<T>(url);
 };
+
+export const checkStatus = (id: number | string) => {
+  const url = `${Routes.API.V1.BOTS.CHECK_STATUS}?id=${id}`;
+
+  return FetchHelpers.get<IBot>(url, id);
+};
