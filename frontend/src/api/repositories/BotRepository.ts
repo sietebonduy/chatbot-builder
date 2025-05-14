@@ -1,11 +1,13 @@
 import Routes from '../routes';
 import { FetchHelpers } from '@/lib/FetchHelpers';
-import type { IBot, ICreateBotParams, IUpdateBotParams } from '@/types/bot';
+import humps from 'humps';
+import type { IBot, ICreateBotParams, IUpdateBotParams, IBotListParams } from '@/types/bot';
 
-export const index = () => {
+export const index = (params?: IBotListParams) => {
   const url = Routes.API.V1.BOTS.ROOT;
+  const query = params ? humps.decamelizeKeys(params) : {};
 
-  return FetchHelpers.get<IBot[]>(url);
+  return FetchHelpers.get<IBot[]>(url, { params: query });
 };
 
 export const show = (id: number | string) => {

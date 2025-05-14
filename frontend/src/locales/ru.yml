@@ -118,6 +118,7 @@ settings:
     update_profile: "Обновить профиль"
     change_password: "Изменить пароль"
 flow_builder:
+  leave_confirm: "У вас есть несохранённые изменения. Вы уверены, что хотите покинуть страницу?"
   buttons:
     save: "Сохранить"
 flow_list:
@@ -211,6 +212,22 @@ edit_bot:
     token_required: "Токен обязателен"
   notifications:
     updated: "Данные бота успешно обновлены"
+edit_flow:
+  title: "Редактирование сценария"
+  labels:
+    name: "Имя"
+    bot: "Бот"
+    description: "Описание"
+  buttons:
+    save: "Сохранить"
+  errors:
+    name_required: "Имя обязательно"
+    bot_required: "Выберите бота"
+    description_max: "Описание не должно превышать 500 символов"
+  notifications:
+    updated: "Сценарий успешно обновлен"
+node_selector:
+  dragging: 'Перетаскивается…'
 admin:
   users:
     table:

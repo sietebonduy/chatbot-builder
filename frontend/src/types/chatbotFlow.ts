@@ -1,8 +1,8 @@
 export interface IFlowNodeStyle {
   color?: string;
   padding?: number;
-  border_radius?: number;
-  background_color?: string;
+  borderRadius?: number;
+  backgroundColor?: string;
 }
 
 export interface IFlowNode {
@@ -51,11 +51,11 @@ export interface IChatbotFlowAttributes {
   name: string;
   slug: string;
   description: string;
-  flow_data: IFlowData;
+  flowData: IFlowData;
   published: boolean;
-  published_at: string | null;
-  created_at: string;
-  updated_at: string;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IChatbotFlowResource {
@@ -88,12 +88,12 @@ export interface IChatbotFlow {
 export interface ICreateChatbotFlowParams {
   name: string;
   description: string;
-  bot_id: number | string;
+  botId: number | string;
 }
 
 export interface IUpdateChatbotFlowParams {
   name?: string;
   description?: string;
-  flow_data?: IFlowData;
+  flowData?: IFlowData;
   published?: boolean;
 }

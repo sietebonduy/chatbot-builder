@@ -18,9 +18,9 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
     @chatbot_flow = ChatbotFlow.friendly.find(params[:id])
 
     if @chatbot_flow.present?
-      render json: @chatbot_flow.as_json
+      render json: ChatbotFlowSerializer.new(@chatbot_flow).serializable_hash
     else
-      render json: { message: 'Couldn\'t find record' }, status: :unauthorized
+      render_service_error
     end
   end
 
@@ -29,7 +29,7 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
     result = ::ChatbotFlow::Create.call(current_user, form.params)
 
     if result.successful?
-      render json: result.data
+      render json: ChatbotFlowSerializer.new(result.data).serializable_hash
     else
       render_service_error(result)
     end
@@ -40,7 +40,7 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
     result = ::ChatbotFlow::Update.call(current_user, form.params)
 
     if result.successful?
-      render json: result.data
+      render json: ChatbotFlowSerializer.new(result.data).serializable_hash
     else
       render_service_error(result)
     end

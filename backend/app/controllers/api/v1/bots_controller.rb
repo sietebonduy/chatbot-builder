@@ -8,7 +8,7 @@ class Api::V1::BotsController < Api::V1::ApplicationController
     result = ::Bot::Index.call(current_user, form.params)
 
     if result.successful?
-      render json: result.data
+      render json: BotSerializer.new(result.data).serializable_hash
     else
       render_service_error(result)
     end

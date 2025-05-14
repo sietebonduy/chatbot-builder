@@ -6,6 +6,6 @@ class Api::V1::Bot::IndexForm
   end
 
   def params
-    @params.permit(:user_id, :provider)
+    @params.permit(:user_id, :provider, :without_flows, :include_bot_id)
   end
 end

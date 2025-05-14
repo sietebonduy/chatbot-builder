@@ -1,15 +1,25 @@
 import React from "react";
-import NodeSelector from "./NodeSelector";
+import { Box, Typography, Divider } from '@mui/material';
+import NodeSelector from './NodeSelector';
 
-const NodeSidebar = () => {
-  return (
-    <aside className="h-full w-full bg-white border-r border-gray-200 overflow-y-auto">
-      <div className="p-4">
-        <h2 className="text-lg font-semibold text-gray-700 mb-3">Компоненты</h2>
-        <NodeSelector />
-      </div>
-    </aside>
-  );
-};
+const NodeSidebar: React.FC = () => (
+  <Box
+    sx={{
+      height: '100%',
+      bgcolor: 'background.paper',
+      borderRight: 1,
+      borderColor: 'divider',
+      overflowY: 'auto'
+    }}
+  >
+    <Box p={2}>
+      <Typography variant="h6" gutterBottom>
+        Компоненты
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+      <NodeSelector />
+    </Box>
+  </Box>
+);
 
 export default NodeSidebar;

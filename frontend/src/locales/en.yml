@@ -118,6 +118,7 @@ settings:
     update_profile: "Update Profile"
     change_password: "Change Password"
 flow_builder:
+  leave_confirm: "You have unsaved changes. Are you sure you want to leave this page?"
   buttons:
     save: "Save"
 flow_list:
@@ -183,6 +184,22 @@ bot_details:
     refresh: "Refresh"
   notifications:
     status_ok: "Status refreshed"
+edit_flow:
+  title: "Edit Flow"
+  labels:
+    name: "Name"
+    bot: "Bot"
+    description: "Description"
+  buttons:
+    save: "Save"
+  errors:
+    name_required: "Name is required"
+    bot_required: "Please select a bot"
+    description_max: "Description must not exceed 500 characters"
+  notifications:
+    updated: "Flow updated successfully"
+node_selector:
+  dragging: 'Dragging…'
 admin:
   users:
     table:

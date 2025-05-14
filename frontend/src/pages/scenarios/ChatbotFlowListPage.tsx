@@ -145,7 +145,7 @@ const ChatbotFlowListPage: React.FC = () => {
                             )}
                             onClick={() =>
                               navigate(
-                                `/chatbot_flows/${flow.slug}/edit`
+                                `/chatbot_flows/${flow.id}/${flow.slug}/edit`
                               )
                             }
                           >

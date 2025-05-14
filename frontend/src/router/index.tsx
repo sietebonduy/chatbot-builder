@@ -12,9 +12,10 @@ import ChatbotBuilder from "@/components/ChatbotBuilder";
 import BotListPage from "@/pages/bot/BotListPage";
 import ShowBot from "@/pages/bot/ShowBot";
 import CreateBot from "@/pages/bot/CreateBot";
-import ResetPassword from "@/pages/ResetPassword.tsx";
-import ResetPasswordRequest from "@/pages/ResetPasswordRequest.tsx";
-import EditBot from "@/pages/bot/EditBot.tsx";
+import ResetPassword from "@/pages/ResetPassword";
+import ResetPasswordRequest from "@/pages/ResetPasswordRequest";
+import EditBot from "@/pages/bot/EditBot";
+import EditFlow from "@/pages/scenarios/Edit";
 
 export const routes = [
   {
@@ -52,6 +53,7 @@ export const routes = [
     children: [
       { path: "/chatbot_flows", element: <ChatbotFlowListPage />, isPrivate: false },
       { path: "/chatbot_flows/new", element: <CreateFlow />, isPrivate: false },
+      { path: "/chatbot_flows/:id/:slug/edit", element: <EditFlow />, isPrivate: false },
       { path: "/bots", element: <BotListPage />, isPrivate: false },
       { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
       { path: "/bots/new", element: <CreateBot />, isPrivate: false },

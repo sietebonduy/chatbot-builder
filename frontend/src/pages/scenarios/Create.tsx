@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { normalizeBot } from "@/lib/normalizeBot";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
@@ -67,7 +68,7 @@ const CreateFlow = () => {
 
   useEffect(() => {
     fetchBots()
-      .then((res) => setBots(res?.data ?? []))
+      .then((res) => setBots(res?.data.data.map(normalizeBot) ?? []))
       .catch(() => toast.error(t('notifications.error')))
       .finally(() => setLoading(false));
   }, [t]);
@@ -97,16 +98,6 @@ const CreateFlow = () => {
                 error={!!errors.name}
                 helperText={errors.name?.message}
                 fullWidth
-              />
-
-              <TextField
-                label={t('create_flow.labels.description')}
-                {...register("description")}
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                fullWidth
-                multiline
-                minRows={3}
               />
 
               <Controller
@@ -152,6 +143,16 @@ const CreateFlow = () => {
                     )}
                   </TextField>
                 )}
+              />
+
+              <TextField
+                label={t('create_flow.labels.description')}
+                {...register("description")}
+                error={!!errors.description}
+                helperText={errors.description?.message}
+                fullWidth
+                multiline
+                minRows={3}
               />
 
               <Button

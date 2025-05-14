@@ -10,7 +10,7 @@ function normalizeFlow(res: IChatbotFlowResource): IChatbotFlow {
     name: attributes.name,
     slug: attributes.slug,
     description: attributes.description,
-    flowData: attributes.flow_data,
+    flowData: attributes.flowData,
     published: attributes.published,
     publishedAt: attributes.published_at,
     createdAt: attributes.created_at,

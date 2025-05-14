@@ -1,9 +1,9 @@
-// src/pages/BotListPage.jsx
 import React, { useEffect, useState } from "react";
 import { index as fetchBots, destroy as removeBot } from "@/api/repositories/BotRepository";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { normalizeBot } from "@/lib/normalizeBot";
 import {
   Avatar,
   Stack,
@@ -35,7 +35,8 @@ const BotListPage = () => {
     setLoading(true);
     try {
       const res = await fetchBots();
-      setBots(res.data || []);
+      const normalizedBots = res.data.data.map(normalizeBot);
+      setBots(normalizedBots || []);
     } catch (err) {
       const messages = err?.response?.data?.errors || [t('notifications.error')];
       toast.error(messages.join(', '));

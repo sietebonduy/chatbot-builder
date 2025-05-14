@@ -5,6 +5,7 @@ class BotSerializer
   set_type :bot
 
   attributes :id,
+             :user_id,
              :provider,
              :token,
              :extra,
@@ -22,12 +23,4 @@ class BotSerializer
              :avatar_url,
              :created_at,
              :updated_at
-
-  belongs_to :user,
-             serializer: UserSerializer,
-             if: ->(object, _params) { object.user_id.present? }
-
-  has_many :chatbot_flows,
-           serializer: ChatbotFlowSerializer,
-           if: ->(object, _params) { object.association(:chatbot_flows).loaded? }
 end
