@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
 import { index as fetchFlows, destroy as deleteFlow } from "@/api/repositories/ChatbotFlowRepository";
+import { normalizeFlow } from "@/lib/normalizeFlow";
+import type { IChatbotFlowResource, IChatbotFlow } from "@/types/chatbotFlow";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import {
   Box,
   Button,
@@ -23,19 +25,23 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Loader from "@/components/UI/loader/Loader";
 
-const ChatbotFlowListPage = () => {
+const ChatbotFlowListPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const [flows, setFlows] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [deleteDialog, setDeleteDialog] = useState({ open: false, flowId: null });
+  const [flows, setFlows] = useState<IChatbotFlow[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; flowId: number | null }>({
+    open: false,
+    flowId: null,
+  });
 
   const loadFlows = async () => {
     setLoading(true);
     try {
-      const res = await fetchFlows();
-      setFlows(res.data ?? []);
+      const res = await fetchFlows(); // { data: { data: IChatbotFlowResource[] } }
+      const resources: IChatbotFlowResource[] = res.data.data;
+      const domainFlows = resources.map(normalizeFlow);
+      setFlows(domainFlows);
     } catch {
       toast.error(t("notifications.error"));
     } finally {
@@ -47,13 +53,18 @@ const ChatbotFlowListPage = () => {
     loadFlows();
   }, [t]);
 
-  const openDeleteDialog = (id) => setDeleteDialog({ open: true, flowId: id });
-  const closeDeleteDialog = () => setDeleteDialog({ open: false, flowId: null });
+  const openDeleteDialog = (flowId: number) =>
+    setDeleteDialog({ open: true, flowId });
+  const closeDeleteDialog = () =>
+    setDeleteDialog({ open: false, flowId: null });
 
   const handleConfirmDelete = async () => {
+    if (deleteDialog.flowId == null) return;
     try {
       await deleteFlow(deleteDialog.flowId);
-      setFlows((prev) => prev.filter((f) => f.id !== deleteDialog.flowId));
+      setFlows((prev) =>
+        prev.filter((f) => f.id !== deleteDialog.flowId)
+      );
       toast.success(t("flow_list.notifications.deleted"));
     } catch {
       toast.error(t("notifications.error"));
@@ -65,7 +76,12 @@ const ChatbotFlowListPage = () => {
   return (
     <Container maxWidth="md" sx={{ my: 5, p: 5 }}>
       <Box py={4}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={4}
+        >
           <Typography variant="h5" fontWeight="bold">
             {t("flow_list.title")}
           </Typography>
@@ -88,37 +104,81 @@ const ChatbotFlowListPage = () => {
         ) : (
           <Stack spacing={2}>
             {flows.map((flow) => (
-              <Card key={flow.id} variant="outlined" sx={{ cursor: "pointer" }}>
-                <Box onClick={() => navigate(`/chatbot_flows/${flow.slug}/edit`)}>
+              <Card
+                key={flow.id}
+                variant="outlined"
+                sx={{ cursor: "pointer" }}
+              >
+                <Box
+                  onClick={() =>
+                    navigate(
+                      `/chatbot_flows/${flow.slug}/edit`
+                    )
+                  }
+                >
                   <CardContent>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <Typography variant="subtitle1" fontWeight="bold">
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                      >
                         {flow.name || `Flow #${flow.id}`}
                       </Typography>
-                      <Stack direction="row" spacing={1} onClick={(e) => e.stopPropagation()}>
-                        <Tooltip title={t("flow_list.tooltips.edit")}>
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Tooltip
+                          title={t(
+                            "flow_list.tooltips.edit"
+                          )}
+                        >
                           <IconButton
                             size="small"
-                            aria-label={t("flow_list.tooltips.edit")}
-                            onClick={() => navigate(`/chatbot_flows/${flow.slug}/edit`)}
+                            aria-label={t(
+                              "flow_list.tooltips.edit"
+                            )}
+                            onClick={() =>
+                              navigate(
+                                `/chatbot_flows/${flow.slug}/edit`
+                              )
+                            }
                           >
                             <EditIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title={t("flow_list.tooltips.delete")}>
+                        <Tooltip
+                          title={t(
+                            "flow_list.tooltips.delete"
+                          )}
+                        >
                           <IconButton
                             size="small"
                             color="error"
-                            aria-label={t("flow_list.tooltips.delete")}
-                            onClick={() => openDeleteDialog(flow.id)}
+                            aria-label={t(
+                              "flow_list.tooltips.delete"
+                            )}
+                            onClick={() =>
+                              openDeleteDialog(flow.id)
+                            }
                           >
                             <DeleteIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
                       </Stack>
                     </Stack>
-                    <Typography variant="body2" color="text.secondary" mt={0.5}>
-                      {flow.description || t("flow_list.empty")}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      mt={0.5}
+                    >
+                      {flow.description ||
+                        t("flow_list.empty")}
                     </Typography>
                   </CardContent>
                 </Box>
@@ -127,14 +187,28 @@ const ChatbotFlowListPage = () => {
           </Stack>
         )}
 
-        <Dialog open={deleteDialog.open} onClose={closeDeleteDialog}>
-          <DialogTitle>{t("flow_list.delete_confirm.title")}</DialogTitle>
+        <Dialog
+          open={deleteDialog.open}
+          onClose={closeDeleteDialog}
+        >
+          <DialogTitle>
+            {t("flow_list.delete_confirm.title")}
+          </DialogTitle>
           <DialogContent>
-            <Typography>{t("flow_list.delete_confirm.description")}</Typography>
+            <Typography>
+              {t(
+                "flow_list.delete_confirm.description"
+              )}
+            </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeDeleteDialog}>{t("common.cancel")}</Button>
-            <Button color="error" onClick={handleConfirmDelete}>
+            <Button onClick={closeDeleteDialog}>
+              {t("common.cancel")}
+            </Button>
+            <Button
+              color="error"
+              onClick={handleConfirmDelete}
+            >
               {t("common.delete")}
             </Button>
           </DialogActions>

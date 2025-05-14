@@ -183,6 +183,34 @@ bot_details:
     refresh: "Обновить"
   notifications:
     status_ok: "Статус обновлён"
+create_bot:
+  title: "Создание чат-бота"
+  labels:
+    name: "Имя"
+    provider: "Провайдер"
+    token: "Токен"
+    default_response: "Ответа при умолчании"
+  buttons:
+    create: "Создать"
+  errors:
+    name_required: "Имя обязательно"
+    provider_required: "Провайдер обязателен"
+    token_required: "Токен обязателен"
+edit_bot:
+  title: "Редактирование бота"
+  labels:
+    name: "Имя"
+    provider: "Провайдер"
+    token: "Токен"
+    default_response: "Ответа при умолчании"
+  buttons:
+    save: "Сохранить"
+  errors:
+    name_required: "Имя обязательно"
+    provider_required: "Провайдер обязателен"
+    token_required: "Токен обязателен"
+  notifications:
+    updated: "Данные бота успешно обновлены"
 admin:
   users:
     table:

@@ -26,6 +26,7 @@ class Bot::Create
       name: @params[:name],
       provider: @params[:provider],
       token: @params[:token],
+      default_response: @params[:default_response],
     }
   end
 end

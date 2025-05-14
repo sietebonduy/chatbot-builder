@@ -6,6 +6,6 @@ class Api::V1::Bot::UpdateForm
   end
 
   def params
-    @params.permit(:token)
+    @params.permit(:id, :name, :token, :provider, :default_response)
   end
 end

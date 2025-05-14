@@ -194,16 +194,46 @@ admin:
       edit: "Edit"
       archive: "Archive"
       show: "Show"
+create_bot:
+  title: "Create Chatbot"
+  labels:
+    name: "Name"
+    provider: "Provider"
+    token: "Token"
+    default_response: "Default Response"
+  buttons:
+    create: "Create"
+  errors:
+    name_required: "Name is required"
+    provider_required: "Provider is required"
+    token_required: "Token is required"
+edit_bot:
+  title: "Edit Bot"
+  labels:
+    name: "Name"
+    provider: "Provider"
+    token: "Token"
+    default_response: "Default Response"
+  buttons:
+    save: "Save"
+  errors:
+    name_required: "Name is required"
+    provider_required: "Provider is required"
+    token_required: "Token is required"
+  notifications:
+    updated: "Bot successfully updated"
 notifications:
   success: "Action completed successfully."
   error: "An error occurred. Please try again."
-  invalid_password_or_email: 'Incorrect email or password'
-  successfully_logged_in: 'Successfully logged in'
-  successfully_registered: 'Successfully registered'
-  successfully_logged_out: 'Successfully logged out'
-  something_went_wrong: 'Oops, something went wrong...'
-  successfully_updated: 'Successfully updated.'
-  reset_token_is_not_present: 'Reset token is not present'
+  invalid_password_or_email: "Invalid email or password"
+  successfully_logged_in: "Successfully logged in"
+  successfully_registered: "Successfully registered"
+  successfully_logged_out: "Successfully logged out"
+  something_went_wrong: "Oops, something went wrong..."
+  successfully_updated: "Successfully updated."
+  successfully_created: "Successfully created."
+  successfully_destroyed: "Successfully deleted."
+  reset_token_is_not_present: "Password reset token is missing."
 common:
   back: "Back"
   yes: "Yes"

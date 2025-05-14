@@ -14,6 +14,7 @@ import ShowBot from "@/pages/bot/ShowBot";
 import CreateBot from "@/pages/bot/CreateBot";
 import ResetPassword from "@/pages/ResetPassword.tsx";
 import ResetPasswordRequest from "@/pages/ResetPasswordRequest.tsx";
+import EditBot from "@/pages/bot/EditBot.tsx";
 
 export const routes = [
   {
@@ -54,6 +55,7 @@ export const routes = [
       { path: "/bots", element: <BotListPage />, isPrivate: false },
       { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
       { path: "/bots/new", element: <CreateBot />, isPrivate: false },
+      { path: "/bots/:id/edit", element: <EditBot />, isPrivate: false },
       { path: "/dashboard", element: <Dashboard />, isPrivate: false },
       // { path: "/profile", element: <Profile />, isPrivate: false },
       { path: "/settings", element: <Settings />, isPrivate: false },

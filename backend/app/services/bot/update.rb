@@ -12,17 +12,10 @@ class Bot::Update
 
   def perform
     bot = Bot.find(@params[:id])
-
-    update_params = build_params(bot)
-    bot.update(update_params)
+    bot.update!(@params)
 
     success(bot)
   rescue => e
     error(e)
-  end
-
-  def build_params(bot)
-    {}.tap do |params|
-    end
   end
 end

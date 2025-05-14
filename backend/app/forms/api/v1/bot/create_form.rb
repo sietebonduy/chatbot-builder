@@ -6,6 +6,6 @@ class Api::V1::Bot::CreateForm
   end
 
   def params
-    @params.permit(:provider, :token, :name)
+    @params.permit(:provider, :token, :name, :default_response)
   end
 end
