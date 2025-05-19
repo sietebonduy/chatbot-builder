@@ -48,12 +48,12 @@ const Settings: React.FC = () => {
         <LoginActivity activities={null}/>
 
         <Card className="flex-1">
-          <CardHeader title="Connected Accounts" />
+          <CardHeader title={t("settings.connected_accounts.title")} />
           <Divider />
           <CardContent>
             {[
-              { name: "Google", icon: <Google color="error" />, email: "praveen@gmail.com" },
-              { name: "GitHub", icon: <GitHub />, email: "praveenjuge" }
+              { name: "Google", icon: <Google color="error" /> },
+              { name: "GitHub", icon: <GitHub /> }
             ].map((acc, index) => (
               <div
                 key={index}
@@ -64,11 +64,13 @@ const Settings: React.FC = () => {
                   <div>
                     <Typography>{acc.name}</Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Connected as {acc.email}
+                      {t("settings.connected_accounts.not_connected")}
                     </Typography>
                   </div>
                 </div>
-                <Button variant="outlined" size="small">Disconnect</Button>
+                <Button variant="outlined" size="small">
+                  {t("settings.connected_accounts.connect")}
+                </Button>
               </div>
             ))}
           </CardContent>

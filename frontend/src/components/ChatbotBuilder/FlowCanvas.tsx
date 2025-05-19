@@ -1,3 +1,4 @@
+// FlowCanvas.tsx
 import React, {
   useCallback,
   useState,
@@ -54,9 +55,7 @@ interface FlowCanvasProps {
 }
 
 type FlowNode = any;
-
 type FlowEdge = Edge & { id: string };
-
 type DragItem = { type: string; label: string };
 
 const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
@@ -201,18 +200,24 @@ const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
       [setNodes, setEdges, handleCloseContextMenu]
     );
     const handleSaveNodeEdit = useCallback(
-      (label: string) => {
-        if (editingNode) {
-          setNodes((nds) =>
-            nds.map((n) =>
-              n.id === editingNode.id
-                ? { ...n, data: { ...n.data, label, onContextMenu: (e) => handleOpenContextMenu(e, n) } }
-                : n
-            )
-          );
-          setIsModalOpen(false);
-          setEditingNode(null);
-        }
+      (newData: any) => {
+        if (!editingNode) return;
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === editingNode.id
+              ? {
+                ...n,
+                data: {
+                  ...n.data,
+                  ...newData,
+                  onContextMenu: (e: React.MouseEvent<HTMLElement>) => handleOpenContextMenu(e, n),
+                },
+              }
+              : n
+          )
+        );
+        setIsModalOpen(false);
+        setEditingNode(null);
       },
       [editingNode, handleOpenContextMenu]
     );
@@ -225,7 +230,7 @@ const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
         const vp = rfInstance?.getViewport() || { x: 0, y: 0, zoom: 1 };
         if (!offset || !bounds || !rfInstance) return;
         if (item.type === 'trigger' && nodes.some((n) => n.type === 'trigger')) {
-          toast.warning(t('flow_canvas.trigger_exists'));
+          toast.warning(t('flow_builder.notifications.trigger_exists'));
           return;
         }
         const x = (offset.x - bounds.left - vp.x) / vp.zoom;
@@ -233,14 +238,28 @@ const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
         const id = nanoid();
         setNodes((nds) => [
           ...nds,
-          { id, type: item.type, position: { x, y }, data: { label: item.label, onContextMenu: (e) => handleOpenContextMenu(e, { id } as any) } },
+          {
+            id,
+            type: item.type,
+            position: { x, y },
+            data: {
+              label: item.label,
+              onContextMenu: (e) => handleOpenContextMenu(e, { id } as any),
+            },
+          },
         ]);
         onChange?.();
       },
     });
 
     return (
-      <div ref={(el) => { wrapperRef.current = el; drop(el!); }} style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <div
+        ref={(el) => {
+          wrapperRef.current = el;
+          drop(el!);
+        }}
+        style={{ width: '100%', height: '100%', position: 'relative' }}
+      >
         <ReactFlow
           onInit={setRfInstance}
           nodes={nodes}
@@ -289,7 +308,8 @@ const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
         {editingNode && isModalOpen && (
           <EditNodeModal
             isOpen={isModalOpen}
-            initialLabel={editingNode.data.label}
+            type={editingNode.type}
+            initialData={editingNode.data}
             onSave={handleSaveNodeEdit}
             onClose={() => setIsModalOpen(false)}
           />

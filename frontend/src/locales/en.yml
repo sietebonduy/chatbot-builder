@@ -97,6 +97,10 @@ settings:
     os: "OS: "
     browser: "Browser: "
     used_at: "Used at: "
+  connected_accounts:
+    title: "Connected Accounts"
+    not_connected: "Not connected"
+    connect: "Connect"
   change_password:
     title: "Change Password"
     fields:
@@ -120,6 +124,8 @@ settings:
 flow_builder:
   leave_confirm: "You have unsaved changes. Are you sure you want to leave this page?"
   delete_edge: "Delete edge"
+  notifications:
+    trigger_exists: "Trigger already exists."
   buttons:
     save: "Save"
 flow_list:

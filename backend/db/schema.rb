@@ -171,7 +171,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_141803) do
     t.string "first_name"
     t.string "last_name"
     t.integer "locale", default: 0
-    t.integer "sign_in_count", default: 0, null: false
+    t.integer "sign_in_count", default: 0, null: false # delete
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"

@@ -21,8 +21,7 @@ const ResetPassword = () => {
   const navigate = useNavigate();
 
   const searchParams = new URLSearchParams(location.search);
-  // const token = searchParams.get('reset_password_token');
-  const token = '123';
+  const token = searchParams.get('reset_password_token');
 
   const {
     control,

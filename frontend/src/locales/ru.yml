@@ -97,6 +97,10 @@ settings:
     os: "ОС: "
     browser: "Браузер: "
     used_at: "Вход выполнен: "
+  connected_accounts:
+    title: "Подключённые аккаунты"
+    not_connected: "Не подключено"
+    connect: "Подключить"
   change_password:
     title: "Смена пароля"
     fields:
@@ -120,6 +124,8 @@ settings:
 flow_builder:
   leave_confirm: "У вас есть несохранённые изменения. Вы уверены, что хотите покинуть страницу?"
   delete_edge: "Удалить узел"
+  notifications:
+    trigger_exists: "Триггер уже есть."
   buttons:
     save: "Сохранить"
 flow_list:

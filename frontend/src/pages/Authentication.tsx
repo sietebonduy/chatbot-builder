@@ -51,11 +51,12 @@ const Authentication = ({ pageType = PageTypes.LOGIN }: AuthenticationProps) => 
     try {
       if (pageType === PageTypes.LOGIN) {
         await signIn({ email: data.email, password: data.password });
+        // navigate("/dashboard");
       } else {
         await registerUser({ email: data.email, password: data.password });
+        // navigate("/");
       }
 
-      navigate("/");
     } catch (e: any) {
       setError("email", { type: "manual", message: t("authentication.errors.invalid_credentials") });
     }

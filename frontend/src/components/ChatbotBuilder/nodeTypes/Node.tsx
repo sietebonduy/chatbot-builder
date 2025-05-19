@@ -9,19 +9,15 @@ import {
   FaUserCheck,
   FaCloudDownloadAlt,
 } from 'react-icons/fa';
+import type { INodeData } from '@/types/flow';
 
-interface NodeProps {
-  data: {
-    label: string;
-    onEdit?: () => void;
-    onContextMenu?: (e: React.MouseEvent<HTMLElement>) => void;
-  };
+export interface NodeProps {
+  data: INodeData;
   selected: boolean;
-  type: 'message' | 'userResponse' | 'textInput' | 'button' | 'condition' | 'apiCall' | 'trigger';
-  position: { x: number; y: number };
+  type: keyof typeof typeStyles;
 }
 
-const typeStyles: Record<NodeProps['type'], { bg: string; icon: JSX.Element }> = {
+const typeStyles = {
   trigger: {
     bg: 'bg-purple-100 border-purple-500',
     icon: <FaPlay className="text-purple-500" />,
@@ -50,35 +46,39 @@ const typeStyles: Record<NodeProps['type'], { bg: string; icon: JSX.Element }> =
     bg: 'bg-cyan-100 border-cyan-500',
     icon: <FaCloudDownloadAlt className="text-cyan-500" />,
   },
-};
+} as const;
 
-const Node: React.FC<NodeProps> = ({ data, selected, type, position }) => {
+const Node: React.FC<NodeProps> = ({ data, selected, type }) => {
+  const style = typeStyles[type];
+
   const handleContextMenu = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
     data.onContextMenu?.(e);
   };
 
-  const style = typeStyles[type];
-
   return (
     <div
       onDoubleClick={data.onEdit}
       onContextMenu={handleContextMenu}
-      className={`relative w-48 p-3 rounded shadow-sm cursor-pointer border-2 transition-colors duration-200
-        ${style.bg} ${selected ? 'border-black' : style.bg}`}
+      className={`
+        relative w-48 p-3 rounded shadow-sm cursor-pointer border-2 transition-colors duration-200
+        ${style.bg} ${selected ? 'border-black' : ''}
+      `}
     >
       {type !== 'trigger' && <Handle type="target" position={Position.Left} />}
 
       <div className="flex items-center gap-2 mb-2">
         <div className="text-xl">{style.icon}</div>
-        <div className="text-sm font-semibold text-gray-800">{data.label}</div>
+        <div className="text-sm font-semibold text-gray-800">
+          {data.label}
+        </div>
       </div>
 
       {type === 'textInput' && (
         <input
           type="text"
-          placeholder={data.label}
+          placeholder={(data as any).placeholder || data.label}
           disabled
           className="w-full px-2 py-1 text-sm border rounded bg-white"
         />
@@ -90,7 +90,6 @@ const Node: React.FC<NodeProps> = ({ data, selected, type, position }) => {
         </button>
       )}
 
-      {/* Выходные Handle в зависимости от типа */}
       {['message', 'userResponse', 'textInput', 'button', 'trigger'].includes(type) && (
         <Handle type="source" position={Position.Right} />
       )}
