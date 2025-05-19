@@ -1,4 +1,3 @@
-// FlowCanvas.tsx
 import React, {
   useCallback,
   useState,
@@ -281,7 +280,6 @@ const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
           <Background color="#aaa" variant="dots" gap={12} />
         </ReactFlow>
 
-        {/* Node context menu */}
         {contextMenu && (
           <ContextMenu
             node={contextMenu.node}

@@ -1,5 +1,5 @@
 import React from 'react';
-import Node from '../Node';
+import Node from './Node';
 import type { ITextInputNodeData } from '@/types/flow';
 
 interface TextInputNodeProps {

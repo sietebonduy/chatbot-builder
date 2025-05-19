@@ -40,7 +40,7 @@ navbar:
   register: "Зарегистрироваться"
   logout: 'Выйти'
   dashboard: 'Дашборд'
-  chatbot_flows: 'Сценарии ботов'
+  chatbot_flows: 'Сценарии'
   profile: 'Профиль'
   settings: 'Настройки'
   bots: "Боты"
