@@ -39,7 +39,7 @@ import {
   ConditionNode,
   APICallNode,
   TriggerNode,
-} from './nodeTypes/Nodes';
+} from './nodeTypes';
 import { show as fetchFlow, update as updateFlow } from '@/api/repositories/ChatbotFlowRepository';
 import { normalizeFlow } from '@/lib/normalizeFlow';
 import Loader from '@/components/UI/loader/Loader';

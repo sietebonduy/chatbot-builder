@@ -11,104 +11,89 @@ class Webhooks::Telegram::Receive
 
   def perform
     logger.info("Received params: #{@params}")
-    chat_id = @params.dig('message', 'chat', 'id')
-    text = @params.dig('message', 'text')
-    return error(nil, ['No chat_id provided']) if chat_id.blank?
+
+    if @params[:callback_query].present?
+      cq         = @params[:callback_query]
+      chat_id    = cq.dig(:message, :chat, :id)
+      user_input = { button_id: cq[:data] }
+
+      api_client.answer_callback_query(cq[:id])
+    elsif @params[:message].present?
+      chat_id    = @params.dig(:message, :chat, :id)
+      user_input = @params.dig(:message, :text) || ''
+    else
+      return error(nil, ['No message or callback_query'])
+    end
+
+    return error(nil, ['No chat_id']) if chat_id.blank?
 
     client = Client.find_or_create_by!(chat_id: chat_id, bot_id: @params[:bot_id])
-    chat = client.chats.where(client_id: client.id, bot_id: @params[:bot_id]).first
-    chat = if chat.present?
-             chat
-            else
-              Chat.create!(client_id: client.id, bot_id: @params[:bot_id])
-            end
+    chat   = client.chats.find_or_create_by!(client_id: client.id, bot_id: @params[:bot_id])
+    chat.messages.create!(content: user_input) unless user_input.is_a?(Hash)
 
-    chat.messages.create!(content: text)
+    next_node = if !user_input.is_a?(Hash) && %w[/start start].include?(user_input.downcase.strip)
+                  find_start_node
+                else
+                  find_next_node(user_input, chat)
+                end
 
-    next_message = if text.downcase.strip == '/start' || text.downcase.strip == 'start'
-                     start_message_from_flow
-                   else
-                     find_next_message(text, chat)
-                   end
-    logger.info("Next Message1: #{next_message}")
-    next_message = bot.default_response.presence || 'No response found. Please try again!' if next_message.blank?
-    logger.info("Next Message2: #{next_message}")
+    if next_node.present?
+      reply_text = next_node.dig('data','label')
+      opts       = next_node.dig('data','options') || []
 
-    # 4. Отправляем ответ
-    api_client = TelegramApi.new(bot.token)
-    api_client.send_message(chat_id, next_message)
+      if opts.any?
+        keyboard = opts.map { |o| [{ text: o['label'], callback_data: o['id'] }] }
+        reply_markup = { inline_keyboard: keyboard }
+      end
+    else
+      reply_text   = bot.default_response.presence || 'No response found'
+      reply_markup = nil
+    end
 
-
-
-    # 5. Сохраняем ответ
-    chat.messages.create!(content: next_message, from_bot: true)
+    api_client.send_message(chat_id, reply_text, reply_markup: reply_markup)
+    chat.messages.create!(content: reply_text, from_bot: true)
 
     success
   rescue => e
-    Rails.logger.error("[Telegram::Receive] #{e.class}: #{e.message}")
+    logger.error("[Telegram::Receive] #{e.class}: #{e.message}\n#{e.backtrace.join("\n")}")
     error(nil, [I18n.t('services.error')])
   end
 
-  def start_message_from_flow
-    logger.info("start_message_from_flow init")
-    logger.info("Flow: #{flow.attributes.pretty_inspect}")
 
-    return if flow.blank? || flow.flow_data.blank?
+  def find_start_node
+    nodes = flow.flow_data['nodes'] || []
+    edges = flow.flow_data['edges'] || []
 
-    nodes = flow.flow_data["nodes"]
-    edges = flow.flow_data["edges"]
-    return if nodes.blank? || edges.blank?
+    trigger = nodes.detect { |n| n['type'] == 'trigger' }
+    return unless trigger
 
-    # Найти node с type: "trigger"
-    trigger_node = nodes.find do |n|
-      n["type"] == "trigger" &&
-        n.dig("data", "label").to_s.downcase.in?(["start", "старт"])
+    first_edge = edges.detect { |e| e['source'] == trigger['id'] }
+    nodes.detect { |n| n['id'] == first_edge['target'] } if first_edge
+  end
+
+  def find_next_node(user_text, chat)
+    nodes = flow.flow_data['nodes'] || []
+    edges = flow.flow_data['edges'] || []
+
+    if user_text.is_a?(Hash) && user_text[:button_id].present?
+      edge = edges.find { |e| e['source_handle'] == user_text[:button_id] }
+      return nodes.find { |n| n['id'] == edge&.dig('target') } if edge
     end
-    return unless trigger_node
 
-    # Найти edge, где source — trigger
-    edge_from_trigger = edges.find { |e| e["source"] == trigger_node["id"] }
-    return unless edge_from_trigger
+    last_msg_from_bot = chat.messages.where(from_bot: true).order(:created_at).last&.content
+    current = nodes.find { |n| n.dig('data', 'label') == last_msg_from_bot } || find_start_node
+    return unless current
 
-    # Найти node, на который указывает edge
-    start_node = nodes.find { |n| n["id"] == edge_from_trigger["target"] }
-    return unless start_node
+    if current.dig('data','options').present?
+      opts = current.dig('data','options')
 
-    message = start_node.dig("data", "label")
-    logger.info("Start message: #{message}")
-    message
-  end
+      chosen = opts.find { |o| o['label'].to_s.strip.casecmp?(user_text.to_s.strip) }
+      edge = edges.find { |e| e['source'] == current['id'] && e['source_handle']==chosen&.fetch('id',nil) }
+    else
+      edge = edges.find { |e| e['source'] == current['id'] }
+    end
 
-
-  def find_next_message(user_text, chat)
-    logger.info("find_next_message with {text: #{text}}, chat_id: #{chat.id}")
-    return if flow.blank? || flow.flow_data.blank?
-
-    nodes = flow.flow_data["nodes"]
-    edges = flow.flow_data["edges"]
-    return if nodes.blank?
-
-    last_bot_message = last_bot_message_from_chat(chat)
-    current_node = find_node_by_label(nodes, last_bot_message) || start_node(nodes, edges)
-    return if current_node.blank?
-
-    next_node_id = edges.find { |e| e["source"] == current_node["id"] }&.dig("target")
-    next_node = nodes.find { |n| n["id"] == next_node_id }
-
-    next_node&.dig("data", "label")
-  end
-
-  def last_bot_message_from_chat(chat)
-    chat.messages.where(from_client: false).order(created_at: :desc).first&.content
-  end
-
-  def find_node_by_label(nodes, label)
-    nodes.find { |n| n.dig("data", "label") == label }
-  end
-
-  def start_node(nodes, edges)
-    incoming = edges.map { |e| e["target"] }
-    nodes.find { |n| n["type"] == "message" && !incoming.include?(n["id"]) }
+    nodes.find { |n| n['id'] == edge&.dig('target') } if edge
   end
 
   def flow
@@ -117,6 +102,10 @@ class Webhooks::Telegram::Receive
 
   def bot
     @bot ||= Bot.find_by!(id: @params[:bot_id], token: @params[:bot_token], provider: 'telegram')
+  end
+
+  def api_client
+    @api_client ||= TelegramApi.new(bot.token)
   end
 
   def log_with_tags(&block)

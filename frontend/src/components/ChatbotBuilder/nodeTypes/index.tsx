@@ -5,4 +5,3 @@ export { default as ConditionNode } from './ConditionNode';
 export { default as APICallNode } from './APICallNode';
 export { default as TriggerNode } from './TriggerNode';
 export { default as UserResponseNode } from './UserResponseNode';
-export { default as ActionGroupNode } from './ActionGroupNode';

@@ -7,12 +7,33 @@ class TelegramApi
     @token = token
   end
 
-  def send_message(chat_id, text)
-    body = { chat_id:, text: }
-    response = HTTParty.post("#{base_url}/sendMessage", body:)
+  def send_message(chat_id, text, reply_markup: nil)
+    payload = {
+      chat_id: chat_id,
+      text:    text,
+      parse_mode: 'Markdown'
+    }
+    payload[:reply_markup] = reply_markup if reply_markup.present?
+
+    response = HTTParty.post(
+      "#{base_url}/sendMessage",
+      headers: { 'Content-Type' => 'application/json' },
+      body: payload.to_json
+    )
     JSON.parse(response.body)
   rescue Net::ReadTimeout
     { errors: [I18n.t('services.timeout_error')] }
+  end
+
+  def answer_callback_query(callback_query_id)
+    payload = { callback_query_id: callback_query_id }
+    HTTParty.post(
+      "#{base_url}/answerCallbackQuery",
+      headers: { 'Content-Type' => 'application/json' },
+      body: payload.to_json
+    )
+  rescue Net::ReadTimeout
+    { 'ok' => false, 'description' => I18n.t('services.timeout_error') }
   end
 
   def set_webhook(url)
