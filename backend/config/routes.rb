@@ -49,6 +49,13 @@ Rails.application.routes.draw do
         end
       end
       resources :login_activities, only: %i[index]
+      resources :analytics, only: %i[index] do
+        collection do
+          get :messages_over_time
+          get :chats_over_time
+          get :messages_by_hour
+        end
+      end
     end
   end
 end

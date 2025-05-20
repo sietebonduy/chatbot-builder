@@ -56,6 +56,17 @@ home:
   start: "Get Started"
   learn_more: "Learn More"
   footer: "Developed by Denis"
+dashboard:
+  title: "Dashboard"
+  subtitle: "Here’s an overview of your application’s performance."
+  total_chats: "Total Chats"
+  bot_messages: "Messages from Bot"
+  client_messages: "Messages from Clients"
+  scheduled_messages: "Scheduled Messages"
+  messages_over_time: "Messages Over Time"
+  chats_over_time: "Chats Over Time"
+  messages_by_hour: "Messages by Hour"
+  load_error: "Failed to load dashboard data."
 about_us:
   title: "About Platform"
   description: "An interactive platform for building chatbots without coding — simply assemble logic in a visual editor. Everything is executed on the server via webhooks — no infrastructure, hosting, or unnecessary complexity."

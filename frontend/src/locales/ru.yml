@@ -72,6 +72,17 @@ about_us:
   cta:
     start: "Начать создавать бота"
     docs: "Документация"
+dashboard:
+  title: "Дашборд"
+  subtitle: "Обзор ключевых показателей."
+  total_chats: "Всего чатов"
+  bot_messages: "Сообщения от бота"
+  client_messages: "Сообщения от пользователей"
+  scheduled_messages: "Запланированные сообщения"
+  messages_over_time: "Сообщения по дням"
+  chats_over_time: "Чаты по дням"
+  messages_by_hour: "Сообщения по часам"
+  load_error: "Не удалось загрузить данные дашборда."
 settings:
   title: "Настройки"
   subtitle: "Управляйте предпочтениями приложения и настройками безопасности."
@@ -258,6 +269,7 @@ notifications:
   successfully_created: 'Успешно создано.'
   successfully_destroyed: 'Успешно удалено.'
   reset_token_is_not_present: 'Токен для обновления пароля отстуствует'
+  load_error: 'Ошибка загрузки данных'
 common:
   back: "Назад"
   yes: "Да"

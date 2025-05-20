@@ -1,95 +1,256 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  index as fetchAnalytics,
+  getMessagesOverTime,
+  getChatsOverTime,
+  getMessagesByHour,
+} from "@/api/repositories/AnalyticsRepository";
+import { IAnalytics } from "@/types/analytics";
+
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  Box,
+  Avatar,
+} from "@mui/material";
+import {
+  ChatBubbleOutline,
+  SmartToy,
+  Person,
+  AccessTime,
+} from "@mui/icons-material";
+import Loader from "@/components/UI/loader/Loader";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Dashboard: React.FC = () => {
-  const statistics = {
-    users: 1200,
-    revenue: 24500,
-    orders: 675,
-    products: 134,
+  const { t } = useTranslation();
+  const [stats, setStats] = useState<IAnalytics | null>(null);
+  const [dailyMessages, setDailyMessages] = useState<Record<string, number>>({});
+  const [dailyChats, setDailyChats] = useState<Record<string, number>>({});
+  const [messagesByHour, setMessagesByHour] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const statsRes = await fetchAnalytics();
+        setStats(statsRes.data);
+
+        const msgRes = await getMessagesOverTime();
+        setDailyMessages(msgRes.data || {});
+
+        const chatRes = await getChatsOverTime();
+        setDailyChats(chatRes.data || {});
+
+        const hourRes = await getMessagesByHour();
+        setMessagesByHour(hourRes.data || {});
+      } catch {
+        setError(t("dashboard.load_error"));
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [t]);
+
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return (
+      <Box textAlign="center" mt={4}>
+        <Typography color="error">{error}</Typography>
+      </Box>
+    );
+  }
+
+  const chartOptions = {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: "#e0e0e0" } },
+    },
   };
 
-  const chartData = {
-    labels: Array.from({ length: 12 }, (_, i) => `Month ${i + 1}`),
+  const buildChartData = (
+    data: Record<string, number>,
+    label: string
+  ) => ({
+    labels: Object.keys(data),
     datasets: [
       {
-        label: "Revenue",
-        data: [1000, 1200, 1400, 1300, 1600, 2000, 2100, 1900, 2200, 2300, 2400, 2500],
+        label,
+        data: Object.values(data),
         fill: false,
-        borderColor: "#3B82F6",
-        tension: 0.3,
+        borderColor: "#1976d2",
+        backgroundColor: "#1976d2",
+        tension: 0.4,
       },
     ],
-  };
+  });
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-6xl bg-white p-10 rounded-xl shadow-md">
-        <h1 className="text-4xl font-bold mb-6 text-gray-900 text-center">Dashboard</h1>
-        <p className="text-center text-gray-600 mb-10">Here’s an overview of your application’s performance.</p>
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        {t("dashboard.title")}
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        align="center"
+        color="textSecondary"
+        gutterBottom
+      >
+        {t("dashboard.subtitle")}
+      </Typography>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          {[
-            { title: "Users", value: statistics.users, icon: "👥" },
-            { title: "Revenue", value: `$${statistics.revenue}`, icon: "💰" },
-            { title: "Orders", value: statistics.orders, icon: "📦" },
-            { title: "Products", value: statistics.products, icon: "🛒" },
-          ].map((stat, index) => (
-            <div key={index} className="bg-gray-50 p-6 rounded-lg border text-center shadow-sm hover:shadow transition">
-              <div className="text-3xl mb-2">{stat.icon}</div>
-              <div className="text-lg font-medium mb-1">{stat.title}</div>
-              <div className="text-2xl font-bold">{stat.value}</div>
-            </div>
-          ))}
-        </div>
+      <Grid
+        container
+        spacing={4}
+        justifyContent="space-evenly"
+        alignItems="stretch"
+        sx={{ mt: 5 }}
+      >
+        {[
+          {
+            title: t("dashboard.total_chats"),
+            value: stats?.totalChats || 0,
+            icon: <ChatBubbleOutline fontSize="large" />,
+          },
+          {
+            title: t("dashboard.bot_messages"),
+            value: stats?.totalMessagesFromBots || 0,
+            icon: <SmartToy fontSize="large" />,
+          },
+          {
+            title: t("dashboard.client_messages"),
+            value: stats?.totalMessagesFromClients || 0,
+            icon: <Person fontSize="large" />,
+          },
+          {
+            title: t("dashboard.scheduled_messages"),
+            value: stats?.scheduledMessages || 0,
+            icon: <AccessTime fontSize="large" />,
+          },
+        ].map((card, idx) => (
+          <Grid item xs={12} sm={6} md={3} key={idx}>
+            <Card
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                p: 3,
+                width: "250px",
+                height: "150px",
+                boxShadow: 3,
+                borderRadius: 2,
+                bgcolor: "background.paper",
+                transition: "transform 0.3s ease, boxShadow 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-6px)",
+                  boxShadow: 6,
+                },
+              }}
+            >
+              <Avatar
+                sx={{
+                  bgcolor: "primary.main",
+                  width: 56,
+                  height: 56,
+                  mr: 2,
+                }}
+              >
+                {card.icon}
+              </Avatar>
+              <Box>
+                <Typography
+                  variant="subtitle2"
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  {card.title}
+                </Typography>
+                <Typography variant="h4" color="primary">
+                  {card.value}
+                </Typography>
+              </Box>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-        <div className="bg-gray-50 rounded-lg p-6 mb-12 border shadow-sm">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">📈 Revenue Over Time</h2>
-          <Line data={chartData} />
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-gray-50 rounded-lg p-6 border shadow-sm">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">🕒 Recent Activity</h3>
-            <ul className="space-y-2 text-gray-600">
-              {[
-                "User 'Denis' added a new product.",
-                "Order #4587 was placed by 'John'.",
-                "Revenue increased by $200.",
-                "Product 'Widget Pro' stock updated.",
-              ].map((item, i) => (
-                <li key={i}>• {item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="bg-gray-50 rounded-lg p-6 border shadow-sm">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">🔔 Notifications</h3>
-            <ul className="space-y-2 text-gray-600">
-              {[
-                "New comment on your post.",
-                "Product 'Smartphone' is back in stock.",
-                "Your subscription is about to expire.",
-              ].map((item, i) => (
-                <li key={i}>• {item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+      <Grid container spacing={3} sx={{ mt: 4 }} justifyContent="space-evenly">
+        <Grid item xs={12} md={4}>
+          <Card sx={{height: "300px"}}>
+            <CardHeader title={t("dashboard.messages_over_time")} />
+            <CardContent>
+              <Line
+                data={buildChartData(
+                  dailyMessages,
+                  t("dashboard.messages_over_time")
+                )}
+                options={chartOptions}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card sx={{height: "300px"}}>
+            <CardHeader title={t("dashboard.messages_by_hour")} />
+            <CardContent>
+              <Bar
+                data={buildChartData(
+                  messagesByHour,
+                  t("dashboard.messages_by_hour")
+                )}
+                options={chartOptions}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Card sx={{height: "300px"}}>
+            <CardHeader title={t("dashboard.chats_over_time")} />
+            <CardContent>
+              <Line
+                data={buildChartData(
+                  dailyChats,
+                  t("dashboard.chats_over_time")
+                )}
+                options={chartOptions}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

@@ -19,14 +19,13 @@ const Routes = {
       CAPTCHA: {
         VERIFY: '/api/v1/verify_recaptcha',
       },
-      CHATBOT_FLOWS: {
-        ROOT: '/api/v1/chatbot_flows',
-      },
+      CHATBOT_FLOWS: { ROOT: '/api/v1/chatbot_flows' },
       BOTS: {
         ROOT: '/api/v1/bots',
         CHECK_STATUS: '/api/v1/bots/check_status',
       },
-      LOGIN_ACTIVITIES: { ROOT: '/api/v1/login_activities', }
+      LOGIN_ACTIVITIES: { ROOT: '/api/v1/login_activities' },
+      ANALYTICS: { ROOT: '/api/v1/analytics' },
     }
   }
 };
