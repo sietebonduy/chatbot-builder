@@ -22,15 +22,13 @@ export const useAuth = () => {
     setError(null);
 
     try {
-      const response = await registration(credentials);
-      setUser(normalizeFromJsonApi(response.data.data));
+      await registration(credentials);
       toast.success(t('notifications.successfully_registered'));
-      navigate('/dashboard');
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err : new Error('Registration failed'));
+      navigate('/login');
+    } catch {
       toast.error(t('notifications.something_went_wrong'));
     }
-  }, [setUser]);
+  }, []);
 
   const signIn = useCallback(async (credentials: IUserCredentials) => {
     setError(null);

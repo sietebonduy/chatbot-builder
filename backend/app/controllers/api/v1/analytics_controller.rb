@@ -40,17 +40,21 @@ class Api::V1::AnalyticsController < Api::V1::ApplicationController
 
   # todo: add scope for current_user
   def messages_by_hour
-    extract_hour = Arel.sql("EXTRACT(HOUR FROM messages.created_at)")
+    if current_user.bots.present? && current_user.chatbot_flows.present?
+      extract_hour = Arel.sql("EXTRACT(HOUR FROM messages.created_at)")
 
-    messages = Message.all
-                      .select("#{extract_hour} AS hour", "COUNT(*) AS total")
-                      .group(extract_hour)
-                      .order(extract_hour)
+      messages = Message.all
+                        .select("#{extract_hour} AS hour", "COUNT(*) AS total")
+                        .group(extract_hour)
+                        .order(extract_hour)
 
-    result = messages.each_with_object({}) do |m, h|
-      h[m.hour.to_i] = m.total.to_i
+      result = messages.each_with_object({}) do |m, h|
+        h[m.hour.to_i] = m.total.to_i
+      end
+
+      render json: result
+    else
+      render json: {}
     end
-
-    render json: result
   end
 end
