@@ -28,6 +28,7 @@ class ChatbotFlow::Update
       params[:description] = @params[:description] if @params[:description].present?
       params[:published_at] = Time.current if published?
       params[:flow_data] = @params[:flow_data] if scenario_has_changed?(flow)
+      params[:bot_id] = @params[:bot_id] if @params[:bot_id].present?
     end
   end
 

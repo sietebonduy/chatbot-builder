@@ -6,6 +6,6 @@ class Api::V1::ChatbotFlow::CreateForm
   end
 
   def params
-    @params.permit(:user_id, :name, :description, flow_data: {})
+    @params.permit(:user_id, :name, :description, :bot_id, flow_data: {})
   end
 end
