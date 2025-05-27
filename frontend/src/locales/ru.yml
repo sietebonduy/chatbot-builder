@@ -139,6 +139,21 @@ flow_builder:
     trigger_exists: "Триггер уже есть."
   buttons:
     save: "Сохранить"
+  node_selector:
+    title: 'Компоненты'
+    node_types:
+      trigger: "Старт"
+      message: "Сообщение"
+      textInput: "Текстовое поле"
+      condition: "Условие"
+      userResponse: "Ответ пользователя"
+  edit_node_modal:
+    buttons: "Кнопки"
+    add_button: "Добавить кнопку"
+    cancel: "Отмена"
+    save: "Сохранить"
+    label: "Название"
+    edit_node_title: "Редактировать узел {{type}}"
 flow_list:
   title: "Сценарии"
   buttons:

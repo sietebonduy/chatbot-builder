@@ -5,11 +5,11 @@ import {
   Button,
   TextField,
   Typography,
-  MenuItem,
   IconButton,
 } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
 import { nanoid } from "nanoid";
+import { useTranslation } from 'react-i18next';
 
 export interface EditNodeModalProps<T> {
   isOpen: boolean;
@@ -26,6 +26,7 @@ const EditNodeModal = <T extends Record<string, any>>({
                                                         initialData,
                                                         onSave,
                                                       }: EditNodeModalProps<T>) => {
+  const { t } = useTranslation();
   const [data, setData] = useState<T>({} as T);
 
   useEffect(() => {
@@ -98,11 +99,11 @@ const EditNodeModal = <T extends Record<string, any>>({
         }}
       >
         <Typography variant="h6" component="h2" gutterBottom>
-          {`Edit ${capitalizedType} Node`}
+          {t('flow_builder.edit_node_modal.edit_node_title', { type: capitalizedType })}
         </Typography>
 
         <TextField
-          label="Label"
+          label={ t('flow_builder.edit_node_modal.label') }
           value={data.label || ""}
           onChange={handleChange("label" as keyof T)}
           fullWidth
@@ -122,7 +123,7 @@ const EditNodeModal = <T extends Record<string, any>>({
             {/*/>*/}
 
             <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
-              Buttons
+              { t('flow_builder.edit_node_modal.buttons') }
             </Typography>
             {(data as any).options?.map(
               (opt: any, idx: number) => (
@@ -131,7 +132,7 @@ const EditNodeModal = <T extends Record<string, any>>({
                   sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}
                 >
                   <TextField
-                    label="Label"
+                    label={ t('flow_builder.edit_node_modal.label') }
                     value={opt.label}
                     onChange={handleOptionChange(idx, 'label')}
                     size="small"
@@ -152,7 +153,7 @@ const EditNodeModal = <T extends Record<string, any>>({
               onClick={addOption}
               size="small"
             >
-              Add Option
+              { t('flow_builder.edit_node_modal.add_button') }
             </Button>
           </>
         )}
@@ -174,10 +175,10 @@ const EditNodeModal = <T extends Record<string, any>>({
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
           <Button onClick={onClose} sx={{ mr: 1 }}>
-            Cancel
+            { t('flow_builder.edit_node_modal.cancel') }
           </Button>
           <Button variant="contained" onClick={handleSubmit}>
-            Save
+            { t('flow_builder.edit_node_modal.save') }
           </Button>
         </Box>
       </Box>

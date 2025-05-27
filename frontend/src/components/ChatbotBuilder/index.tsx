@@ -57,7 +57,6 @@ const ChatbotBuilder: React.FC = () => {
     <DndProvider backend={HTML5Backend}>
       <ReactFlowProvider>
         <Box display="flex" height="100vh" bgcolor="background.default">
-          {/* Sidebar */}
           <Box width={280} borderRight={1} borderColor="divider" bgcolor="background.paper">
             <NodeSidebar />
           </Box>

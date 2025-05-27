@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useDrag } from 'react-dnd';
 import { FaPlay, FaCommentDots, FaCheckSquare, FaKeyboard, FaCodeBranch, FaUserCheck } from 'react-icons/fa';
 
-const NODE_TYPES = [
-  { type:'trigger', label:'Старт', color:'#64748B', icon:<FaPlay /> },
-  { type:'message', label:'Сообщение', color:'#3B82F6', icon:<FaCommentDots /> },
-  { type: 'button', label: 'Кнопка', color: '#10B981', icon: <FaCheckSquare /> },
-  { type: 'textInput', label: 'Текстовое поле', color: '#F59E0B', icon: <FaKeyboard /> },
-  { type: 'condition', label: 'Условие', color: '#8B5CF6', icon: <FaCodeBranch /> },
-  { type: 'userResponse', label: 'Ответ пользователя', color: '#EF4444', icon: <FaUserCheck /> },
+const NODE_CONFIGS = [
+  { type:'trigger', color:'#64748B', icon:<FaPlay /> },
+  { type:'message', color:'#3B82F6', icon:<FaCommentDots /> },
+  // { type: 'button', color: '#10B981', icon: <FaCheckSquare /> },
+  { type: 'textInput', color: '#F59E0B', icon: <FaKeyboard /> },
+  { type: 'condition', color: '#8B5CF6', icon: <FaCodeBranch /> },
+  { type: 'userResponse', color: '#EF4444', icon: <FaUserCheck /> },
 ];
 
 export const DraggableNode = ({ type, label, color, icon }: any) => {
@@ -23,7 +23,15 @@ export const DraggableNode = ({ type, label, color, icon }: any) => {
 };
 
 const NodeSelector: React.FC = () => {
-  const list = useMemo(() => NODE_TYPES, []);
-  return <div style={{ padding:8 }}>{list.map(nt => <DraggableNode key={nt.type} {...nt} />)}</div>;
+  const { t } = useTranslation();
+  const list = useMemo(() =>
+    NODE_CONFIGS.map((config) => ({
+      ...config,
+      label: t(`flow_builder.node_selector.node_types.${config.type}`),
+    })), [t]
+  );
+
+  return <div style={{ padding: 8 }}>{list.map(nt => <DraggableNode key={nt.type} {...nt} />)}</div>;
 };
+
 export default NodeSelector;

@@ -139,6 +139,21 @@ flow_builder:
     trigger_exists: "Trigger already exists."
   buttons:
     save: "Save"
+  node_selector:
+    title: 'Components'
+    node_types:
+      trigger: "Start"
+      message: "Message"
+      textInput: "Text Input"
+      condition: "Condition"
+      userResponse: "User Response"
+  edit_node_modal:
+    buttons: "Buttons"
+    add_button: "Add button"
+    cancel: "Cancel"
+    save: "Save"
+    label: "Label"
+    edit_node_title: "Edit {{type}} Node"
 flow_list:
   title: "Flows"
   buttons:
