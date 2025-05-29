@@ -16,6 +16,8 @@ import ResetPassword from "@/pages/ResetPassword";
 import ResetPasswordRequest from "@/pages/ResetPasswordRequest";
 import EditBot from "@/pages/bot/EditBot";
 import EditFlow from "@/pages/scenarios/Edit";
+import Chats from "@/pages/chat/Chats";
+import ShowChatPage from "@/pages/chat/ShowChatPage";
 
 export const routes = [
   {
@@ -56,6 +58,8 @@ export const routes = [
       { path: "/chatbot_flows/:id/:slug/edit", element: <EditFlow />, isPrivate: false },
       { path: "/bots", element: <BotListPage />, isPrivate: false },
       { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
+      { path: "/bots/:id/chats", element: <Chats />, isPrivate: false },
+      { path: "/bots/:id/chats/:chat_id", element: <ShowChatPage />, isPrivate: false },
       { path: "/bots/new", element: <CreateBot />, isPrivate: false },
       { path: "/bots/:id/edit", element: <EditBot />, isPrivate: false },
       { path: "/dashboard", element: <Dashboard />, isPrivate: false },

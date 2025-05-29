@@ -1,4 +1,3 @@
-# app/serializers/bot_serializer.rb
 class BotSerializer
   include JSONAPI::Serializer
 

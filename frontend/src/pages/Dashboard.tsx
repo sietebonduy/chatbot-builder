@@ -101,22 +101,55 @@ const Dashboard: React.FC = () => {
     },
   };
 
-  const buildChartData = (
+  const buildDateChartData = (
     data: Record<string, number>,
     label: string
-  ) => ({
-    labels: Object.keys(data),
-    datasets: [
-      {
+  ) => {
+    const labels = Object.keys(data).map(dateStr => {
+      let day: string, month: string, year: string;
+      if (dateStr.includes("-")) {
+        [year, month, day] = dateStr.split("-");
+      } else if (dateStr.length === 8) {
+        year  = dateStr.slice(0, 4);
+        month = dateStr.slice(4, 6);
+        day   = dateStr.slice(6, 8);
+      } else {
+        const d = new Date(dateStr);
+        day   = String(d.getDate()).padStart(2, "0");
+        month = String(d.getMonth() + 1).padStart(2, "0");
+        year  = String(d.getFullYear());
+      }
+      return `${day}.${month}.${year}`;
+    });
+
+    return {
+      labels,
+      datasets: [{
         label,
         data: Object.values(data),
         fill: false,
         borderColor: "#1976d2",
         backgroundColor: "#1976d2",
         tension: 0.4,
-      },
-    ],
+      }],
+    };
+  };
+
+  const buildHourChartData = (
+    data: Record<string, number>,
+    label: string
+  ) => ({
+    labels: Object.keys(data).map(hour => `${hour}:00`),
+    datasets: [{
+      label,
+      data: Object.values(data),
+      fill: false,
+      borderColor: "#1976d2",
+      backgroundColor: "#1976d2",
+      tension: 0.4,
+    }],
   });
+
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
@@ -212,7 +245,7 @@ const Dashboard: React.FC = () => {
             <CardHeader title={t("dashboard.messages_over_time")} />
             <CardContent>
               <Line
-                data={buildChartData(
+                data={buildDateChartData(
                   dailyMessages,
                   t("dashboard.messages_over_time")
                 )}
@@ -226,7 +259,7 @@ const Dashboard: React.FC = () => {
             <CardHeader title={t("dashboard.messages_by_hour")} />
             <CardContent>
               <Bar
-                data={buildChartData(
+                data={buildHourChartData(
                   messagesByHour,
                   t("dashboard.messages_by_hour")
                 )}
@@ -240,7 +273,7 @@ const Dashboard: React.FC = () => {
             <CardHeader title={t("dashboard.chats_over_time")} />
             <CardContent>
               <Line
-                data={buildChartData(
+                data={buildDateChartData(
                   dailyChats,
                   t("dashboard.chats_over_time")
                 )}

@@ -28,6 +28,8 @@ class Webhooks::Telegram::Receive
     return error(nil, ['No chat_id']) if chat_id.blank?
 
     client = Client.find_or_create_by!(chat_id: chat_id, bot_id: @params[:bot_id])
+    update_client(client)
+
     chat   = client.chats.find_or_create_by!(client_id: client.id, bot_id: @params[:bot_id])
     chat.messages.create!(content: user_input) unless user_input.is_a?(Hash)
 
@@ -94,6 +96,23 @@ class Webhooks::Telegram::Receive
     end
 
     nodes.find { |n| n['id'] == edge&.dig('target') } if edge
+  end
+
+  def update_client(client)
+    id         = @params.dig(:message, :from, :id)   || @params.dig(:callback_query, :from, :id)
+    username   = @params.dig(:message, :from, :username)   || @params.dig(:callback_query, :from, :username)
+    first_name = @params.dig(:message, :from, :first_name) || @params.dig(:callback_query, :from, :first_name)
+
+    client.external_user_id = id if id.present? && client.external_user_id.blank?
+    client.username = username if username.present? && client.username != username
+    client.first_name = first_name if first_name.present? && client.first_name != username
+    
+    # client.avatar.attach(client_avatar) unless client.avatar.attached?
+    client.save!
+  end
+
+  def client_avatar
+    api_client
   end
 
   def flow

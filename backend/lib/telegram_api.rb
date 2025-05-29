@@ -65,6 +65,13 @@ class TelegramApi
     { errors: [I18n.t('services.timeout_error')] }
   end
 
+  def get_user_photos(client_id, limit: 1)
+    response = HTTParty.get("#{base_url}/getUserProfilePhotos", query: { client_id:, limit: })
+    JSON.parse(response.body)
+  rescue Net::ReadTimeout
+    { errors: [I18n.t('services.timeout_error')] }
+  end
+
   private
 
   def base_url

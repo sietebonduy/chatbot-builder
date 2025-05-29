@@ -56,6 +56,11 @@ Rails.application.routes.draw do
           get :messages_by_hour
         end
       end
+      resources :chats, only: %i[index show] do
+        member do
+          post :send_message
+        end
+      end
     end
   end
 end

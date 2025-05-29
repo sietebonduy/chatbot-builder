@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_14_141803) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_28_212700) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -96,6 +96,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_141803) do
     t.bigint "bot_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "external_user_id"
     t.index ["chat_id", "bot_id"], name: "index_clients_on_chat_id_and_bot_id", unique: true
   end
 
@@ -171,7 +172,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_141803) do
     t.string "first_name"
     t.string "last_name"
     t.integer "locale", default: 0
-    t.integer "sign_in_count", default: 0, null: false # delete
+    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"

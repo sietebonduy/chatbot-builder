@@ -201,7 +201,10 @@ bot_list:
 bot_details:
   title: "Bot Details"
   default_name: "Bot"
+  notifications:
+    status_ok: "Status updated successfully"
   labels:
+    status: "Webhook Status"
     name: "Name"
     username: "Username"
     description: "Description"
@@ -211,12 +214,11 @@ bot_details:
   status:
     active: "Active"
     inactive: "Inactive"
-  tooltips:
-    check_status: "Check Status"
   buttons:
     refresh: "Refresh"
-  notifications:
-    status_ok: "Status refreshed"
+    chats: "Chats"
+  tooltips:
+    check_status: "Check Webhook Status"
 edit_flow:
   title: "Edit Flow"
   labels:
@@ -272,6 +274,18 @@ edit_bot:
     token_required: "Token is required"
   notifications:
     updated: "Bot successfully updated"
+chats:
+  title: "Bot Chats"
+  search_placeholder: "Search..."
+  no_chats: "No chats found."
+  no_name: "No Name"
+  load_error: "Failed to load chats"
+  back: "Back"
+chat:
+  show:
+    subtitle: "{{count}} messages"
+    input_placeholder: "Type a message..."
+    load_error: "Failed to load chat"
 notifications:
   success: "Action completed successfully."
   error: "An error occurred. Please try again."

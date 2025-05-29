@@ -201,22 +201,24 @@ bot_list:
 bot_details:
   title: "Детали бота"
   default_name: "Бот"
+  notifications:
+    status_ok: "Статус успешно обновлён"
   labels:
+    status: "Состояние Webhook"
     name: "Имя"
     username: "Username"
     description: "Описание"
     provider: "Провайдер"
     token: "Токен"
-    webhook_set: "Вебхук установлен"
+    webhook_set: "Webhook установлен"
   status:
     active: "Активен"
     inactive: "Неактивен"
-  tooltips:
-    check_status: "Проверить статус"
   buttons:
     refresh: "Обновить"
-  notifications:
-    status_ok: "Статус обновлён"
+    chats: "Чаты"
+  tooltips:
+    check_status: "Проверить статус Webhook"
 create_bot:
   title: "Создание чат-бота"
   labels:
@@ -261,6 +263,18 @@ edit_flow:
     updated: "Сценарий успешно обновлен"
 node_selector:
   dragging: 'Перетаскивается…'
+chats:
+  title: "Чаты бота"
+  search_placeholder: "Поиск..."
+  no_chats: "Чатов не найдено."
+  no_name: "Без имени"
+  load_error: "Не удалось загрузить чаты"
+  back: "Назад"
+chat:
+  show:
+    subtitle: "{{count}} сообщений"
+    input_placeholder: "Введите сообщение..."
+    load_error: "Не удалось загрузить переписку"
 admin:
   users:
     table:

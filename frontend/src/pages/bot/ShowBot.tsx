@@ -9,20 +9,38 @@ import {
   Container,
   Box,
   Card,
+  CardHeader,
+  Avatar,
   CardContent,
   Typography,
   Button,
   Chip,
   Stack,
   Tooltip,
+  Divider,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CachedIcon from '@mui/icons-material/Cached';
+import ChatIcon from '@mui/icons-material/Chat';
 
-const ShowBotPage = () => {
+interface InfoRowProps {
+  label: string;
+  value?: React.ReactNode;
+}
+
+const InfoRow: React.FC<InfoRowProps> = ({ label, value }) => (
+  <Box display="flex" justifyContent="space-between" alignItems="center" py={1}>
+    <Typography variant="body1">{label}</Typography>
+    <Typography variant="body2" color="text.secondary">
+      {value ?? '—'}
+    </Typography>
+  </Box>
+);
+
+const ShowBotPage: React.FC = () => {
   const { t } = useTranslation();
-  const { id } = useParams();
-  const [bot, setBot] = useState(null);
+  const { id } = useParams<{ id: string }>();
+  const [bot, setBot] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -50,7 +68,7 @@ const ShowBotPage = () => {
       const res = await checkStatus(id);
       setBot(res.data);
       toast.success(t('bot_details.notifications.status_ok'));
-    } catch (err) {
+    } catch (err: any) {
       const messages = err?.response?.data?.errors || [t('notifications.error')];
       toast.error(messages.join(', '));
     } finally {
@@ -66,66 +84,75 @@ const ShowBotPage = () => {
 
   const isActive = present(bot.webhookUrl);
 
-  const InfoRow = ({ label, value }) => (
-    <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-      <Typography variant="body1">{label}</Typography>
-      <Typography variant="body2" color="text.secondary">
-        {value || '—'}
-      </Typography>
-    </Stack>
-  );
-
   return (
     <Container maxWidth="sm" sx={{ mt: 6 }}>
+      {/* Заголовок и кнопки Навигации */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Box>
+          <Button
+            variant="text"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate('/bots')}
+          >
+            {t('common.back')}
+          </Button>
+        </Box>
         <Typography variant="h5" fontWeight="bold">
           {t('bot_details.title')}
         </Typography>
         <Button
-          variant="outlined"
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate(-1)}
+          variant="contained"
+          startIcon={<ChatIcon />}
+          onClick={() => navigate(`/bots/${id}/chats`)}
         >
-          {t('common.back')}
+          {t('bot_details.buttons.chats')}
         </Button>
       </Box>
 
       <Card variant="outlined" sx={{ boxShadow: 3, borderRadius: 2 }}>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56, fontSize: 24 }}>
+              {bot.name?.charAt(0) ?? 'B'}
+            </Avatar>
+          }
+          title={
+            <Typography variant="h6">
+              {bot.name || `${t('bot_details.default_name')} #${bot.id}`}
+            </Typography>
+          }
+          subheader={`@${bot.username}`}
+        />
+        <Divider />
         <CardContent>
-          <Stack spacing={3}>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h6" fontWeight="medium">
-                {bot.name || `${t('bot_details.default_name')} #${bot.id}`}
-              </Typography>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Chip
-                  label={isActive ? t('bot_details.status.active') : t('bot_details.status.inactive')}
-                  color={isActive ? 'success' : 'default'}
+          <Stack spacing={1.5}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Typography variant="body1">{t('bot_details.labels.status')}</Typography>
+              <Chip
+                label={isActive ? t('bot_details.status.active') : t('bot_details.status.inactive')}
+                color={isActive ? 'success' : 'default'}
+                size="small"
+                variant="outlined"
+              />
+              <Tooltip title={t('bot_details.tooltips.check_status')}>
+                <Button
+                  variant="text"
                   size="small"
-                  variant="outlined"
-                />
-                <Tooltip title={t('bot_details.tooltips.check_status')}>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<CachedIcon />}
-                    onClick={handleCheckStatus}
-                  >
-                    {t('bot_details.buttons.refresh')}
-                  </Button>
-                </Tooltip>
-              </Stack>
-            </Box>
+                  startIcon={<CachedIcon />}
+                  onClick={handleCheckStatus}
+                >
+                  {t('bot_details.buttons.refresh')}
+                </Button>
+              </Tooltip>
+            </Stack>
+
+            <Divider />
 
             <InfoRow label={t('bot_details.labels.name')} value={bot.name} />
             <InfoRow label={t('bot_details.labels.username')} value={bot.username} />
             <InfoRow label={t('bot_details.labels.description')} value={bot.description} />
             <InfoRow label={t('bot_details.labels.provider')} value={bot.provider} />
             <InfoRow label={t('bot_details.labels.token')} value={bot.token} />
-            <InfoRow
-              label={t('bot_details.labels.webhook_set')}
-              value={isActive ? t('common.yes') : t('common.no')}
-            />
           </Stack>
         </CardContent>
       </Card>

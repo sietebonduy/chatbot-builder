@@ -26,6 +26,7 @@ const Routes = {
       },
       LOGIN_ACTIVITIES: { ROOT: '/api/v1/login_activities' },
       ANALYTICS: { ROOT: '/api/v1/analytics' },
+      CHAT: { ROOT: '/api/v1/chats' },
     }
   }
 };
