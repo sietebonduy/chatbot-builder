@@ -39,10 +39,12 @@ import {
   ConditionNode,
   APICallNode,
   TriggerNode,
+  NotifyUserNode,
 } from './nodeTypes';
 import { show as fetchFlow, update as updateFlow } from '@/api/repositories/ChatbotFlowRepository';
 import { normalizeFlow } from '@/lib/normalizeFlow';
 import Loader from '@/components/UI/loader/Loader';
+import finishNode from "./nodeTypes/FinishNode.tsx";
 
 export interface FlowCanvasHandle {
   save: () => Promise<void>;
@@ -83,6 +85,8 @@ const FlowCanvas = forwardRef<FlowCanvasHandle, FlowCanvasProps>(
         condition: ConditionNode,
         apiCall: APICallNode,
         trigger: TriggerNode,
+        notifyUser: NotifyUserNode,
+        finish: finishNode,
       }),
       []
     );

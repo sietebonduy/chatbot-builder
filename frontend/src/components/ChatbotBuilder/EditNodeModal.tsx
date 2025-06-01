@@ -108,6 +108,9 @@ const EditNodeModal = <T extends Record<string, any>>({
           onChange={handleChange("label" as keyof T)}
           fullWidth
           margin="normal"
+          multiline
+          rows={5}
+          maxRows={10}
         />
 
         {type === "message" && (

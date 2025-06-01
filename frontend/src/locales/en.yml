@@ -147,6 +147,8 @@ flow_builder:
       textInput: "Text Input"
       condition: "Condition"
       userResponse: "User Response"
+      notifyUser: "Request Manager response"
+      finish: "Finish/End"
   edit_node_modal:
     buttons: "Buttons"
     add_button: "Add button"

@@ -8,6 +8,7 @@ import {
   FaCodeBranch,
   FaUserCheck,
   FaCloudDownloadAlt,
+  FaCheckCircle,
 } from 'react-icons/fa';
 import type { INodeData, NodeType } from '@/types/flow';
 import clsx from 'clsx';
@@ -34,6 +35,8 @@ const nodeConfig: Record<
   condition: { bg: 'bg-violet-100',border: 'border-violet-500', icon: <FaCodeBranch className="text-violet-500" aria-label="Condition icon" /> },
   userResponse: { bg: 'bg-red-100', border: 'border-red-500',  icon: <FaUserCheck className="text-red-500" aria-label="User response icon" /> },
   apiCall: { bg: 'bg-cyan-100',   border: 'border-cyan-500',   icon: <FaCloudDownloadAlt className="text-cyan-500" aria-label="API call icon" /> },
+  notifyUser: { bg: "bg-green-50", border: "border-green-300",   icon: <FaCheckCircle className="text-green-500" aria-label="Manager Request" /> },
+  finish: { bg: "bg-stone-50", border: "border-stone-300", icon: <FaCheckCircle className="text-stone-500" aria-label="Finish icon" /> },
 };
 
 export interface NodeProps {
@@ -49,7 +52,7 @@ const Node = forwardRef<HTMLDivElement, NodeProps>(({ data, selected, type }, re
   };
 
   const renderSourceHandles = () => {
-    if (type === 'message' && data.options?.length > 0) {
+    if ((type === 'message' && data.options?.length > 0) || type === 'notifyUser' || type === 'finish') {
       return null;
     }
 

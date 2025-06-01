@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrag } from 'react-dnd';
-import { FaPlay, FaCommentDots, FaCheckSquare, FaKeyboard, FaCodeBranch, FaUserCheck } from 'react-icons/fa';
+import { FaPlay, FaCommentDots, FaCheckSquare, FaKeyboard, FaCodeBranch, FaUserCheck, FaCheckCircle, FaFlagCheckered } from 'react-icons/fa';
 
 const NODE_CONFIGS = [
   { type:'trigger', color:'#64748B', icon:<FaPlay /> },
@@ -10,6 +10,8 @@ const NODE_CONFIGS = [
   { type: 'textInput', color: '#F59E0B', icon: <FaKeyboard /> },
   { type: 'condition', color: '#8B5CF6', icon: <FaCodeBranch /> },
   { type: 'userResponse', color: '#EF4444', icon: <FaUserCheck /> },
+  { type: 'notifyUser', color: '#4CAF50', icon: <FaCheckCircle /> },
+  { type: 'finish', color: '#825A2C', icon: <FaFlagCheckered /> },
 ];
 
 export const DraggableNode = ({ type, label, color, icon }: any) => {

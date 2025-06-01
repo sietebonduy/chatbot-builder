@@ -33,10 +33,18 @@ export interface IApiCallNodeData extends IBaseNodeData {
 export interface ITriggerNodeData extends IBaseNodeData {
 }
 
+export interface INotifyUserNodeData extends IBaseNodeData {
+}
+
+export interface IFinishNodeData extends IBaseNodeData {
+}
+
 export type INodeData =
   | IMessageNodeData
   | IButtonNodeData
   | ITextInputNodeData
   | IConditionNodeData
   | IApiCallNodeData
-  | ITriggerNodeData;
+  | ITriggerNodeData
+  | INotifyUserNodeData
+  | IFinishNodeData;

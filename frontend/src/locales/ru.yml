@@ -147,6 +147,8 @@ flow_builder:
       textInput: "Текстовое поле"
       condition: "Условие"
       userResponse: "Ответ пользователя"
+      notifyUser: "Вызов менеджера"
+      finish: "Конец"
   edit_node_modal:
     buttons: "Кнопки"
     add_button: "Добавить кнопку"
