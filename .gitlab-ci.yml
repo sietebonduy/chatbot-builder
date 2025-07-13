@@ -25,9 +25,3 @@ test:
   stage: test
   script:
     - docker-compose -f docker-compose.ci.yml run --rm backend bash -c "bundle exec rails db:create db:migrate && bundle exec rspec"
-  artifacts:
-    when: always
-    paths:
-      - backend/tmp/coverage
-      - backend/tmp/rspec.xml
-    expire_in: 1 week
