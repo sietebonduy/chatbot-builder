@@ -18,6 +18,7 @@ import EditBot from "@/pages/bot/EditBot";
 import EditFlow from "@/pages/scenarios/Edit";
 import Chats from "@/pages/chat/Chats";
 import ShowChatPage from "@/pages/chat/ShowChatPage";
+import AdminDashboard from "@/pages/admin/AdminDashboard.tsx";
 
 export const routes = [
   {
@@ -44,29 +45,36 @@ export const routes = [
     element: <MainLayout />,
     isPrivate: false,
     children: [
-      { path: "/", element: <Home />, isPrivate: false },
-      { path: "/about_us", element: <AboutUs />, isPrivate: false },
-      { path: "*", element: <NotFound />, isPrivate: false },
+      { path: "/", element: <Home /> },
+      { path: "/about_us", element: <AboutUs /> },
+      { path: "*", element: <NotFound /> },
     ],
   },
   {
     element: <MainLayout />,
     isPrivate: true,
     children: [
-      { path: "/chatbot_flows", element: <ChatbotFlowListPage />, isPrivate: false },
-      { path: "/chatbot_flows/new", element: <CreateFlow />, isPrivate: false },
-      { path: "/chatbot_flows/:id/:slug/edit", element: <EditFlow />, isPrivate: false },
-      { path: "/bots", element: <BotListPage />, isPrivate: false },
-      { path: "/bots/:id", element: <ShowBot />, isPrivate: false },
-      { path: "/bots/:id/chats", element: <Chats />, isPrivate: false },
-      { path: "/bots/:id/chats/:chat_id", element: <ShowChatPage />, isPrivate: false },
-      { path: "/bots/new", element: <CreateBot />, isPrivate: false },
-      { path: "/bots/:id/edit", element: <EditBot />, isPrivate: false },
-      { path: "/dashboard", element: <Dashboard />, isPrivate: false },
-      // { path: "/profile", element: <Profile />, isPrivate: false },
-      { path: "/settings", element: <Settings />, isPrivate: false },
-      { path: "/admin/users", element: <ListUsers />, isPrivate: false },
+      { path: "/chatbot_flows", element: <ChatbotFlowListPage /> },
+      { path: "/chatbot_flows/new", element: <CreateFlow /> },
+      { path: "/chatbot_flows/:id/:slug/edit", element: <EditFlow /> },
+      { path: "/bots", element: <BotListPage /> },
+      { path: "/bots/:id", element: <ShowBot /> },
+      { path: "/bots/:id/chats", element: <Chats /> },
+      { path: "/bots/:id/chats/:chat_id", element: <ShowChatPage /> },
+      { path: "/bots/new", element: <CreateBot /> },
+      { path: "/bots/:id/edit", element: <EditBot /> },
+      { path: "/dashboard", element: <Dashboard /> },
+      { path: "/settings", element: <Settings /> },
     ],
   },
-  { path: "/chatbot_flows/:slug/edit", element: <ChatbotBuilder />, isPrivate: false },
+  { path: "/chatbot_flows/:slug/edit", element: <ChatbotBuilder />, isPrivate: true },
+  {
+    element: <MainLayout />,
+    isPrivate: true,
+    isAdminOnly: true,
+    children: [
+      { path: "/admin/users", element: <ListUsers />},
+      { path: "/admin/dashboard", element: <AdminDashboard /> },
+    ]
+  },
 ];

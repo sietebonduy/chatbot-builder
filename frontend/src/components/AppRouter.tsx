@@ -5,12 +5,14 @@ import { isBlank, present } from "@/utils/presence.ts";
 
 const renderRoute = (route, user) => {
   if (route.isPrivate && isBlank(user)) return null;
+  if (route.isAdminOnly && (!user || user.admin !== true)) return null;
 
   if (present(route.children)) {
     return (
       <Route key={route.element?.type?.name || 'layout'} element={route.element}>
         {route.children.map((child) =>
-          !child.isPrivate || present(user) ? (
+          (!child.isPrivate || present(user)) &&
+          (!child.isAdminOnly || (user && user.admin === true)) ? (
             <Route key={child.path} path={child.path} element={child.element} />
           ) : null
         )}

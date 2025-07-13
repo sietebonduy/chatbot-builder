@@ -92,6 +92,12 @@ const Navbar = () => {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
               >
+                { user.admin === true ?
+                  <li>
+                    <a href="/admin/dashboard">{t('navbar.admin')}</a>
+                  </li>
+                  : null
+                }
                 <li>
                   <a href="/dashboard">{t('navbar.dashboard')}</a>
                 </li>

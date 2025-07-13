@@ -34,6 +34,7 @@ authentication:
     send_reset_link: "Отправить ссылку для сброса"
     reset_password: "Сбросить пароль"
 navbar:
+  admin: 'Админ'
   app_name: "Chatbot Builder"
   main_page: "Главная"
   login: "Войти"
@@ -227,7 +228,7 @@ create_bot:
     name: "Имя"
     provider: "Провайдер"
     token: "Токен"
-    default_response: "Ответа при умолчании"
+    default_response: "Ответ при ошибках"
   buttons:
     create: "Создать"
   errors:
@@ -240,7 +241,7 @@ edit_bot:
     name: "Имя"
     provider: "Провайдер"
     token: "Токен"
-    default_response: "Ответа при умолчании"
+    default_response: "Ответ при ошибках"
   buttons:
     save: "Сохранить"
   errors:

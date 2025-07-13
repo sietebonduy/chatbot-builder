@@ -34,6 +34,7 @@ authentication:
     send_reset_link: "Send reset link"
     reset_password: "Reset password"
 navbar:
+  admin: 'Admin'
   app_name: "Chatbot Builder"
   main_page: "Home"
   login: "Login"

@@ -99,7 +99,7 @@ class Webhooks::Telegram::Receive
   end
 
   def update_client(client)
-    id         = @params.dig(:message, :from, :id)   || @params.dig(:callback_query, :from, :id)
+    id         = @params.dig(:message, :from, :id)         || @params.dig(:callback_query, :from, :id)
     username   = @params.dig(:message, :from, :username)   || @params.dig(:callback_query, :from, :username)
     first_name = @params.dig(:message, :from, :first_name) || @params.dig(:callback_query, :from, :first_name)
 

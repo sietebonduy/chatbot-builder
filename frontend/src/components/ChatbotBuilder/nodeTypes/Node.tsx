@@ -1,15 +1,6 @@
 import React, { forwardRef, MouseEvent, memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
-import {
-  FaPlay,
-  FaCommentDots,
-  FaCheckSquare,
-  FaKeyboard,
-  FaCodeBranch,
-  FaUserCheck,
-  FaCloudDownloadAlt,
-  FaCheckCircle,
-} from 'react-icons/fa';
+import { FaPlay, FaCommentDots, FaCheckSquare, FaKeyboard, FaCodeBranch, FaUserCheck, FaCloudDownloadAlt, FaCheckCircle } from 'react-icons/fa';
 import type { INodeData, NodeType } from '@/types/flow';
 import clsx from 'clsx';
 
