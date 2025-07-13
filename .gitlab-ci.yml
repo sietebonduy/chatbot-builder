@@ -1,0 +1,33 @@
+image: docker:20.10.16
+
+services:
+  - name: postgres:17
+    alias: db
+  - name: redis:latest
+    alias: redis
+
+variables:
+  POSTGRES_PASSWORD: "postgres"
+  POSTGRES_USER: "postgres"
+  POSTGRES_DB: "app_test"
+  REDIS_URL: "redis://redis:6379/0"
+  RAILS_ENV: "test"
+
+stages:
+  - test
+
+before_script:
+  - apk add --no-cache docker-compose
+  - docker-compose -f docker-compose.ci.yml build backend
+  - cp backend/config/database.yml.ci backend/config/database.yml
+
+test:
+  stage: test
+  script:
+    - docker-compose -f docker-compose.ci.yml run --rm backend bash -c "bundle exec rails db:create db:migrate && bundle exec rspec"
+  artifacts:
+    when: always
+    paths:
+      - backend/tmp/coverage
+      - backend/tmp/rspec.xml
+    expire_in: 1 week
