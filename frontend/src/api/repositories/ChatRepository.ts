@@ -1,7 +1,10 @@
-import Routes from '../routes';
 import { FetchHelpers } from '@/lib/FetchHelpers';
-import type { IChat, IChatAttributes, IJSONAPIResponse } from '@/types/chat';
 import { normalizeChatResource, normalizeChatsBatch } from '@/lib/normalizeChat';
+
+import Routes from '../routes';
+
+import type { IChat, IChatAttributes, IJSONAPIResource } from '@/types/chat';
+
 
 interface ChatIndexResponse {
   data: IJSONAPIResource<IChatAttributes>[];
@@ -24,9 +27,9 @@ export const index = async (botId: number | string): Promise<IChat[]> => {
 };
 
 export const show = async (chatId: number | string): Promise<IChat> => {
-  const url = `${Routes.API.V1.CHAT.ROOT}/${chatId}`;
+  const url = Routes.API.V1.CHAT.ROOT;
 
-  const response = await FetchHelpers.get<ShowResponse>(url);
+  const response = await FetchHelpers.get<ShowResponse>(url, { params: { chatId } });
 
   const { data, included = [] } = response.data;
 
@@ -36,5 +39,5 @@ export const show = async (chatId: number | string): Promise<IChat> => {
 export const sendMessage = async (chatId: number | string, content: string): Promise<IChat> => {
   const url = `${Routes.API.V1.CHAT.ROOT}/${chatId}/send_message`;
 
-  return FetchHelpers.post<T>(url, { content, chatId });
+  return FetchHelpers.post<IChat, { content: string, chatId: string | number }>(url, { content, chatId });
 };

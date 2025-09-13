@@ -1,5 +1,6 @@
 import axios from 'axios';
 import humps from 'humps';
+
 import { isBlank, present } from "@/utils/presence";
 
 const getCookie = (name: string) => {
@@ -11,7 +12,7 @@ const getCookie = (name: string) => {
 };
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:80',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });
 

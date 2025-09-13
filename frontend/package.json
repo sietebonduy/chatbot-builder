@@ -21,6 +21,8 @@
     "chart.js": "^4.4.9",
     "clsx": "^2.1.1",
     "daisyui": "^5.0.28",
+    "dotenv": "^17.2.2",
+    "eslint-plugin-import": "^2.32.0",
     "framer-motion": "^12.10.4",
     "humps": "^2.0.1",
     "i18next": "^24.2.2",

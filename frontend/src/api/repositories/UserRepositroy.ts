@@ -1,7 +1,9 @@
-import Routes from '../routes';
 import { FetchHelpers } from '@/lib/FetchHelpers';
-import { IUserResponse, IUpdateUserParams, IUpdatePasswordParams, IResetPasswordParams } from '@/types/user';
-import { ICommonMessageResponse } from '@/types';
+
+import Routes from '../routes';
+
+import type { ICommonMessageResponse } from '@/types';
+import type { IUserResponse, IUpdateUserParams, IUpdatePasswordParams, IResetPasswordParams } from '@/types/user';
 
 export const index = () => {
   const url = Routes.API.V1.USERS.ROOT;
