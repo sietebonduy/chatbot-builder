@@ -8,6 +8,7 @@ Thumbs.db
 
 # dotenv
 .env
+ngrok.run
 
 # Logs
 *.log

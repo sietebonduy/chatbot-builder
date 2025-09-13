@@ -1,12 +1,8 @@
-import Routes from '../routes';
 import { FetchHelpers } from '@/lib/FetchHelpers';
-import type {
-  IChatbotFlowResource,
-  ICollectionResponse,
-  ISingleResponse,
-  ICreateChatbotFlowParams,
-  IUpdateChatbotFlowParams,
-} from '@/types/chatbotFlow';
+
+import Routes from '../routes';
+
+import type { IChatbotFlowResource, ICollectionResponse, ISingleResponse, ICreateChatbotFlowParams, IUpdateChatbotFlowParams } from '@/types/chatbotFlow';
 
 export const index = () => {
   const url = Routes.API.V1.CHATBOT_FLOWS.ROOT;

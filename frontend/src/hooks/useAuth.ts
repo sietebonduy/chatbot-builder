@@ -1,12 +1,14 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
+
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import { registration, login, logout } from '@/api/repositories/AuthRepository';
-import { IUserCredentials } from '@/types/auth';
 import { normalizeFromJsonApi } from '@/lib/normalizeUser';
 import { useUserStore } from '@/stores/userStore';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+import { IUserCredentials } from '@/types/auth';
 import { present } from "@/utils/presence.ts";
 
 export const useAuth = () => {
