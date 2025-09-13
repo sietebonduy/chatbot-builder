@@ -5,5 +5,5 @@ class Chat < ApplicationRecord
   belongs_to :bot
   has_many :messages, dependent: :destroy
 
-  scope :for_bot, ->(bot) { where(bot_id: bot.id) }
+  scope :for_bot, ->(bot_id) { where(bot_id: bot_id) }
 end

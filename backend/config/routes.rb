@@ -34,14 +34,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'verify_recaptcha', to: 'captchas#verify'
 
-      resources :hello, only: %i[index]
       resources :users, only: %i[index show update] do
         collection do
           get :me
         end
       end
 
-      resources :routes, only: %i[index]
       resources :chatbot_flows, only: %i[index show create update destroy]
       resources :bots, only: %i[index show create update destroy] do
         collection do

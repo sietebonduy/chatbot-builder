@@ -6,7 +6,7 @@ class ChatbotFlow < ApplicationRecord
   belongs_to :user
   belongs_to :bot, optional: true
 
-  scope :for_user, ->(current_user) { where(user_id: current_user.id) }
+  scope :for_user, ->(user_id) { where(user_id: user_id) }
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true

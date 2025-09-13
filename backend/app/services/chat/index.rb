@@ -11,7 +11,7 @@ class Chat::Index
   private
 
   def perform
-    chats = Chat.for_bot(bot)
+    chats = Chat.for_bot(bot.id)
 
     success(chats)
   rescue => e

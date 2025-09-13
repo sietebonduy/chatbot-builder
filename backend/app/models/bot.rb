@@ -8,10 +8,6 @@ class Bot < ApplicationRecord
 
   has_one_attached :avatar
 
-  scope :for_user, ->(current_user) { where(user_id: current_user.id) }
-
-  scope :without_flows, -> {
-    left_outer_joins(:chatbot_flow)
-      .where(chatbot_flows: { id: nil })
-  }
+  scope :for_user, ->(user_id) { where(user_id: user_id) }
+  scope :without_flows, -> { left_outer_joins(:chatbot_flow).where(chatbot_flows: { id: nil }) }
 end

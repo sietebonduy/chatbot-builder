@@ -11,7 +11,7 @@ class Analytic::Index
   private
 
   def perform
-    bots = Bot.for_user(@current_user)
+    bots = Bot.for_user(@current_user.id)
     total_chats = 0
     total_messages_from_bots = 0
     total_messages_from_clients = 0

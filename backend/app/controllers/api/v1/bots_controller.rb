@@ -47,7 +47,7 @@ class Api::V1::BotsController < Api::V1::ApplicationController
   end
 
   def destroy
-    @bot = Bot.for_user(current_user).find(params[:id])
+    @bot = Bot.for_user(current_user.id).find(params[:id])
 
     if @bot.destroy
       head :no_content

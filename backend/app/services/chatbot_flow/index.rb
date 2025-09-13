@@ -11,7 +11,7 @@ class ChatbotFlow::Index
   private
 
   def perform
-    flows = ChatbotFlow.for_user(@current_user)
+    flows = ChatbotFlow.for_user(@current_user.id)
 
     success(flows)
   rescue => e

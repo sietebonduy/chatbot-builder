@@ -47,7 +47,7 @@ class Api::V1::ChatbotFlowsController < Api::V1::ApplicationController
   end
 
   def destroy
-    @chatbot_flow = ChatbotFlow.for_user(current_user).find(params[:id])
+    @chatbot_flow = ChatbotFlow.for_user(current_user.id).find(params[:id])
 
     if @chatbot_flow.destroy
       head :no_content
